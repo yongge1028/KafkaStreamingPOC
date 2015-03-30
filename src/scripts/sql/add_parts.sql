@@ -1,0 +1,11 @@
+use faganpe;
+alter table staged_rand_netflow add partition (dt='1-26-03-2015-09-42-21');
+alter table staged_rand_netflow add partition (dt='10-26-03-2015-09-42-21');
+alter table staged_rand_netflow add partition (dt='2-26-03-2015-09-42-21');
+alter table staged_rand_netflow add partition (dt='3-26-03-2015-09-42-21');
+alter table staged_rand_netflow add partition (dt='4-26-03-2015-09-42-21');
+alter table staged_rand_netflow add partition (dt='5-26-03-2015-09-42-21');
+alter table staged_rand_netflow add partition (dt='6-26-03-2015-09-42-21');
+alter table staged_rand_netflow add partition (dt='7-26-03-2015-09-42-21');
+alter table staged_rand_netflow add partition (dt='8-26-03-2015-09-42-21');
+alter table staged_rand_netflow add partition (dt='9-26-03-2015-09-42-21');

@@ -1,0 +1,1 @@
+spark-submit --jars sparkwordcount-0.0.1-SNAPSHOT.jar --class RandomNetflowGen --master yarn --driver-memory 8G --executor-memory 24G --num-executors 140 sparkwordcount-0.0.1-SNAPSHOT.jar "hdfs://sm-nn1.tommy.bt.com/user/faganpe/randomNetflow/" 400000000 24 10 false

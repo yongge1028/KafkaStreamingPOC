@@ -1,68 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="308cb771-7646-450e-a2a7-e46b95d0aaea" name="Default" comment="Added proper license file.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/HiveFromSpark.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__antlr_antlr_2_7_7.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__asm_asm_3_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jolbox_bonecp_0_8_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_server_1_14.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_servlet_1_14.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_jdo_jdo_api_3_0_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_transaction_jta_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_opencsv_opencsv_2_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_ST4_4_0_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_antlr_runtime_3_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_stringtemplate_3_2_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_1_9_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_launcher_1_9_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_avro_avro_ipc_1_7_6_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_avro_avro_ipc_tests_1_7_6_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_avro_avro_mapred_1_7_6_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_derby_derby_10_10_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_hive_hive_ant_0_13_1_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_hive_hive_common_0_13_1_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_hive_hive_exec_0_13_1_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_hive_hive_metastore_0_13_1_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_hive_hive_serde_0_13_1_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_hive_hive_shims_0_13_1_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_hive_shims_hive_shims_0_23_0_13_1_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_hive_shims_hive_shims_common_0_13_1_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_hive_shims_hive_shims_common_secure_0_13_1_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_hive_shims_hive_shims_scheduler_0_13_1_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_spark_spark_hive_2_10_1_2_0_cdh5_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_thrift_libfb303_0_9_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_thrift_libthrift_0_9_0_cdh5_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_velocity_velocity_1_5.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_groovy_groovy_all_2_1_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_datanucleus_datanucleus_api_jdo_3_2_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_datanucleus_datanucleus_core_3_2_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_datanucleus_datanucleus_rdbms_3_2_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__oro_oro_2_0_8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__stax_stax_api_1_0_1.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/MANIFEST.MF" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_thoughtworks_paranamer_paranamer_2_6.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_thoughtworks_paranamer_paranamer_2_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/KafkaReadWrite$.class" afterPath="$PROJECT_DIR$/target/classes/KafkaReadWrite$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/KafkaTopicReader$.class" afterPath="$PROJECT_DIR$/target/classes/KafkaTopicReader$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/KafkaTopicWriter$.class" afterPath="$PROJECT_DIR$/target/classes/KafkaTopicWriter$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/org/apache/spark/examples/streaming/KafkaWordCount$.class" afterPath="$PROJECT_DIR$/target/classes/org/apache/spark/examples/streaming/KafkaWordCount$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/org/apache/spark/examples/streaming/KafkaWordCountProducer$.class" afterPath="$PROJECT_DIR$/target/classes/org/apache/spark/examples/streaming/KafkaWordCountProducer$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$3$$anonfun$apply$1.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$3$$anonfun$apply$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$3.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$main$1$$anonfun$4.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$main$1$$anonfun$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$main$1.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$main$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$.class" afterPath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/SparkStreamingNetflowOrig$.class" afterPath="$PROJECT_DIR$/target/classes/SparkStreamingNetflowOrig$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/sparkwordcount-0.0.1-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/target/sparkwordcount-0.0.1-SNAPSHOT.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala" afterPath="$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/kafkastreamingpoc.iml" afterPath="$PROJECT_DIR$/.idea/modules/kafkastreamingpoc.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scripts/run-spark-netflow.sh" afterPath="$PROJECT_DIR$/src/scripts/run-spark-netflow.sh" />
+    <list default="true" id="308cb771-7646-450e-a2a7-e46b95d0aaea" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/add_parts.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/alter_table_partitons.sh" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_external_table_netflow_records_rand.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_external_table_netflow_records_rand_streaming.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_gzip.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_nocomp.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_snappy_rand.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_snappy_rand_bigger.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_snappy_rand_secs.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_gzip.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_nocomp.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_snappy_rand.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_snappy_rand_bigger.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_snappy_rand_secs.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/ru-spark-netflow-yarn.sh" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/test_create.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/test_insert.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="KafkaStreamingPOC.iws" />
@@ -807,7 +763,13 @@
       <option name="project" value="LOCAL" />
       <updated>1427494692801</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added support for the hive context.">
+      <created>1427750818416</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1427750818416</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -844,6 +806,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919955" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32985783" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270142" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919955" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3219616" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -856,7 +819,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919955" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270142" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919955" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -877,7 +839,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Rough cut code to read from a kafka topic, output to a kafka topic, write to hdfs, wrte to elasticsearch" />
     <MESSAGE value="Added proper license file." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added proper license file." />
+    <MESSAGE value="Added support for the hive context." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added support for the hive context." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
