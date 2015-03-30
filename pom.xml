@@ -104,6 +104,12 @@
           <version>1.2.0-cdh5.3.2</version>
       </dependency>
       <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-hive_2.10</artifactId>
+        <version>1.2.0-cdh5.3.2</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
           <groupId>org.elasticsearch</groupId>
           <artifactId>elasticsearch-spark_2.10</artifactId>
           <version>2.1.0.Beta3</version>

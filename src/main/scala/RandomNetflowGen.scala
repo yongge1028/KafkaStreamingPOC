@@ -3,6 +3,10 @@
  */
 
 import java.io.FileWriter
+
+import org.apache.spark.sql.catalyst.expressions.Row
+import org.apache.spark.sql.catalyst.types.{StringType, StructField, StructType}
+
 //import java.util.Properties
 
 //import _root_.kafka.producer.Producer
@@ -24,6 +28,10 @@ import java.text.SimpleDateFormat
 //import org.elasticsearch.spark.sql._
 import com.google.common.net.InetAddresses
 import java.nio.file.{Paths, Files}
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql._
+import org.apache.spark.sql.hive._
 //import util.Properties
 
 /**
@@ -149,6 +157,7 @@ object RandomNetflowGen extends Serializable {
 //    sparkConf.setJars(jars)
     //      val ssc = new StreamingContext(sparkConf, Seconds(120))
     val sc = new SparkContext(sparkConf)
+    val sqlContext = new org.apache.spark.sql.SQLContext(sc)
 //    val numRecords: Int = 30000000
     val numRecords: Int = args(1).toInt
     val partitions: Int = args(2).toInt
@@ -166,6 +175,27 @@ object RandomNetflowGen extends Serializable {
 
     val seedRdd = sc.parallelize(Seq.fill(partitions)(recordsPerPartition), partitions)
     val netflowLine = seedRdd.flatMap(records => Seq.fill(records)("ReplaceWithData"))
+
+    // Start of experimenting with parquet
+
+    // The schema is encoded in a string, we are currently not using avro
+//    val schemaString = "name age"
+//    // Generate the schema based on the string of schema
+//    val schema =
+//      StructType(
+//        schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, true)))
+
+//    // Convert records of the RDD (people) to Rows.
+//    val rowRDD = netflowLine.map(_.split(",")).map(p => Row(p(0), p(1).trim, p(2).trim, p(3).trim, p(4).trim, p(5).trim,
+//      p(6).trim, p(7).trim, p(8).trim, p(9).trim, p(10).trim, p(11).trim, p(12).trim, p(13).trim))
+//
+//    // Apply the schema to the RDD.
+//    val netflowSchemaRDD = sqlContext.applySchema(rowRDD, schema)
+//
+//    netflowSchemaRDD.saveAsParquetFile(args(0) + "/output-random-netflow/parquetData" + "dt=" + "-"  +hdfsPartitionDir)
+
+    // End of experimenting with parquet
+
     netflowLine.saveAsTextFile(args(0) + "/randfile.txt")
 
     for (i <- 1 to args(3).toInt) {
@@ -221,6 +251,73 @@ object RandomNetflowGen extends Serializable {
         // include this if using localfile + ","  + Properties.lineSeparator
       })
       randLine.saveAsTextFile(args(0) + "/output-random-netflow/" + "dt=" + i.toString + "-"  +hdfsPartitionDir)
+
+      // Start of experimenting with parquet
+
+      // The schema is encoded in a string, we are currently not using avro
+      val schemaString = "StartTime Dur Proto SrcAddr Dir DstAddr Dport State sTos dTos TotPkts TotBytes Label Country"
+      // Generate the schema based on the string of schema
+//      val schema =
+//        StructType(
+//          schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, true)))
+
+      val schema = StructType(Array(StructField("StartTime",StringType,true),StructField("Dur",StringType,true),
+        StructField("Proto",StringType,true), StructField("SrcAddr",StringType,true),
+        StructField("Dir",StringType,true), StructField("DstAddr",StringType,true),
+        StructField("Dport",IntegerType,true), StructField("State",StringType,true),
+        StructField("sTos",StringType,true), StructField("dTos",StringType,true),
+        StructField("TotPkts",StringType,true), StructField("TotBytes",StringType,true),
+        StructField("Label",StringType,true), StructField("Country",StringType,true)))
+
+      // Just the true case for now
+      val rowRDD = randLine.map(_.split(",")).map(p => Row(p(0), p(1).trim, p(2).trim, p(3).trim, p(4).trim, p(5).trim,
+        p(6).toInt, p(7).trim, p(8).trim, p(9).trim, p(10).trim, p(11).trim, p(12).trim, p(13).trim))
+
+      // Apply the schema to the RDD.
+      val netflowSchemaRDD = sqlContext.applySchema(rowRDD, schema)
+
+      netflowSchemaRDD.saveAsParquetFile(args(0) + "/output-random-netflow/parquetData/" + "dt=" + i.toString + "-"  +hdfsPartitionDir)
+
+//      sqlContext.sql("SELECT * FROM records")
+
+      // sc is an existing SparkContext.
+      val sqlContextHive = new org.apache.spark.sql.hive.HiveContext(sc)
+
+//      sqlContext.sql("CREATE TABLE IF NOT EXISTS src (key INT, value STRING)")
+
+      sqlContextHive.sql("CREATE TABLE IF NOT EXISTS rand_netflow_snappy_sec (StartTime string, "
+        + "Dur string, Proto string, SrcAddr string, Dir string, DstAddr string, "
+        + "Dport tinyint, State string, sTos string, dTos string, TotPkts string, "
+        + "TotBytes string, Label string, Country string) "
+        + "partitioned by (dt string) STORED AS PARQUET "
+        + "location 'hdfs://localhost:8020/user/faganpe/randomNetflow/output-random-netflow/parquetData'")
+
+      /*
+      CREATE TABLE IF NOT EXISTS rand_netflow_snappy_secs
+        (StartTime string,
+          Dur string,
+          Proto string,
+          SrcAddr string,
+          Dir string,
+          DstAddr string,
+          Dport bigint,
+          State string,
+          sTos string,
+          dTos string,
+          TotPkts string,
+          TotBytes string,
+          Label string,
+          Country string
+          )
+      partitioned by (dt string)
+      STORED AS PARQUET
+      location '/user/faganpe/randomNetflow/output-random-netflow/parquetData'
+      */
+//
+//
+      sqlContextHive.sql("alter table rand_netflow_snappy_sec add partition (dt='" + i.toString + "-"  +hdfsPartitionDir + "')")
+
+      // End of experimenting with parquet
     }
 
 //    val lines = sc.textFile(args(0) + "/randfile.txt")
