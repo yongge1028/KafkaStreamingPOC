@@ -2,23 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="308cb771-7646-450e-a2a7-e46b95d0aaea" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/add_parts.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/alter_table_partitons.sh" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_external_table_netflow_records_rand.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_external_table_netflow_records_rand_streaming.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_gzip.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_nocomp.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_snappy_rand.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_snappy_rand_bigger.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_snappy_rand_secs.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_gzip.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_nocomp.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_snappy_rand.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_snappy_rand_bigger.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_snappy_rand_secs.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/ru-spark-netflow-yarn.sh" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/test_create.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/sql/test_insert.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/Utils/NetflowProperties.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/Utils/SaveRDD.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/SimpleLib/SimpleLibContext.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_typesafe_config_1_0_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_typesafe_config_1_2_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$3$$anonfun$apply$1.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$3$$anonfun$apply$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$3.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$main$1$$anonfun$4.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$main$1$$anonfun$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$main$1.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$main$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/sparkwordcount-0.0.1-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/target/sparkwordcount-0.0.1-SNAPSHOT.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala" afterPath="$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/kafkastreamingpoc.iml" afterPath="$PROJECT_DIR$/.idea/modules/kafkastreamingpoc.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="KafkaStreamingPOC.iws" />
@@ -48,17 +49,17 @@
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="102" column="32" selection-start-line="102" selection-start-column="32" selection-end-line="102" selection-end-column="32" />
+              <caret line="121" column="18" selection-start-line="121" selection-start-column="18" selection-end-line="121" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestMaxMindSingleton.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/TestMaxMindSingleton.scala">
+      <file leaf-file-name="application.conf" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="3" column="39" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.044247787">
+              <caret line="2" column="20" selection-start-line="0" selection-start-column="0" selection-end-line="7" selection-end-column="77" />
               <folding />
             </state>
           </provider>
@@ -74,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RandomNetflowGen.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RandomNetflowGen.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.91358024">
-              <caret line="317" column="61" selection-start-line="317" selection-start-column="61" selection-end-line="317" selection-end-column="61" />
+            <state vertical-scroll-proportion="-11.2">
+              <caret line="130" column="42" selection-start-line="130" selection-start-column="42" selection-end-line="130" selection-end-column="42" />
               <folding>
                 <element signature="e#42#67#0" expanded="true" />
               </folding>
@@ -86,35 +87,36 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StructField.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-catalyst_2.10/1.2.0-cdh5.3.2/spark-catalyst_2.10-1.2.0-cdh5.3.2.jar!/org/apache/spark/sql/catalyst/types/StructField.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.6">
-              <caret line="1" column="11" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HiveFromSpark.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/HiveFromSpark.scala">
+      <file leaf-file-name="NetflowProperties.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/Utils/NetflowProperties.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="16" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="20" />
+              <caret line="19" column="8" selection-start-line="18" selection-start-column="4" selection-end-line="19" selection-end-column="78" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <element signature="e#889#937#0" expanded="true" />
+                <element signature="e#59#92#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="create_linux_user.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/scripts/create_linux_user.sh">
+      <file leaf-file-name="SimpleLibContext.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/SimpleLib/SimpleLibContext.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.6">
-              <caret line="1" column="6" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="62" column="0" selection-start-line="62" selection-start-column="2" selection-end-line="64" selection-end-column="46" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SaveRDD.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/Utils/SaveRDD.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="17" column="77" selection-start-line="17" selection-start-column="61" selection-end-line="17" selection-end-column="77" />
+              <folding>
+                <element signature="e#15#48#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -122,28 +124,8 @@
       <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.8">
-              <caret line="13" column="152" selection-start-line="13" selection-start-column="152" selection-end-line="13" selection-end-column="152" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="create_external_table_netflow_records_rand_streaming.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/scripts/sql/create_external_table_netflow_records_rand_streaming.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="24" column="3" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="run-spark-netflow.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/scripts/run-spark-netflow.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.8">
-              <caret line="3" column="325" selection-start-line="3" selection-start-column="325" selection-end-line="3" selection-end-column="325" />
+            <state vertical-scroll-proportion="-3.0">
+              <caret line="5" column="86" selection-start-line="5" selection-start-column="86" selection-end-line="5" selection-end-column="86" />
               <folding />
             </state>
           </provider>
@@ -176,11 +158,15 @@
         <option value="$PROJECT_DIR$/src/scripts/create_linux_user.sh" />
         <option value="$PROJECT_DIR$/LICENSE.md" />
         <option value="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_snappy_rand_secs.sql" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/scala/HiveFromSpark.scala" />
         <option value="$PROJECT_DIR$/src/scripts/run-spark-netflow.sh" />
-        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/main/scala/Utils/SaveRDD.scala" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/scala/SimpleLib/SimpleLibContext.scala" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.conf" />
+        <option value="$PROJECT_DIR$/src/main/scala/Utils/NetflowProperties.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -342,6 +328,80 @@
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Utils" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SimpleLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
@@ -380,7 +440,7 @@
       <recent name="$PROJECT_DIR$/src/scripts" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.RandomNetflowGen">
+  <component name="RunManager" selected="Application.NetflowProperties">
     <configuration default="false" name="KafkaTopicReader" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="KafkaTopicReader" />
@@ -389,23 +449,6 @@
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="kafkastreamingpoc" />
-      <envs />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="KafkaTopicWriter" type="Application" factoryName="Application" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="KafkaTopicWriter" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
@@ -464,6 +507,26 @@
       <envs />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="NetflowProperties" type="Application" factoryName="Application" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="Utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="Utils.NetflowProperties" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="kafkastreamingpoc" />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
@@ -687,18 +750,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Application.KafkaTopicReader" />
-      <item index="1" class="java.lang.String" itemvalue="Application.KafkaTopicWriter" />
-      <item index="2" class="java.lang.String" itemvalue="Application.SparkStreamingNetflow" />
-      <item index="3" class="java.lang.String" itemvalue="Application.TestMaxMindSingleton" />
-      <item index="4" class="java.lang.String" itemvalue="Application.RandomNetflowGen" />
+      <item index="1" class="java.lang.String" itemvalue="Application.SparkStreamingNetflow" />
+      <item index="2" class="java.lang.String" itemvalue="Application.TestMaxMindSingleton" />
+      <item index="3" class="java.lang.String" itemvalue="Application.RandomNetflowGen" />
+      <item index="4" class="java.lang.String" itemvalue="Application.NetflowProperties" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.RandomNetflowGen" />
-        <item index="1" class="java.lang.String" itemvalue="Application.SparkStreamingNetflow" />
-        <item index="2" class="java.lang.String" itemvalue="Application.TestMaxMindSingleton" />
-        <item index="3" class="java.lang.String" itemvalue="Application.KafkaTopicReader" />
-        <item index="4" class="java.lang.String" itemvalue="Application.KafkaTopicWriter" />
+        <item index="0" class="java.lang.String" itemvalue="Application.NetflowProperties" />
+        <item index="1" class="java.lang.String" itemvalue="Application.RandomNetflowGen" />
+        <item index="2" class="java.lang.String" itemvalue="Application.SparkStreamingNetflow" />
+        <item index="3" class="java.lang.String" itemvalue="Application.TestMaxMindSingleton" />
+        <item index="4" class="java.lang.String" itemvalue="Application.KafkaTopicReader" />
       </list>
     </recent_temporary>
   </component>
@@ -769,7 +832,13 @@
       <option name="project" value="LOCAL" />
       <updated>1427750818416</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added support for the hive context.">
+      <created>1427750889276</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1427750889276</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -810,7 +879,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919955" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3219616" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3329776" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3329776" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24919957" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270142" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -853,41 +922,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/build.sbt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="71" selection-start-line="19" selection-start-column="71" selection-end-line="19" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowOrig.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.sbt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="71" selection-start-line="19" selection-start-column="71" selection-end-line="19" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowOrig.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.sbt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="71" selection-start-line="19" selection-start-column="71" selection-end-line="19" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowOrig.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1143,14 +1177,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="72" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="74" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/MaxMindSingleton.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2863436">
@@ -1166,29 +1192,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="102" column="32" selection-start-line="102" selection-start-column="32" selection-end-line="102" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-catalyst_2.10/1.2.0-cdh5.3.2/spark-catalyst_2.10-1.2.0-cdh5.3.2.jar!/org/apache/spark/sql/catalyst/types/StructField.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.6">
-          <caret line="1" column="11" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/HiveFromSpark.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="30" column="16" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="20" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#889#937#0" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#889#937#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1209,21 +1219,89 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.8">
-          <caret line="13" column="152" selection-start-line="13" selection-start-column="152" selection-end-line="13" selection-end-column="152" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="121" column="18" selection-start-line="121" selection-start-column="18" selection-end-line="121" selection-end-column="18" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/typesafe/config/1.2.1/config-1.2.1.jar!/com/typesafe/config/impl/SimpleConfig.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34603658">
+          <caret line="131" column="0" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-catalyst_2.10/1.2.0-cdh5.3.2/spark-catalyst_2.10-1.2.0-cdh5.3.2.jar!/org/apache/spark/sql/catalyst/types/StructField.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.022865854">
+          <caret line="1" column="11" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Utils/SaveRDD.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="77" selection-start-line="17" selection-start-column="61" selection-end-line="17" selection-end-column="77" />
+          <folding>
+            <element signature="e#15#48#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="34" column="72" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/SimpleLib/SimpleLibContext.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="62" column="0" selection-start-line="62" selection-start-column="2" selection-end-line="64" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Utils/NetflowProperties.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="8" selection-start-line="18" selection-start-column="4" selection-end-line="19" selection-end-column="78" />
+          <folding>
+            <element signature="e#59#92#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.91358024">
-          <caret line="317" column="61" selection-start-line="317" selection-start-column="61" selection-end-line="317" selection-end-column="61" />
+        <state vertical-scroll-proportion="-11.2">
+          <caret line="130" column="42" selection-start-line="130" selection-start-column="42" selection-end-line="130" selection-end-column="42" />
           <folding>
             <element signature="e#42#67#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.0">
+          <caret line="5" column="86" selection-start-line="5" selection-start-column="86" selection-end-line="5" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.044247787">
+          <caret line="2" column="20" selection-start-line="0" selection-start-column="0" selection-end-line="7" selection-end-column="77" />
+          <folding />
         </state>
       </provider>
     </entry>

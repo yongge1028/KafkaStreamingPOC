@@ -2,6 +2,9 @@
 
 This project is a spark streaming project which consumes data from a kafka topic, output's data to a kafka topic and writes the data to hdfs.
 
+This project reads from a configuration file in the same directory as the maven packaged jar file called application.conf which overrides the inetrnal
+packaged application.conf file in the 'resources' folder of the maven packed jar file.
+
 It also contains a random netflow generator to genrate large volumes of netflow data into hdfs.
 
 A copy of hive-site.xml will need to be put in ${SPAK_HOME}/conf for spark to work correctly with the hive context in spark e.g.

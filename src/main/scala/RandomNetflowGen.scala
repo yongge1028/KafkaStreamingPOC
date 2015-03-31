@@ -4,6 +4,8 @@
 
 import java.io.FileWriter
 
+import Utils.SaveRDD
+import com.typesafe.config.ConfigFactory
 import org.apache.spark.sql.catalyst.expressions.Row
 import org.apache.spark.sql.catalyst.types.{StringType, StructField, StructType}
 
@@ -120,9 +122,13 @@ object RandomNetflowGen extends Serializable {
 
   def main(args: Array[String]) {
 
+    val conf = ConfigFactory.load()
+    val appName = conf.getString("netflow-app.name")
+    println("The application name  is: " + appName)
+
     if (args.length < 5) {
-      System.err.println("Usage: RandomNetflowGen <hdfsURI> <numRecords> <numFilesPerDir> <numDirectories> <CountryEnrichment>")
-      System.err.println("Example: RandomNetflowGen hdfs://8f8810e7061a:8020/user/bloke/randomNetflow 30000000 4 10 true")
+      System.err.println("Usage: appName <hdfsURI> <numRecords> <numFilesPerDir> <numDirectories> <CountryEnrichment>")
+      System.err.println("Example: appName hdfs://8f8810e7061a:8020/user/bloke/randomNetflow 30000000 4 10 true")
       System.exit(1)
     }
     else {
@@ -252,8 +258,6 @@ object RandomNetflowGen extends Serializable {
       })
       randLine.saveAsTextFile(args(0) + "/output-random-netflow/" + "dt=" + i.toString + "-"  +hdfsPartitionDir)
 
-      // Start of experimenting with parquet
-
       // The schema is encoded in a string, we are currently not using avro
       val schemaString = "StartTime Dur Proto SrcAddr Dir DstAddr Dport State sTos dTos TotPkts TotBytes Label Country"
       // Generate the schema based on the string of schema
@@ -277,20 +281,20 @@ object RandomNetflowGen extends Serializable {
       val netflowSchemaRDD = sqlContext.applySchema(rowRDD, schema)
 
       netflowSchemaRDD.saveAsParquetFile(args(0) + "/output-random-netflow/parquetData/" + "dt=" + i.toString + "-"  +hdfsPartitionDir)
+      // the function call below SaveRDD.toHive is in the Utils package so we abstract out common functionality
+      SaveRDD.toHive(sc, randLine, hdfsPartitionDir, i.toInt)
 
-//      sqlContext.sql("SELECT * FROM records")
-
-      // sc is an existing SparkContext.
-      val sqlContextHive = new org.apache.spark.sql.hive.HiveContext(sc)
-
-//      sqlContext.sql("CREATE TABLE IF NOT EXISTS src (key INT, value STRING)")
-
-      sqlContextHive.sql("CREATE TABLE IF NOT EXISTS rand_netflow_snappy_sec (StartTime string, "
-        + "Dur string, Proto string, SrcAddr string, Dir string, DstAddr string, "
-        + "Dport tinyint, State string, sTos string, dTos string, TotPkts string, "
-        + "TotBytes string, Label string, Country string) "
-        + "partitioned by (dt string) STORED AS PARQUET "
-        + "location 'hdfs://localhost:8020/user/faganpe/randomNetflow/output-random-netflow/parquetData'")
+//      // sc is an existing SparkContext.
+//      val sqlContextHive = new org.apache.spark.sql.hive.HiveContext(sc)
+//
+//      sqlContextHive.sql("CREATE TABLE IF NOT EXISTS rand_netflow_snappy_sec (StartTime string, "
+//        + "Dur string, Proto string, SrcAddr string, Dir string, DstAddr string, "
+//        + "Dport tinyint, State string, sTos string, dTos string, TotPkts string, "
+//        + "TotBytes string, Label string, Country string) "
+//        + "partitioned by (dt string) STORED AS PARQUET "
+//        + "location 'hdfs://localhost:8020/user/faganpe/randomNetflow/output-random-netflow/parquetData'")
+//
+//      sqlContextHive.sql("alter table rand_netflow_snappy_sec add partition (dt='" + i.toString + "-"  +hdfsPartitionDir + "')")
 
       /*
       CREATE TABLE IF NOT EXISTS rand_netflow_snappy_secs
@@ -313,11 +317,7 @@ object RandomNetflowGen extends Serializable {
       STORED AS PARQUET
       location '/user/faganpe/randomNetflow/output-random-netflow/parquetData'
       */
-//
-//
-      sqlContextHive.sql("alter table rand_netflow_snappy_sec add partition (dt='" + i.toString + "-"  +hdfsPartitionDir + "')")
 
-      // End of experimenting with parquet
     }
 
 //    val lines = sc.textFile(args(0) + "/randfile.txt")

@@ -117,7 +117,6 @@
     <orderEntry type="library" name="Maven: commons-net:commons-net:2.2" level="project" />
     <orderEntry type="library" name="Maven: org.spark-project.akka:akka-remote_2.10:2.2.3-shaded-protobuf" level="project" />
     <orderEntry type="library" name="Maven: org.spark-project.akka:akka-actor_2.10:2.2.3-shaded-protobuf" level="project" />
-    <orderEntry type="library" name="Maven: com.typesafe:config:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty:3.6.6.Final" level="project" />
     <orderEntry type="library" name="Maven: org.spark-project.protobuf:protobuf-java:2.4.1-shaded" level="project" />
     <orderEntry type="library" name="Maven: org.uncommons.maths:uncommons-maths:1.2.2a" level="project" />
@@ -211,5 +210,6 @@
     <orderEntry type="library" name="Maven: com.maxmind.geoip2:geoip2:2.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.maxmind.db:maxmind-db:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.http-client:google-http-client:1.19.0" level="project" />
+    <orderEntry type="library" name="Maven: com.typesafe:config:1.2.1" level="project" />
   </component>
 </module>
