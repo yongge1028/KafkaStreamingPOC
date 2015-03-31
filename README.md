@@ -9,7 +9,7 @@ Instructions for the Impatient
 3. mvn package
 4. run on a spark cluster with :
     spark-submit --jars $(echo *.jar | tr ' ' ',') --class RandomNetflowGen --master spark://c97f85a113e8:7077 --driver-class-path '/usr/lib/hive/lib/*' --driver-java-options '-Dspark.executor.extraClassPath=/usr/lib/hive/lib/*' sparkwordcount-0.0.1-SNAPSHOT.jar "hdfs://localhost:8020/user/faganpe/randomNetflow" 100000 2 2
-5. see below for addtional debugging details, especially for setting up hive to work spark
+5. see below for addtional debugging details, especially for setting up hive to work with spark
 
 This project reads from a configuration file in the same directory as the maven packaged jar file called application.conf which overrides the inetrnal
 packaged application.conf file in the 'resources' folder of the maven packed jar file.
