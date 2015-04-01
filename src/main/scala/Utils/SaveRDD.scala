@@ -49,14 +49,16 @@ object SaveRDD extends Serializable {
     val netflowSchemaRDD = sqlContext.applySchema(rowRDD, schema)
 
     try {
-      sqlContextHive.sql("CREATE TABLE IF NOT EXISTS rand_netflow_snappy_sec (StartTime string, "
+      sqlContextHive.sql("CREATE DATABASE IF NOT EXISTS faganpe")
+
+      sqlContextHive.sql("use faganpe; CREATE TABLE IF NOT EXISTS rand_netflow_snappy_sec (StartTime string, "
         + "Dur string, Proto string, SrcAddr string, Dir string, DstAddr string, "
         + "Dport tinyint, State string, sTos string, dTos string, TotPkts string, "
         + "TotBytes string, Label string, Country string) "
         + "partitioned by (dt string) STORED AS PARQUET "
         + "location " + "'" + hdfsURI + "/output-random-netflow/parquetData'")
 
-      sqlContextHive.sql("alter table rand_netflow_snappy_sec add partition (dt='" + Prefix.toString + "-" + hdfsPartitionDir + "')")
+      sqlContextHive.sql("use faganpe; alter table rand_netflow_snappy_sec add partition (dt='" + Prefix.toString + "-" + hdfsPartitionDir + "')")
     }
     catch {
       case e: Exception => println("exception caught in writing to hdfs : " + e);

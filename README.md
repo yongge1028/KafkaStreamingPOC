@@ -68,3 +68,21 @@ drwxrwxrwx 2 root root 4096 Mar 28 21:57 seg0/
 -rwxrwxrwx 1 root root  915 Mar 28 20:07 service.properties*
 drwxrwxrwx 2 root root 4096 Mar 28 20:07 tmp/
 root@c97f85a113e8:/var/lib/hive/metastore/metastore_db#
+
+If you receive this error : -
+
+"Error while processing statement: FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. MetaException(message:Got exception: org.apache.hadoop.security.AccessControlException Permission denied: user=faganpe, access=WRITE, inode="/user/hive/warehouse":hive:supergroup:drwxrwxr-x at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkFsPermission(DefaultAuthorizationProvider.java:257) at ....."
+
+Then follow the guidance here http://gethue.com/hadoop-tutorial-hive-query-editor-with-hiveserver2-and/ , this may also help - http://www.cloudera.com/content/cloudera/en/documentation/cdh4/latest/CDH4-Installation-Guide/cdh4ig_topic_18_7.html
+
+E.g.
+
+hdfs@c97f85a113e8:~$ hdfs dfs -ls /user/hive
+Found 1 items
+drwxrwxr-x   - hive supergroup          0 2015-03-20 17:47 /user/hive/warehouse
+hdfs@c97f85a113e8:~$ hdfs dfs -chmod 1777 /user/hive/warehouse
+hdfs@c97f85a113e8:~$ hdfs dfs -ls /user/hive
+Found 1 items
+drwxrwxrwt   - hive supergroup          0 2015-03-20 17:47 /user/hive/warehouse
+hdfs@c97f85a113e8:~$
+
