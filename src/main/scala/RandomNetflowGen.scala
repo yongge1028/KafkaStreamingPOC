@@ -124,15 +124,16 @@ object RandomNetflowGen extends Serializable {
 
     val conf = ConfigFactory.load()
     val appName = conf.getString("netflow-app.name")
+    val hdfsURI = conf.getString("netflow-app.hdfsURI")
     println("The application name  is: " + appName)
 
-    if (args.length < 5) {
-      System.err.println("Usage: appName <hdfsURI> <numRecords> <numFilesPerDir> <numDirectories> <CountryEnrichment>")
-      System.err.println("Example: appName hdfs://8f8810e7061a:8020/user/bloke/randomNetflow 30000000 4 10 true")
+    if (args.length < 4) {
+      System.err.println("Usage: " + appName + " <numRecords> <numFilesPerDir> <numDirectories> <CountryEnrichment>")
+      System.err.println("Example: " + appName + " 30000000 4 10 true")
       System.exit(1)
     }
     else {
-      println("Supplied arguments to the program are : RandomNetflowGen " + args(0) + " " + args(1).toInt + " " + args(2).toInt + " " + args(3) + " " + args(4))
+      println("Supplied arguments to the program are : " + appName + " " + " " + args(1).toInt + " " + args(2).toInt + " " + args(3))
     }
 
     val format = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss")
@@ -165,8 +166,8 @@ object RandomNetflowGen extends Serializable {
     val sc = new SparkContext(sparkConf)
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)
 //    val numRecords: Int = 30000000
-    val numRecords: Int = args(1).toInt
-    val partitions: Int = args(2).toInt
+    val numRecords: Int = args(0).toInt
+    val partitions: Int = args(1).toInt
     val recordsPerPartition = numRecords / partitions // we are assuming here that numRecords is divisible by partitions, otherwise we need to compensate for the residual
 
     //  create the for loop for running around this x times
@@ -174,7 +175,7 @@ object RandomNetflowGen extends Serializable {
 //      val hdfsPartitionDir = format.format(Calendar.getInstance().getTime())
 //      val seedRdd = sc.parallelize(Seq.fill(partitions)(recordsPerPartition), partitions)
 //      val netflowLine = seedRdd.flatMap(records => Seq.fill(records)(genRandNetflowLine))
-//      netflowLine.saveAsTextFile(args(0) + "/data/dt=" + hdfsPartitionDir)
+//      netflowLine.saveAsTextFile(hdfsURI + "/data/dt=" + hdfsPartitionDir)
 //      netflowLine.saveAsTextFile("hdfs://bow-grd-nn-01.bowdev.net/user/faganp/randomNetflow/data/dt=" + hdfsPartitionDir)
 //      //        netflowLine.saveAsTextFile("hdfs://bow-grd-nn-01.bowdev.net/user/faganp/randomNetflow/data/" + hdfsPartitionDir)
 //    }
@@ -198,15 +199,15 @@ object RandomNetflowGen extends Serializable {
 //    // Apply the schema to the RDD.
 //    val netflowSchemaRDD = sqlContext.applySchema(rowRDD, schema)
 //
-//    netflowSchemaRDD.saveAsParquetFile(args(0) + "/output-random-netflow/parquetData" + "dt=" + "-"  +hdfsPartitionDir)
+//    netflowSchemaRDD.saveAsParquetFile(hdfsURI + "/output-random-netflow/parquetData" + "dt=" + "-"  +hdfsPartitionDir)
 
     // End of experimenting with parquet
 
-    netflowLine.saveAsTextFile(args(0) + "/randfile.txt")
+    netflowLine.saveAsTextFile(hdfsURI + "/randfile.txt")
 
-    for (i <- 1 to args(3).toInt) {
+    for (i <- 1 to args(2).toInt) {
       println("Loop number : " + i.toString)
-      val randLoopLine = sc.textFile(args(0) + "/randfile.txt")
+      val randLoopLine = sc.textFile(hdfsURI + "/randfile.txt")
       val randLine = randLoopLine.map(x => {
         val r = scala.util.Random
 
@@ -238,7 +239,7 @@ object RandomNetflowGen extends Serializable {
 //        val SourceIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
         val SourceIPString = getIPGenRand(r.nextInt())
         val DestIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
-        if (args(4).toBoolean) {
+        if (args(3).toBoolean) {
           flowTimestamp + "," + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
             SourceIPString + "," + flowDirMap(r.nextInt(6)) + "," + DestIPString + "," +
             r.nextInt(65535) + "," + flowStatMap(r.nextInt(11)) + "," + sTosMap(r.nextInt(3)) +
@@ -256,7 +257,7 @@ object RandomNetflowGen extends Serializable {
 
         // include this if using localfile + ","  + Properties.lineSeparator
       })
-      randLine.saveAsTextFile(args(0) + "/output-random-netflow/" + "dt=" + i.toString + "-"  +hdfsPartitionDir)
+      randLine.saveAsTextFile(hdfsURI + "/output-random-netflow/" + "dt=" + i.toString + "-"  +hdfsPartitionDir)
 
       // The schema is encoded in a string, we are currently not using avro
       val schemaString = "StartTime Dur Proto SrcAddr Dir DstAddr Dport State sTos dTos TotPkts TotBytes Label Country"
@@ -280,7 +281,7 @@ object RandomNetflowGen extends Serializable {
       // Apply the schema to the RDD.
       val netflowSchemaRDD = sqlContext.applySchema(rowRDD, schema)
 
-      netflowSchemaRDD.saveAsParquetFile(args(0) + "/output-random-netflow/parquetData/" + "dt=" + i.toString + "-"  +hdfsPartitionDir)
+      netflowSchemaRDD.saveAsParquetFile(hdfsURI + "/output-random-netflow/parquetData/" + "dt=" + i.toString + "-"  +hdfsPartitionDir)
       // the function call below SaveRDD.toHive is in the Utils package so we abstract out common functionality
       SaveRDD.toHive(sc, randLine, hdfsPartitionDir, i.toInt)
 
@@ -320,9 +321,9 @@ object RandomNetflowGen extends Serializable {
 
     }
 
-//    val lines = sc.textFile(args(0) + "/randfile.txt")
+//    val lines = sc.textFile(hdfsURI + "/randfile.txt")
 //    val randLine = lines.map(x => genRandNetflowLine())
-//    randLine.saveAsTextFile(args(0) + "randNetflow-output")
+//    randLine.saveAsTextFile(hdfsURI + "randNetflow-output")
 
     //  create the for loop for running around this x times
     //      for (i <- 1 to 10) {

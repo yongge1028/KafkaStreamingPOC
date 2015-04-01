@@ -3,6 +3,7 @@ package Utils
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
+import com.typesafe.config.ConfigFactory
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql._
@@ -16,6 +17,10 @@ object SaveRDD extends Serializable {
 
   // This method save's the string RDD to the hdfs directory for partitioned hive tables.
   def toHive(saveSC: SparkContext, rddSaveHive :RDD[String], hdfsPartitionDir: String, Prefix: Int): Unit = {
+
+    // setup the application.conf file
+    val conf = ConfigFactory.load()
+    val hdfsURI = conf.getString("netflow-app.hdfsURI")
 
     // sc is an existing SparkContext.
     val sqlContext = new org.apache.spark.sql.SQLContext(saveSC)
@@ -49,7 +54,7 @@ object SaveRDD extends Serializable {
         + "Dport tinyint, State string, sTos string, dTos string, TotPkts string, "
         + "TotBytes string, Label string, Country string) "
         + "partitioned by (dt string) STORED AS PARQUET "
-        + "location 'hdfs://localhost:8020/user/faganpe/randomNetflow/output-random-netflow/parquetData'")
+        + "location " + "'" + hdfsURI + "/output-random-netflow/parquetData'")
 
       sqlContextHive.sql("alter table rand_netflow_snappy_sec add partition (dt='" + Prefix.toString + "-" + hdfsPartitionDir + "')")
     }
