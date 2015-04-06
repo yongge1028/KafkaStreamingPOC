@@ -86,3 +86,11 @@ Found 1 items
 drwxrwxrwt   - hive supergroup          0 2015-03-20 17:47 /user/hive/warehouse
 hdfs@c97f85a113e8:~$
 
+As hdfs unix user : -
+
+hdfs@c97f85a113e8:~$ hdfs dfs -chown hive:hive /user/hive/warehouse
+hdfs@c97f85a113e8:~$ hdfs dfs -ls -h /user/hive/
+Found 1 items
+drwxrwxrwt   - hive hive          0 2015-03-20 17:47 /user/hive/warehouse
+hdfs@c97f85a113e8:~$
+

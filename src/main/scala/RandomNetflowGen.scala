@@ -137,7 +137,7 @@ object RandomNetflowGen extends Serializable {
     }
 
     val format = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss")
-    val hdfsPartitionDir = format.format(Calendar.getInstance().getTime())
+//    val hdfsPartitionDir = format.format(Calendar.getInstance().getTime())
 
     // setup Spark
     val sparkConf = new SparkConf()
@@ -183,31 +183,26 @@ object RandomNetflowGen extends Serializable {
     val seedRdd = sc.parallelize(Seq.fill(partitions)(recordsPerPartition), partitions)
     val netflowLine = seedRdd.flatMap(records => Seq.fill(records)("ReplaceWithData"))
 
-    // Start of experimenting with parquet
-
-    // The schema is encoded in a string, we are currently not using avro
-//    val schemaString = "name age"
-//    // Generate the schema based on the string of schema
-//    val schema =
-//      StructType(
-//        schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, true)))
-
-//    // Convert records of the RDD (people) to Rows.
-//    val rowRDD = netflowLine.map(_.split(",")).map(p => Row(p(0), p(1).trim, p(2).trim, p(3).trim, p(4).trim, p(5).trim,
-//      p(6).trim, p(7).trim, p(8).trim, p(9).trim, p(10).trim, p(11).trim, p(12).trim, p(13).trim))
-//
-//    // Apply the schema to the RDD.
-//    val netflowSchemaRDD = sqlContext.applySchema(rowRDD, schema)
-//
-//    netflowSchemaRDD.saveAsParquetFile(hdfsURI + "/output-random-netflow/parquetData" + "dt=" + "-"  +hdfsPartitionDir)
-
-    // End of experimenting with parquet
-
     netflowLine.saveAsTextFile(hdfsURI + "/randfile.txt")
 
     for (i <- 1 to args(2).toInt) {
       println("Loop number : " + i.toString)
       val randLoopLine = sc.textFile(hdfsURI + "/randfile.txt")
+      val currentTimeForDirPart = Calendar.getInstance().getTime()
+
+      // start of define hours and mins and maybe secs here
+      val formatDateDayForDir = new SimpleDateFormat("YYYY-MM-dd")
+      val formatDateHourForDir = new SimpleDateFormat("HH")
+      val formatDateMinuteForDir = new SimpleDateFormat("mm")
+      val formatDateSecondForDir = new SimpleDateFormat("ss")
+      val formatDateMilliSecondForDir = new SimpleDateFormat("SSS")
+      val flowDay = formatDateDayForDir.format(currentTimeForDirPart)
+      val flowHour = formatDateHourForDir.format(currentTimeForDirPart)
+      val flowMinute = formatDateMinuteForDir.format(currentTimeForDirPart)
+      val flowSecond = formatDateSecondForDir.format(currentTimeForDirPart)
+      val flowMilliSecond = formatDateMilliSecondForDir.format(currentTimeForDirPart)
+      // end of define hours and mins and maybe secs here
+
       val randLine = randLoopLine.map(x => {
         val r = scala.util.Random
 
@@ -232,15 +227,25 @@ object RandomNetflowGen extends Serializable {
             8 -> "flow=From-Normal-V44-UDP-CVUT-DNS-Server")
         // end of maps
 
+        // these dates need to be declared here so that the spark worker's work correctly and conform to the values
+        // outside of the map
         val formatDate = new SimpleDateFormat("YYYY/MM/dd HH:MM:ss.SSSSSS")
         val formatDateDuration = new SimpleDateFormat("ss.SSSSSS")
-        val flowTimestamp = formatDate.format(Calendar.getInstance().getTime())
-        val flowDuration = formatDateDuration.format(Calendar.getInstance().getTime())
+        val formatDateDay = new SimpleDateFormat("YYYY-MM-dd")
+        val formatDateHour = new SimpleDateFormat("HH")
+
+        // get the current time for flowDuration so we get variability
+        val currentTime = Calendar.getInstance().getTime()
+
+        val flowTimestamp = formatDate.format(currentTimeForDirPart)
+        val flowDay = formatDateDay.format(currentTimeForDirPart)
+        val flowHour = formatDateHour.format(currentTimeForDirPart)
+        val flowDuration = formatDateDuration.format(currentTime)
 //        val SourceIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
         val SourceIPString = getIPGenRand(r.nextInt())
         val DestIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
         if (args(3).toBoolean) {
-          flowTimestamp + "," + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
+          flowTimestamp + ","  + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
             SourceIPString + "," + flowDirMap(r.nextInt(6)) + "," + DestIPString + "," +
             r.nextInt(65535) + "," + flowStatMap(r.nextInt(11)) + "," + sTosMap(r.nextInt(3)) +
             "," + dTosMap(r.nextInt(4)) + "," + totPktsMap(r.nextInt(2)) + "," +
@@ -248,7 +253,7 @@ object RandomNetflowGen extends Serializable {
             "," + MaxMindSingleton.getInstance().getCountry(SourceIPString)
         }
         else {
-          flowTimestamp + "," + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
+          flowTimestamp + ","  + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
             SourceIPString + "," + flowDirMap(r.nextInt(6)) + "," + DestIPString + "," +
             r.nextInt(65535) + "," + flowStatMap(r.nextInt(11)) + "," + sTosMap(r.nextInt(3)) +
             "," + dTosMap(r.nextInt(4)) + "," + totPktsMap(r.nextInt(2)) + "," +
@@ -257,33 +262,43 @@ object RandomNetflowGen extends Serializable {
 
         // include this if using localfile + ","  + Properties.lineSeparator
       })
-      randLine.saveAsTextFile(hdfsURI + "/output-random-netflow/" + "dt=" + i.toString + "-"  +hdfsPartitionDir)
+
+      val hdfsPartitionDir = flowDay + "/" + "hour=" + flowHour + "/" + "minute=" + flowMinute + "/" + "second=" + flowSecond // + "/" + "millisecond=" + flowMilliSecond
+//      try {
+//        randLine.saveAsTextFile(hdfsURI + "/output-random-netflow/" + "dt=" + hdfsPartitionDir)
+//      }
+//      catch {
+//        case e: Exception => println("exception caught in writing to hdfs : " + e);
+//        case e: ArrayIndexOutOfBoundsException => println("exception caught in array : " + e);
+//      }
 
       // The schema is encoded in a string, we are currently not using avro
-      val schemaString = "StartTime Dur Proto SrcAddr Dir DstAddr Dport State sTos dTos TotPkts TotBytes Label Country"
+//      val schemaString = "StartTime Dur Proto SrcAddr Dir DstAddr Dport State sTos dTos TotPkts TotBytes Label Country"
       // Generate the schema based on the string of schema
 //      val schema =
 //        StructType(
 //          schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, true)))
 
-      val schema = StructType(Array(StructField("StartTime",StringType,true),StructField("Dur",StringType,true),
-        StructField("Proto",StringType,true), StructField("SrcAddr",StringType,true),
-        StructField("Dir",StringType,true), StructField("DstAddr",StringType,true),
-        StructField("Dport",IntegerType,true), StructField("State",StringType,true),
-        StructField("sTos",StringType,true), StructField("dTos",StringType,true),
-        StructField("TotPkts",StringType,true), StructField("TotBytes",StringType,true),
-        StructField("Label",StringType,true), StructField("Country",StringType,true)))
+//      val schema = StructType(Array(StructField("StartTime",StringType,true),StructField("Dur",StringType,true),
+//        StructField("Proto",StringType,true), StructField("SrcAddr",StringType,true),
+//        StructField("Dir",StringType,true), StructField("DstAddr",StringType,true),
+//        StructField("Dport",IntegerType,true), StructField("State",StringType,true),
+//        StructField("sTos",StringType,true), StructField("dTos",StringType,true),
+//        StructField("TotPkts",StringType,true), StructField("TotBytes",StringType,true),
+//        StructField("Label",StringType,true), StructField("Country",StringType,true)))
 
       // Just the true case for now
-      val rowRDD = randLine.map(_.split(",")).map(p => Row(p(0), p(1).trim, p(2).trim, p(3).trim, p(4).trim, p(5).trim,
-        p(6).toInt, p(7).trim, p(8).trim, p(9).trim, p(10).trim, p(11).trim, p(12).trim, p(13).trim))
+//      val rowRDD = randLine.map(_.split(",")).map(p => Row(p(0), p(1).trim, p(2).trim, p(3).trim, p(4).trim, p(5).trim,
+//        p(6).toInt, p(7).trim, p(8).trim, p(9).trim, p(10).trim, p(11).trim, p(12).trim, p(13).trim))
 
       // Apply the schema to the RDD.
-      val netflowSchemaRDD = sqlContext.applySchema(rowRDD, schema)
+//      val netflowSchemaRDD = sqlContext.applySchema(rowRDD, schema)
 
-      netflowSchemaRDD.saveAsParquetFile(hdfsURI + "/output-random-netflow/parquetData/" + "dt=" + i.toString + "-"  +hdfsPartitionDir)
+//      netflowSchemaRDD.saveAsParquetFile(hdfsURI + "/output-random-netflow/parquetData/" + "dt=" + i.toString + "-"  + hdfsPartitionDir)
       // the function call below SaveRDD.toHive is in the Utils package so we abstract out common functionality
-      SaveRDD.toHive(sc, randLine, hdfsPartitionDir, i.toInt)
+      SaveRDD.toHive(sc, randLine, hdfsPartitionDir, flowDay, flowHour, flowMinute, flowSecond)
+//      SaveRDD.toHiveTable(sc, randLine, hdfsPartitionDir, i.toInt, netflowSchemaRDD)
+//      SaveRDD.toHiveTable(sc, randLine, hdfsPartitionDir, i.toInt)
 
 //      // sc is an existing SparkContext.
 //      val sqlContextHive = new org.apache.spark.sql.hive.HiveContext(sc)
