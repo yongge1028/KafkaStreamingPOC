@@ -33,17 +33,17 @@ object SaveRDD extends Serializable {
     //        StructType(
     //          schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, true)))
 
-    val schema = StructType(Array(StructField("StartTime",StringType,true),StructField("Dur",StringType,true),
+    val schema = StructType(Array(StructField("StartTime",StringType,true),StructField("Dur",FloatType,true),
       StructField("Proto",StringType,true), StructField("SrcAddr",StringType,true),
       StructField("Dir",StringType,true), StructField("DstAddr",StringType,true),
       StructField("Dport",IntegerType,true), StructField("State",StringType,true),
-      StructField("sTos",StringType,true), StructField("dTos",StringType,true),
-      StructField("TotPkts",StringType,true), StructField("TotBytes",StringType,true),
+      StructField("sTos",IntegerType,true), StructField("dTos",IntegerType,true),
+      StructField("TotPkts",IntegerType,true), StructField("TotBytes",IntegerType,true),
       StructField("Label",StringType,true)))
 
     // Just the true case for now
-    val rowRDD = rddSaveHive.map(_.split(",")).map(p => Row(p(0), p(1).trim, p(2).trim, p(3).trim, p(4).trim, p(5).trim,
-      p(6).toInt, p(7).trim, p(8).trim, p(9).trim, p(10).trim, p(11).trim, p(12).trim))
+    val rowRDD = rddSaveHive.map(_.split(",")).map(p => Row(p(0), p(1).toFloat, p(2).trim, p(3).trim, p(4).trim, p(5).trim,
+      p(6).toInt, p(7).trim, p(8).toInt, p(9).toInt, p(10).toInt, p(11).toInt, p(12).trim))
 
     // Apply the schema to the RDD.
     val netflowSchemaRDD = sqlContext.applySchema(rowRDD, schema)
@@ -57,10 +57,10 @@ object SaveRDD extends Serializable {
       sqlContextHive.sql("use faganpe")
 
       sqlContextHive.sql("CREATE TABLE IF NOT EXISTS rand_netflow_snappy_sec (StartTime string, "
-        + "Dur string, Proto string, SrcAddr string, Dir string, DstAddr string, "
-        + "Dport tinyint, State string, sTos string, dTos string, TotPkts string, "
-        + "TotBytes string, Label string) "
-        + "partitioned by (dt string, hour string, minute string, second string) STORED AS PARQUET "
+        + "Dur float, Proto string, SrcAddr string, Dir string, DstAddr string, "
+        + "Dport int, State string, sTos tinyint, dTos tinyint, TotPkts int, "
+        + "TotBytes int, Label string) "
+        + "partitioned by (dt string, hour tinyint, minute tinyint, second tinyint) STORED AS PARQUET "
         + "location " + "'" + hdfsURI + "/output-random-netflow/parquetData'")
 
       sqlContextHive.sql("alter table rand_netflow_snappy_sec add partition (dt='" + hdfsflowDay + "'" + "," + "hour='" + hdfsflowHour + "'" + "," + "minute='" + hdfsflowMinute + "'" + "," + "second='" + hdfsflowSecond + "')")
@@ -90,18 +90,18 @@ object SaveRDD extends Serializable {
     //        StructType(
     //          schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, true)))
 
-    val schema = StructType(Array(StructField("StartTime",StringType,true), StructField("Dur",StringType,true),
+    val schema = StructType(Array(StructField("StartTime",StringType,true), StructField("Dur",FloatType,true),
       StructField("Proto",StringType,true), StructField("SrcAddr",StringType,true),
       StructField("Dir",StringType,true), StructField("DstAddr",StringType,true),
       StructField("Dport",IntegerType,true), StructField("State",StringType,true),
-      StructField("sTos",StringType,true), StructField("dTos",StringType,true),
-      StructField("TotPkts",StringType,true), StructField("TotBytes",StringType,true),
+      StructField("sTos",IntegerType,true), StructField("dTos",IntegerType,true),
+      StructField("TotPkts",IntegerType,true), StructField("TotBytes",IntegerType,true),
       StructField("Label",StringType,true), StructField("Country",StringType,true),
       StructField("flowDay",StringType,true), StructField("flowHour",StringType,true)))
 
     // Just the true case for now
-    val rowRDD = rddSaveHive.map(_.split(",")).map(p => Row(p(0), p(1).trim, p(2).trim, p(3).trim, p(4).trim, p(5).trim, p(6).toInt, p(7).trim,
-      p(8).trim, p(9).trim, p(10).trim, p(11).trim, p(12).trim, p(13).trim, p(14).trim, p(15).trim))
+    val rowRDD = rddSaveHive.map(_.split(",")).map(p => Row(p(0), p(1).toFloat, p(2).trim, p(3).trim, p(4).trim, p(5).trim, p(6).toInt, p(7).trim,
+      p(8).toInt, p(9).toInt, p(10).toInt, p(11).toInt, p(12).trim, p(13).trim, p(14).trim, p(15).trim))
 
     // Apply the schema to the RDD.
     val netflowSchemaRDD = sqlContext.applySchema(rowRDD, schema).registerTempTable("parquetTempTable")
@@ -112,9 +112,9 @@ object SaveRDD extends Serializable {
       sqlContextHive.sql("use faganpe")
 
       sqlContextHive.sql("CREATE TABLE IF NOT EXISTS rand_netflow_snappy_sec (StartTime string, "
-        + "Dur string, Proto string, SrcAddr string, Dir string, DstAddr string, "
-        + "Dport tinyint, State string, sTos string, dTos string, TotPkts string, "
-        + "TotBytes string, Label string, Country string) "
+        + "Dur float, Proto string, SrcAddr string, Dir string, DstAddr string, "
+        + "Dport bigint, State string, sTos bigint, dTos tinyint, TotPkts smallint, "
+        + "TotBytes tinyint, Label string, Country string) "
         + "partitioned by (flowDay string, flowHour string) STORED AS PARQUET ")
 //        + "location " + "'" + hdfsURI + "/output-random-netflow/parquetData'")
 
