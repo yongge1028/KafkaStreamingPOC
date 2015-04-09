@@ -7,7 +7,8 @@ import java.io.FileWriter
 import Utils.SaveRDD
 import com.typesafe.config.ConfigFactory
 import org.apache.spark.sql.catalyst.expressions.Row
-import org.apache.spark.sql.catalyst.types.{StringType, StructField, StructType}
+// import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.catalyst.types.{StringType, StructField, StructType} // spark 1.2 codeline
 
 //import java.util.Properties
 
@@ -229,7 +230,7 @@ object RandomNetflowGen extends Serializable {
 
         // these dates need to be declared here so that the spark worker's work correctly and conform to the values
         // outside of the map
-        val formatDate = new SimpleDateFormat("YYYY/MM/dd HH:MM:ss.SSSSSS")
+        val formatDate = new SimpleDateFormat("YYYY-MM-dd HH:MM:ss.SSSSSS")
         val formatDateDuration = new SimpleDateFormat("ss.SSSSSS")
         val formatDateDay = new SimpleDateFormat("YYYY-MM-dd")
         val formatDateHour = new SimpleDateFormat("HH")

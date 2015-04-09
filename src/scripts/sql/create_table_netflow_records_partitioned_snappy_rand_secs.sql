@@ -2,21 +2,20 @@ create database if not exists faganpe;
 use faganpe;
 drop table rand_netflow_snappy_secs;
 Create table rand_netflow_snappy_secs
-(StartTime string,
+(StartTime timestamp,
 Dur float,
 Proto string,
 SrcAddr string,
 Dir string,
 DstAddr string,
-Dport bigint,
+Dport int,
 State string,
-sTos bigint,
+sTos tinyint,
 dTos tinyint,
-TotPkts smallint,
-TotBytes tinyint,
-Label string,
-Country string
+TotPkts int,
+TotBytes int,
+Label string
 )
--- partitioned by (dt string, hour tinyint, minute tinyint, seconds tinyint)
-location '/user/faganpe/randomNetflow/output-random-netflow/parquetData'
+partitioned by (dt string, hour tinyint, minute tinyint, second tinyint)
+location '/user/faganpe/randomNetflow/output-random-netflow/parquetDataReal'
 STORED AS PARQUET;

@@ -8,7 +8,8 @@ import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql._
 import org.apache.spark.sql.catalyst.expressions.Row
-import org.apache.spark.sql.catalyst.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.catalyst.types.{StringType, StructField, StructType} // spark 1.2 codebase
+// import org.apache.spark.sql.types._
 
 /**
  * Created by faganpe on 31/03/15.
@@ -56,19 +57,50 @@ object SaveRDD extends Serializable {
 
       sqlContextHive.sql("use faganpe")
 
-      sqlContextHive.sql("CREATE TABLE IF NOT EXISTS rand_netflow_snappy_sec (StartTime string, "
+      sqlContextHive.sql("CREATE TABLE IF NOT EXISTS rand_netflow_snappy_sec_stage (StartTime string, "
         + "Dur float, Proto string, SrcAddr string, Dir string, DstAddr string, "
         + "Dport int, State string, sTos tinyint, dTos tinyint, TotPkts int, "
         + "TotBytes int, Label string) "
         + "partitioned by (dt string, hour tinyint, minute tinyint, second tinyint) STORED AS PARQUET "
         + "location " + "'" + hdfsURI + "/output-random-netflow/parquetData'")
 
-      sqlContextHive.sql("alter table rand_netflow_snappy_sec add partition (dt='" + hdfsflowDay + "'" + "," + "hour='" + hdfsflowHour + "'" + "," + "minute='" + hdfsflowMinute + "'" + "," + "second='" + hdfsflowSecond + "')")
+      sqlContextHive.sql("alter table rand_netflow_snappy_sec_stage add partition (dt='" + hdfsflowDay + "'" + "," + "hour='" + hdfsflowHour + "'" + "," + "minute='" + hdfsflowMinute + "'" + "," + "second='" + hdfsflowSecond + "')")
     }
     catch {
       case e: Exception => println("exception caught in writing to hdfs : " + e);
       case e: ArrayIndexOutOfBoundsException => println("exception caught in array : " + e);
     }
+
+    // This is a bodge because the timestamp datatype is not yet working in the spark schema StructType above
+//    try {
+//      //      sqlContextHive.sql("CREATE DATABASE IF NOT EXISTS faganpe")
+//
+//      sqlContextHive.sql("use faganpe")
+//
+//      sqlContextHive.sql("CREATE TABLE IF NOT EXISTS rand_netflow_snappy_sec (StartTime string, "
+//        + "Dur float, Proto string, SrcAddr string, Dir string, DstAddr string, "
+//        + "Dport int, State string, sTos tinyint, dTos tinyint, TotPkts int, "
+//        + "TotBytes int, Label string) "
+//        + "partitioned by (dt string, hour tinyint, minute tinyint, second tinyint) STORED AS PARQUET "
+//        + "location " + "'" + hdfsURI + "/output-random-netflow/parquetData1'")
+//
+//      // working
+////      hive> insert OVERWRITE table rand_netflow_snappy_sec partition (dt='2015-04-08',hour='15',minute='34',second='54')
+////      > select starttime, dur, proto, srcaddr, dir, dstaddr, dport, state, stos, dtos, totpkts, totbytes, label from rand_netflow_snappy_sec_stage
+////    > where hour='15' and minute='34' and second='54';
+//
+////      sqlContextHive.sql("insert OVERWRITE table rand_netflow_snappy_sec partition (dt='" + hdfsflowDay + "'" + "," + "hour='" + hdfsflowHour + "'" + "," + "minute='" + hdfsflowMinute + "'" + "," + "second='" + hdfsflowSecond
+////        + "')" + " select starttime, dur, proto, srcaddr, dir, dstaddr, dport, state, stos, dtos, totpkts, totbytes, label from rand_netflow_snappy_sec_stage where dt='" + hdfsflowDay + "'" + " and " + "hour='" + hdfsflowHour + "'" + " and " + "minute='" + hdfsflowMinute + "'" + " and " + "second='" + hdfsflowSecond + "'")
+//      sqlContextHive.setConf("hive.exec.dynamic.partition.mode", "nonstrict")
+////      sqlContextHive.sql("insert OVERWRITE table rand_netflow_snappy_sec partition (dt, hour, minute, second)"
+////        + " select starttime, dur, proto, srcaddr, dir, dstaddr, dport, state, stos, dtos, totpkts, totbytes, label from rand_netflow_snappy_sec_stage where dt='" + hdfsflowDay + "'" + " and " + "hour='" + hdfsflowHour + "'" + " and " + "minute='" + hdfsflowMinute + "'" + " and " + "second='" + hdfsflowSecond + "'")
+//      sqlContextHive.sql("insert into table rand_netflow_snappy_sec partition (dt, hour, minute, second)"
+//      + " select starttime, cast(dur as float), proto, srcaddr, dir, dstaddr, cast(dport as int), state, stos, dtos, cast(totpkts as int), cast(totbytes as int), label, dt, cast(hour as tinyint), cast(minute as tinyint), cast(second as tinyint) from rand_netflow_snappy_sec_stage where dt='" + hdfsflowDay + "'" + " and " + "hour='" + hdfsflowHour + "'" + " and " + "minute='" + hdfsflowMinute + "'" + " and " + "second='" + hdfsflowSecond + "'")
+//    }
+//    catch {
+//      case e: Exception => println("exception caught in writing to hdfs : " + e);
+//      case e: ArrayIndexOutOfBoundsException => println("exception caught in array : " + e);
+//    }
 
   }
 
