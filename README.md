@@ -94,3 +94,10 @@ Found 1 items
 drwxrwxrwt   - hive hive          0 2015-03-20 17:47 /user/hive/warehouse
 hdfs@c97f85a113e8:~$
 
+If you see this error "UnsatisfiedLinkError: no snappyjava in java.library.path when running Spark MLLib Unit test within Intellij"
+In Intelij you may need to add this to the Java VM run config : -
+
+-Dorg.xerial.snappy.lib.name=libsnappyjava.jnilib -Dorg.xerial.snappy.tempdir=/tmp
+
+See http://stackoverflow.com/questions/30039976/unsatisfiedlinkerror-no-snappyjava-in-java-library-path-when-running-spark-mlli for more details.
+
