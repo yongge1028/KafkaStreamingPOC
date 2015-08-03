@@ -52,7 +52,6 @@
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_spark_spark_streaming_2_10_1_3_0_cdh5_4_3.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_spark_spark_streaming_kafka_2_10_1_3_0_cdh5_4_3.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_cloudera_logredactor_logredactor_1_0_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowJson.scala" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291260000.crc" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291275000.bk.crc" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291275000.crc" afterPath="" />
@@ -89,12 +88,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$$anonfun$main$2.class" afterPath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$$anonfun$main$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$.class" afterPath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow.class" afterPath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala" afterPath="$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala" afterPath="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/application.conf" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/kafkastreamingpoc.iml" afterPath="$PROJECT_DIR$/.idea/modules/kafkastreamingpoc.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowJson.scala" afterPath="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowJson.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="KafkaStreamingPOC.iws" />
@@ -994,7 +988,7 @@
       <workItem from="1434695513023" duration="1611000" />
       <workItem from="1434964431652" duration="228000" />
       <workItem from="1434969672741" duration="75000" />
-      <workItem from="1438407406536" duration="16621000" />
+      <workItem from="1438407406536" duration="16833000" />
     </task>
     <task id="LOCAL-00001" summary="Rough cut code to read from a kafka topic, output to a kafka topic, write to hdfs, wrte to elasticsearch">
       <created>1427493442145</created>
@@ -1098,11 +1092,17 @@
       <option name="project" value="LOCAL" />
       <updated>1436439200142</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Major re-write of RandomNetflow Gen to be able to do skewed distribution of number of lines per job between min and max number's as defined in the application.conf file. Also netflow json support, also simple SQL based rule support.">
+      <created>1438574091275</created>
+      <option name="number" value="00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1438574091275</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32209000" />
+    <option name="totallyTimeSpent" value="32421000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1184,7 +1184,8 @@
     <MESSAGE value="Added notes on InteliJ snappy error" />
     <MESSAGE value="Able to compile now into a fat or uber jar very nice!" />
     <MESSAGE value="Simplified random generator now much more performant, also FPGrowth algo basic impl." />
-    <option name="LAST_COMMIT_MESSAGE" value="Simplified random generator now much more performant, also FPGrowth algo basic impl." />
+    <MESSAGE value="Major re-write of RandomNetflow Gen to be able to do skewed distribution of number of lines per job between min and max number's as defined in the application.conf file. Also netflow json support, also simple SQL based rule support." />
+    <option name="LAST_COMMIT_MESSAGE" value="Major re-write of RandomNetflow Gen to be able to do skewed distribution of number of lines per job between min and max number's as defined in the application.conf file. Also netflow json support, also simple SQL based rule support." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
