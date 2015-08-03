@@ -207,7 +207,8 @@ object RandomNetflowGen extends Serializable {
     val r = scala.util.Random
     InetAddresses.fromInteger(r.nextInt()).getHostAddress()
   }
-  //
+
+  // randNum method limit's random number of integers i.e. if 100 passed in number returned can be in the range 0 to 99
   def randNum(ranNum: Int): Int = {
     val r = scala.util.Random
     r.nextInt(ranNum)
@@ -221,6 +222,8 @@ object RandomNetflowGen extends Serializable {
 
     val conf = ConfigFactory.load()
     val appName = conf.getString("netflow-app.name")
+//    val appRandomDistributionMin = conf.getInt("netflow-app.randomDistributionMin")
+//    val appRandomDistributionMax = conf.getInt("netflow-app.randomDistributionMax")
     println("The application name  is: " + appName)
 
     if (args.length != 5) {
@@ -237,8 +240,8 @@ object RandomNetflowGen extends Serializable {
 
     // setup Spark
     val sparkConf = new SparkConf()
-    //    sparkConf.setMaster("local[4]")
-        sparkConf.setMaster("spark://quickstart.cloudera:7077")
+        sparkConf.setMaster("local[4]")
+//    sparkConf.setMaster("spark://quickstart.cloudera:7077")
     //    sparkConf.setMaster("spark://79d4dd97b170:7077")
     //    sparkConf.set("spark.executor.memory", "16g")
     //    sparkConf.set("spark.driver.memory", "64g")
@@ -263,92 +266,222 @@ object RandomNetflowGen extends Serializable {
     val sc = new SparkContext(sparkConf)
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)
     //    val numRecords: Int = 30000000
-    val numRecords: Int = args(1).toInt
-    val partitions: Int = args(2).toInt
+//    val numRecords: Int = args(1).toInt
+//    val partitions: Int = args(2).toInt
     val hdfsURI = args(0).toString
     println("The application hdfsURI  is: " + hdfsURI)
-    val recordsPerPartition = args(1).toInt // we are assuming here that numRecords is divisible by partitions, otherwise we need to compensate for the residual
+//    val recordsPerPartition = {
+//      if (appRandomDistributionMin == 0 & appRandomDistributionMax == 0) {
+//        // no randomness to the number of netflow records
+//        // we are assuming here that numRecords is divisible by partitions, otherwise we need to compensate for the residual
+//        println("Using the standard number of lines per partition of " + args(1).toInt)
+//        args(1).toInt
+//      }
+//      else {
+//        val tempRecordsPerPartition = randNum(appRandomDistributionMax - appRandomDistributionMin) + appRandomDistributionMin
+//        println("Using the randomized number of lines per partition of " + tempRecordsPerPartition)
+//        tempRecordsPerPartition
+//      }
+//    }
+//    val recordsPerPartition :Int = 0
+//    val recordsPerPartition = args(1).toInt
+//    println("Using the number of lines per partition of " + recordsPerPartition)
+//    if (appRandomDistributionMin == 0 & appRandomDistributionMax == 0) { // no randomness to the number of netflow records
+//      val recordsPerPartition = args(1).toInt // we are assuming here that numRecords is divisible by partitions, otherwise we need to compensate for the residual
+//      println("Using the standard number of lines per partition of " + recordsPerPartition)
+//    }
+//    else {
+//      val recordsPerPartition = randNum(appRandomDistributionMax - appRandomDistributionMin) + appRandomDistributionMin
+//      println("Using the randomized number of lines per partition of " + recordsPerPartition)
+//    }
 
     /* Start of new code */
-    val numPartitions = args(2).toInt
+//    val numPartitions = args(2).toInt
+//    val numDirectories = args(3).toInt
+//    val seedRdd = sc.parallelize(Seq[String](), numPartitions).mapPartitions { _ => {
+//
+//      (1 to recordsPerPartition).map { _ =>
+//        val r = scala.util.Random
+//        val currentTimeForDirPart = Calendar.getInstance().getTime()
+//
+//        // start of define hours and mins and maybe secs here
+//        val formatDateDayForDir = new SimpleDateFormat("YYYY-MM-dd")
+//        val formatDateHourForDir = new SimpleDateFormat("HH")
+//        val formatDateMinuteForDir = new SimpleDateFormat("mm")
+//        val formatDateSecondForDir = new SimpleDateFormat("ss")
+//        val formatDateMilliSecondForDir = new SimpleDateFormat("SSS")
+//        val flowDay = formatDateDayForDir.format(currentTimeForDirPart)
+//        val flowHour = formatDateHourForDir.format(currentTimeForDirPart)
+//        val flowMinute = formatDateMinuteForDir.format(currentTimeForDirPart)
+//        val flowSecond = formatDateSecondForDir.format(currentTimeForDirPart)
+//        val flowMilliSecond = formatDateMilliSecondForDir.format(currentTimeForDirPart)
+//        // end of define hours and mins and maybe secs here
+//
+//        // start of maps
+//        val protoMap = Map(0 -> "udp", 1 -> "tcp", 2 -> "icmp", 3 -> "tcp", 4 -> "tcp")
+//        val flowDirMap = Map(0 -> "->", 1 -> "<?>", 2 -> "<->", 3 -> "?>", 4 -> "->", 5 -> "->")
+//        val flowStatMap = Map(0 -> "FSPA_FSPA", 1 -> "CON", 2 -> "INT", 3 -> "FA_FA",
+//          4 -> "SPA_SPA", 5 -> "S_", 6 -> "URP", 7 -> "CON", 8 -> "CON", 9 -> "CON", 10 -> "CON")
+//        //  val ipGenMap = Map(0 -> getIPAddressSkew("132.146.5"), 1 -> getIPRand())
+//        val sTosMap = Map(0 -> 0, 1 -> 3, 2 -> 2, 3 -> 2, 4 -> 2)
+//        val dTosMap = Map(0 -> 0, 1 -> 3, 2 -> 2, 3 -> 4)
+//        val totPktsMap = Map(0 -> randNum(2350), 1 -> randNum(128)) // big and small
+//        val totBytesMap = Map(0 -> randNum(128)) // big and small
+//        val labelMap = Map(0 -> "flow=From-Botnet-V44-ICMP",
+//          1 -> "flow=Backgrund-TCP-Attempt",
+//          2 -> "flow=From-Normal-V44-CVUT-WebServer",
+//          3 -> "flow=Background-google-analytics14",
+//          4 -> "flow=Background-UDP-NTP-Established-1",
+//          5 -> "flow=From-Botnet-V44-TCP-CC107-IRC-Not-Encrypted",
+//          6 -> "flow=Background-google-analytics4",
+//          7 -> "flow=Background-google-analytics9",
+//          8 -> "flow=From-Normal-V44-UDP-CVUT-DNS-Server")
+//        // end of maps
+//
+//        val formatDate = new SimpleDateFormat("YYYY-MM-dd HH:MM:ss.SSSSSS")
+//        val formatDateDuration = new SimpleDateFormat("ss.SSSSSS")
+//        val formatDateDay = new SimpleDateFormat("YYYY-MM-dd")
+//        val formatDateHour = new SimpleDateFormat("HH")
+//
+//        // get the current time for flowDuration so we get variability
+//        val currentTime = Calendar.getInstance().getTime()
+//
+//        val flowTimestamp = formatDate.format(currentTimeForDirPart)
+//        //        val flowDay = formatDateDay.format(currentTimeForDirPart)
+//        //        val flowHour = formatDateHour.format(currentTimeForDirPart)
+//        val flowDuration = formatDateDuration.format(currentTime)
+//        //        val SourceIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
+//        val SourceIPString = getIPGenRand(r.nextInt())
+//        val DestIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
+//
+//        if (args(4).toBoolean) {
+//          flowTimestamp + "," + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
+//            SourceIPString + "," + flowDirMap(r.nextInt(6)) + "," + DestIPString + "," +
+//            r.nextInt(65535) + "," + flowStatMap(r.nextInt(11)) + "," + sTosMap(r.nextInt(3)) +
+//            "," + dTosMap(r.nextInt(4)) + "," + totPktsMap(r.nextInt(2)) + "," +
+//            totBytesMap(r.nextInt(1)) + "," + labelMap(r.nextInt(9)) +
+//            "," + MaxMindSingleton.getInstance().getCountry(SourceIPString)
+//        }
+//        else {
+//          flowTimestamp + "," + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
+//            SourceIPString + "," + flowDirMap(r.nextInt(6)) + "," + DestIPString + "," +
+//            r.nextInt(65535) + "," + flowStatMap(r.nextInt(11)) + "," + sTosMap(r.nextInt(3)) +
+//            "," + dTosMap(r.nextInt(4)) + "," + totPktsMap(r.nextInt(2)) + "," +
+//            totBytesMap(r.nextInt(1)) + "," + labelMap(r.nextInt(9))
+//        }
+//
+//      }
+//
+//      }.iterator
+//
+//    }
+
     val numDirectories = args(3).toInt
-    val seedRdd = sc.parallelize(Seq[String](), numPartitions).mapPartitions { _ => {
-      (1 to recordsPerPartition).map { _ =>
-        val r = scala.util.Random
-        val currentTimeForDirPart = Calendar.getInstance().getTime()
 
-        // start of define hours and mins and maybe secs here
-        val formatDateDayForDir = new SimpleDateFormat("YYYY-MM-dd")
-        val formatDateHourForDir = new SimpleDateFormat("HH")
-        val formatDateMinuteForDir = new SimpleDateFormat("mm")
-        val formatDateSecondForDir = new SimpleDateFormat("ss")
-        val formatDateMilliSecondForDir = new SimpleDateFormat("SSS")
-        val flowDay = formatDateDayForDir.format(currentTimeForDirPart)
-        val flowHour = formatDateHourForDir.format(currentTimeForDirPart)
-        val flowMinute = formatDateMinuteForDir.format(currentTimeForDirPart)
-        val flowSecond = formatDateSecondForDir.format(currentTimeForDirPart)
-        val flowMilliSecond = formatDateMilliSecondForDir.format(currentTimeForDirPart)
-        // end of define hours and mins and maybe secs here
+    for (dirNum <- 1 to numDirectories) {
 
-        // start of maps
-        val protoMap = Map(0 -> "udp", 1 -> "tcp", 2 -> "icmp", 3 -> "tcp", 4 -> "tcp")
-        val flowDirMap = Map(0 -> "->", 1 -> "<?>", 2 -> "<->", 3 -> "?>", 4 -> "->", 5 -> "->")
-        val flowStatMap = Map(0 -> "FSPA_FSPA", 1 -> "CON", 2 -> "INT", 3 -> "FA_FA",
-          4 -> "SPA_SPA", 5 -> "S_", 6 -> "URP", 7 -> "CON", 8 -> "CON", 9 -> "CON", 10 -> "CON")
-        //  val ipGenMap = Map(0 -> getIPAddressSkew("132.146.5"), 1 -> getIPRand())
-        val sTosMap = Map(0 -> 0, 1 -> 3, 2 -> 2, 3 -> 2, 4 -> 2)
-        val dTosMap = Map(0 -> 0, 1 -> 3, 2 -> 2, 3 -> 4)
-        val totPktsMap = Map(0 -> randNum(2350), 1 -> randNum(128)) // big and small
-        val totBytesMap = Map(0 -> randNum(128)) // big and small
-        val labelMap = Map(0 -> "flow=From-Botnet-V44-ICMP",
-          1 -> "flow=Backgrund-TCP-Attempt",
-          2 -> "flow=From-Normal-V44-CVUT-WebServer",
-          3 -> "flow=Background-google-analytics14",
-          4 -> "flow=Background-UDP-NTP-Established-1",
-          5 -> "flow=From-Botnet-V44-TCP-CC107-IRC-Not-Encrypted",
-          6 -> "flow=Background-google-analytics4",
-          7 -> "flow=Background-google-analytics9",
-          8 -> "flow=From-Normal-V44-UDP-CVUT-DNS-Server")
-        // end of maps
+      val appRandomDistributionMin = conf.getInt("netflow-app.randomDistributionMin")
+      val appRandomDistributionMax = conf.getInt("netflow-app.randomDistributionMax")
+      val numPartitions = args(2).toInt
+      val countryEnrichment = args(4).toBoolean
+      /* Start of working out if we need to randomize or not */
 
-        val formatDate = new SimpleDateFormat("YYYY-MM-dd HH:MM:ss.SSSSSS")
-        val formatDateDuration = new SimpleDateFormat("ss.SSSSSS")
-        val formatDateDay = new SimpleDateFormat("YYYY-MM-dd")
-        val formatDateHour = new SimpleDateFormat("HH")
+            val recordsPerPartition = {
+              if (appRandomDistributionMin == 0 & appRandomDistributionMax == 0) {
+                // no randomness to the number of netflow records
+                // we are assuming here that numRecords is divisible by partitions, otherwise we need to compensate for the residual
+                println("Using the standard number of lines per partition of " + args(1).toInt)
+                args(1).toInt
+              }
+              else {
+                val tempRecordsPerPartition = randNum(appRandomDistributionMax - appRandomDistributionMin) + appRandomDistributionMin
+                println("Using the randomized number of lines per partition of " + tempRecordsPerPartition)
+                tempRecordsPerPartition
+              }
+            }
 
-        // get the current time for flowDuration so we get variability
-        val currentTime = Calendar.getInstance().getTime()
+      val seedRdd = sc.parallelize(Seq[String](), numPartitions).mapPartitions { _ => {
 
-        val flowTimestamp = formatDate.format(currentTimeForDirPart)
-        //        val flowDay = formatDateDay.format(currentTimeForDirPart)
-        //        val flowHour = formatDateHour.format(currentTimeForDirPart)
-        val flowDuration = formatDateDuration.format(currentTime)
-        //        val SourceIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
-        val SourceIPString = getIPGenRand(r.nextInt())
-        val DestIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
+        (1 to recordsPerPartition).map { _ =>
+          val r = scala.util.Random
+          val currentTimeForDirPart = Calendar.getInstance().getTime()
+//
+//          // start of define hours and mins and maybe secs here
+          val formatDateDayForDir = new SimpleDateFormat("YYYY-MM-dd")
+          val formatDateHourForDir = new SimpleDateFormat("HH")
+          val formatDateMinuteForDir = new SimpleDateFormat("mm")
+          val formatDateSecondForDir = new SimpleDateFormat("ss")
+          val formatDateMilliSecondForDir = new SimpleDateFormat("SSS")
+          val flowDay = formatDateDayForDir.format(currentTimeForDirPart)
+          val flowHour = formatDateHourForDir.format(currentTimeForDirPart)
+          val flowMinute = formatDateMinuteForDir.format(currentTimeForDirPart)
+          val flowSecond = formatDateSecondForDir.format(currentTimeForDirPart)
+          val flowMilliSecond = formatDateMilliSecondForDir.format(currentTimeForDirPart)
+//          // end of define hours and mins and maybe secs here
+//
+//          // start of maps
+          val protoMap = Map(0 -> "udp", 1 -> "tcp", 2 -> "icmp", 3 -> "tcp", 4 -> "tcp")
+          val flowDirMap = Map(0 -> "->", 1 -> "<?>", 2 -> "<->", 3 -> "?>", 4 -> "->", 5 -> "->")
+          val flowStatMap = Map(0 -> "FSPA_FSPA", 1 -> "CON", 2 -> "INT", 3 -> "FA_FA",
+            4 -> "SPA_SPA", 5 -> "S_", 6 -> "URP", 7 -> "CON", 8 -> "CON", 9 -> "CON", 10 -> "CON")
+          //  val ipGenMap = Map(0 -> getIPAddressSkew("132.146.5"), 1 -> getIPRand())
+          val sTosMap = Map(0 -> 0, 1 -> 3, 2 -> 2, 3 -> 2, 4 -> 2)
+          val dTosMap = Map(0 -> 0, 1 -> 3, 2 -> 2, 3 -> 4)
+          val totPktsMap = Map(0 -> randNum(2350), 1 -> randNum(128)) // big and small
+          val totBytesMap = Map(0 -> randNum(128)) // big and small
+          val labelMap = Map(0 -> "flow=From-Botnet-V44-ICMP",
+            1 -> "flow=Backgrund-TCP-Attempt",
+            2 -> "flow=From-Normal-V44-CVUT-WebServer",
+            3 -> "flow=Background-google-analytics14",
+            4 -> "flow=Background-UDP-NTP-Established-1",
+            5 -> "flow=From-Botnet-V44-TCP-CC107-IRC-Not-Encrypted",
+            6 -> "flow=Background-google-analytics4",
+            7 -> "flow=Background-google-analytics9",
+            8 -> "flow=From-Normal-V44-UDP-CVUT-DNS-Server")
+//          // end of maps
+//
+          val formatDate = new SimpleDateFormat("YYYY-MM-dd HH:MM:ss.SSSSSS")
+          val formatDateDuration = new SimpleDateFormat("ss.SSSSSS")
+          val formatDateDay = new SimpleDateFormat("YYYY-MM-dd")
+          val formatDateHour = new SimpleDateFormat("HH")
+//
+//          // get the current time for flowDuration so we get variability
+          val currentTime = Calendar.getInstance().getTime()
+//
+          val flowTimestamp = formatDate.format(currentTimeForDirPart)
+          //        val flowDay = formatDateDay.format(currentTimeForDirPart)
+          //        val flowHour = formatDateHour.format(currentTimeForDirPart)
+          val flowDuration = formatDateDuration.format(currentTime)
+          //        val SourceIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
+          val SourceIPString = getIPGenRand(r.nextInt())
+          val DestIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
+//
+          if (countryEnrichment) {
+            flowTimestamp + "," + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
+              SourceIPString + "," + flowDirMap(r.nextInt(6)) + "," + DestIPString + "," +
+              r.nextInt(65535) + "," + flowStatMap(r.nextInt(11)) + "," + sTosMap(r.nextInt(3)) +
+              "," + dTosMap(r.nextInt(4)) + "," + totPktsMap(r.nextInt(2)) + "," +
+              totBytesMap(r.nextInt(1)) + "," + labelMap(r.nextInt(9)) +
+              "," + MaxMindSingleton.getInstance().getCountry(SourceIPString)
+          }
+          else {
+            flowTimestamp + "," + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
+              SourceIPString + "," + flowDirMap(r.nextInt(6)) + "," + DestIPString + "," +
+              r.nextInt(65535) + "," + flowStatMap(r.nextInt(11)) + "," + sTosMap(r.nextInt(3)) +
+              "," + dTosMap(r.nextInt(4)) + "," + totPktsMap(r.nextInt(2)) + "," +
+              totBytesMap(r.nextInt(1)) + "," + labelMap(r.nextInt(9))
+          }
 
-        if (args(4).toBoolean) {
-          flowTimestamp + "," + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
-            SourceIPString + "," + flowDirMap(r.nextInt(6)) + "," + DestIPString + "," +
-            r.nextInt(65535) + "," + flowStatMap(r.nextInt(11)) + "," + sTosMap(r.nextInt(3)) +
-            "," + dTosMap(r.nextInt(4)) + "," + totPktsMap(r.nextInt(2)) + "," +
-            totBytesMap(r.nextInt(1)) + "," + labelMap(r.nextInt(9)) +
-            "," + MaxMindSingleton.getInstance().getCountry(SourceIPString)
         }
-        else {
-          flowTimestamp + "," + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
-            SourceIPString + "," + flowDirMap(r.nextInt(6)) + "," + DestIPString + "," +
-            r.nextInt(65535) + "," + flowStatMap(r.nextInt(11)) + "," + sTosMap(r.nextInt(3)) +
-            "," + dTosMap(r.nextInt(4)) + "," + totPktsMap(r.nextInt(2)) + "," +
-            totBytesMap(r.nextInt(1)) + "," + labelMap(r.nextInt(9))
-        }
+
+      }.iterator
 
       }
 
-      }.iterator
-    }
-    for (dirNum <- 1 to numDirectories) {
+      /* End of working out if we need to randomize or not */
       seedRdd.saveAsTextFile(hdfsURI + "/" + "﻿runNum=" + dirNum)
+//      seedRdd.saveAsTextFile("hdfs://quickstart.cloudera:8020/user/cloudera/randomNetflow2" + "/" + "runNum=" + dirNum)
+//      seedRdd.saveAsTextFile("randomNetflow2")
     }
 
   }
