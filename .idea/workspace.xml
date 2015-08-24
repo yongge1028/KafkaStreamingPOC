@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="308cb771-7646-450e-a2a7-e46b95d0aaea" name="Default" comment="">
+    <list default="true" id="5e40ee37-beee-4a66-9df6-161d8214f22f" name="Default" comment="basic kafka shell script to create, describe and list topics">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_twitter_parquet_column_1_5_0_cdh5_4_3.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_twitter_parquet_common_1_5_0_cdh5_4_3.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_twitter_parquet_encoding_1_5_0_cdh5_4_3.xml" />
@@ -52,31 +52,246 @@
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_spark_spark_streaming_2_10_1_3_0_cdh5_4_3.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_spark_spark_streaming_kafka_2_10_1_3_0_cdh5_4_3.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_cloudera_logredactor_logredactor_1_0_3.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291260000.crc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291275000.bk.crc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291275000.crc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291290000.bk.crc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291290000.crc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291305000.crc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291320000.crc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291335000.crc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291350000.crc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.checkpoint-1426291365000.crc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/.temp.crc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/checkpoint-1426291260000" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/checkpoint-1426291275000" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/checkpoint-1426291275000.bk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/checkpoint-1426291290000" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/checkpoint-1426291290000.bk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/checkpoint-1426291305000" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/checkpoint-1426291320000" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/checkpoint-1426291335000" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/checkpoint-1426291350000" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/checkpoint-1426291365000" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/spark_checkpoint/temp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$2.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$$anonfun$main$2$$anonfun$apply$1$$anonfun$apply$2.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$$anonfun$main$2$$anonfun$apply$1.class" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scripts/create_kafka_topics.sh" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__aopalliance_aopalliance_1_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__asm_asm_3_2_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_101tec_zkclient_0_3_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_amazonaws_aws_java_sdk_1_7_4_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_clearspring_analytics_stream_2_7_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_codahale_metrics_metrics_core_3_0_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_codahale_metrics_metrics_graphite_3_0_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_codahale_metrics_metrics_json_3_0_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_codahale_metrics_metrics_jvm_3_0_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_esotericsoftware_kryo_kryo_2_21_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_esotericsoftware_minlog_minlog_1_2_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_esotericsoftware_reflectasm_reflectasm_1_07_shaded_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_fasterxml_jackson_core_jackson_annotations_2_2_3_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_fasterxml_jackson_core_jackson_annotations_2_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_fasterxml_jackson_core_jackson_annotations_2_4_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_fasterxml_jackson_core_jackson_core_2_2_3_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_fasterxml_jackson_core_jackson_core_2_3_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_fasterxml_jackson_core_jackson_core_2_4_3_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_fasterxml_jackson_core_jackson_databind_2_2_3_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_fasterxml_jackson_core_jackson_databind_2_3_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_fasterxml_jackson_core_jackson_databind_2_4_3_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_google_code_findbugs_jsr305_1_3_9_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_google_code_gson_gson_2_2_4_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_google_guava_guava_14_0_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_google_guava_guava_16_0_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_google_http_client_google_http_client_1_19_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_google_inject_guice_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_google_protobuf_protobuf_java_2_5_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_jamesmurty_utils_java_xmlbuilder_0_4_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_maxmind_db_maxmind_db_1_0_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_maxmind_geoip2_geoip2_2_1_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_ning_compress_lzf_1_0_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_sun_jersey_contribs_jersey_guice_1_9_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_sun_jersey_jersey_client_1_9_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_sun_jersey_jersey_core_1_9_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_sun_jersey_jersey_json_1_9_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_sun_jersey_jersey_server_1_9_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_sun_jersey_jersey_test_framework_jersey_test_framework_grizzly2_1_9_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_sun_xml_bind_jaxb_impl_2_2_3_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_thoughtworks_paranamer_paranamer_2_3_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_thoughtworks_paranamer_paranamer_2_6_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_twitter_chill_2_10_0_5_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_twitter_chill_java_0_5_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_typesafe_config_1_0_2_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_typesafe_config_1_2_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_yammer_metrics_metrics_annotation_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__com_yammer_metrics_metrics_core_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_beanutils_commons_beanutils_1_7_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_beanutils_commons_beanutils_core_1_8_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_cli_commons_cli_1_2_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_codec_commons_codec_1_4_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_codec_commons_codec_1_6_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_collections_commons_collections_3_2_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_configuration_commons_configuration_1_6_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_digester_commons_digester_1_8_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_el_commons_el_1_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_httpclient_commons_httpclient_3_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_io_commons_io_2_4_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_lang_commons_lang_2_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_lang_commons_lang_2_6_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_logging_commons_logging_1_1_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_logging_commons_logging_1_1_3_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_net_commons_net_2_2_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__commons_net_commons_net_3_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__io_netty_netty_3_7_0_Final_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__io_netty_netty_3_8_0_Final_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__io_netty_netty_all_4_0_23_Final_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__javax_activation_activation_1_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__javax_inject_javax_inject_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__javax_servlet_jsp_jsp_api_2_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__javax_servlet_servlet_api_2_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__javax_xml_bind_jaxb_api_2_2_2_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__javax_xml_stream_stax_api_1_0_2_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__jline_jline_0_9_94_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__joda_time_joda_time_2_7_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__log4j_log4j_1_2_17_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__net_java_dev_jets3t_jets3t_0_7_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__net_java_dev_jets3t_jets3t_0_9_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__net_jpountz_lz4_lz4_1_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__net_sf_py4j_py4j_0_8_2_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_avro_avro_1_7_4_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_avro_avro_1_7_6_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_commons_commons_compress_1_4_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_commons_commons_lang3_3_3_2_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_commons_commons_math3_3_1_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_commons_commons_math_2_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_curator_curator_client_2_4_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_curator_curator_client_2_6_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_curator_curator_framework_2_4_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_curator_curator_framework_2_6_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_curator_curator_recipes_2_4_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_curator_curator_recipes_2_6_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_directory_api_api_asn1_api_1_0_0_M20_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_directory_api_api_util_1_0_0_M20_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_directory_server_apacheds_i18n_2_0_0_M15_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_directory_server_apacheds_kerberos_codec_2_0_0_M15_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_annotations_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_annotations_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_auth_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_auth_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_aws_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_client_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_client_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_common_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_common_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_hdfs_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_hdfs_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_mapreduce_client_app_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_mapreduce_client_app_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_mapreduce_client_common_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_mapreduce_client_common_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_mapreduce_client_core_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_mapreduce_client_core_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_mapreduce_client_jobclient_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_mapreduce_client_jobclient_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_mapreduce_client_shuffle_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_mapreduce_client_shuffle_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_yarn_api_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_yarn_api_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_yarn_client_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_yarn_client_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_yarn_common_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_yarn_common_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_yarn_server_common_2_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_hadoop_hadoop_yarn_server_common_2_5_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_httpcomponents_httpclient_4_2_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_httpcomponents_httpcore_4_2_4_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_kafka_kafka_2_10_0_8_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_mesos_mesos_0_18_1_shaded_protobuf_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_spark_spark_core_2_10_1_2_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_spark_spark_core_2_10_1_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_spark_spark_network_common_2_10_1_2_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_spark_spark_network_common_2_10_1_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_spark_spark_network_shuffle_2_10_1_2_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_spark_spark_network_shuffle_2_10_1_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_spark_spark_streaming_2_10_1_2_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_spark_spark_streaming_2_10_1_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_spark_spark_streaming_kafka_2_10_1_2_0_cdh5_3_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_spark_spark_streaming_kafka_2_10_1_2_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_zookeeper_zookeeper_3_4_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_apache_zookeeper_zookeeper_3_4_6_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_codehaus_jackson_jackson_core_asl_1_8_8_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_codehaus_jackson_jackson_core_asl_1_9_13_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_codehaus_jackson_jackson_jaxrs_1_8_8_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_codehaus_jackson_jackson_mapper_asl_1_8_8_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_codehaus_jackson_jackson_mapper_asl_1_9_13_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_codehaus_jackson_jackson_xc_1_8_8_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_codehaus_jettison_jettison_1_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_jetty_continuation_8_1_14_v20131031_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_jetty_http_8_1_14_v20131031_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_jetty_io_8_1_14_v20131031_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_jetty_jndi_8_1_14_v20131031_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_jetty_plus_8_1_14_v20131031_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_jetty_security_8_1_14_v20131031_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_jetty_server_8_1_14_v20131031_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_jetty_servlet_8_1_14_v20131031_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_jetty_util_8_1_14_v20131031_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_jetty_webapp_8_1_14_v20131031_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_jetty_xml_8_1_14_v20131031_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_orbit_javax_activation_1_1_0_v201105071233_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_orbit_javax_activation_1_1_0_v201105071233_orbit.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_orbit_javax_mail_glassfish_1_4_1_v201005082020_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_orbit_javax_mail_glassfish_1_4_1_v201005082020_orbit.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_orbit_javax_servlet_3_0_0_v201112011016_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_orbit_javax_servlet_3_0_0_v201112011016_orbit.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_orbit_javax_transaction_1_1_1_v201105210645_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_eclipse_jetty_orbit_javax_transaction_1_1_1_v201105210645_orbit.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_fusesource_leveldbjni_leveldbjni_all_1_8_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_json4s_json4s_ast_2_10_3_2_10_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_json4s_json4s_core_2_10_3_2_10_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_json4s_json4s_jackson_2_10_3_2_10_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_mortbay_jetty_jetty_util_6_1_26_cloudera_4_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_mortbay_jetty_jetty_util_6_1_26_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_objenesis_objenesis_1_2_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_roaringbitmap_RoaringBitmap_0_4_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_scala_lang_scala_compiler_2_10_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_scala_lang_scala_compiler_2_10_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_scala_lang_scala_library_2_10_4_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_scala_lang_scala_library_2_11_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_scala_lang_scala_reflect_2_10_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_scala_lang_scala_reflect_2_10_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_scala_lang_scalap_2_10_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_slf4j_jcl_over_slf4j_1_7_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_slf4j_jul_to_slf4j_1_7_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_slf4j_slf4j_api_1_7_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_slf4j_slf4j_api_1_7_6_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_slf4j_slf4j_log4j12_1_7_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_sonatype_sisu_inject_cglib_2_2_1_v20090111_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_spark_project_akka_akka_actor_2_10_2_2_3_shaded_protobuf_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_spark_project_akka_akka_actor_2_10_2_3_4_spark_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_spark_project_akka_akka_remote_2_10_2_2_3_shaded_protobuf_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_spark_project_akka_akka_remote_2_10_2_3_4_spark_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_spark_project_akka_akka_slf4j_2_10_2_2_3_shaded_protobuf_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_spark_project_akka_akka_slf4j_2_10_2_3_4_spark_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_spark_project_protobuf_protobuf_java_2_4_1_shaded_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_spark_project_protobuf_protobuf_java_2_5_0_spark_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_spark_project_pyrolite_2_0_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_spark_project_spark_unused_1_0_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_tachyonproject_tachyon_0_5_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_tachyonproject_tachyon_client_0_5_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_tukaani_xz_1_0_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_uncommons_maths_uncommons_maths_1_2_2a_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_xerial_snappy_snappy_java_1_0_4_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_xerial_snappy_snappy_java_1_0_5_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__org_xerial_snappy_snappy_java_1_1_1_6_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__stax_stax_api_1_0_1_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__tomcat_jasper_compiler_5_5_23_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__tomcat_jasper_runtime_5_5_23_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\libraries\SBT__xmlenc_xmlenc_0_52_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\modules\kafkastreamingpoc-build.iml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\modules\kafkastreamingpoc.iml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\sbt.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\scopes\scope_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\.idea\uiDesigner.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\.checkpoint-1426291260000.crc" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\.checkpoint-1426291275000.bk.crc" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\.checkpoint-1426291275000.crc" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\.checkpoint-1426291290000.bk.crc" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\.checkpoint-1426291290000.crc" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\.checkpoint-1426291305000.crc" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\.checkpoint-1426291320000.crc" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\.checkpoint-1426291335000.crc" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\.checkpoint-1426291350000.crc" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\.checkpoint-1426291365000.crc" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\.temp.crc" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\checkpoint-1426291260000" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\checkpoint-1426291275000" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\checkpoint-1426291275000.bk" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\checkpoint-1426291290000" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\checkpoint-1426291290000.bk" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\checkpoint-1426291305000" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\checkpoint-1426291320000" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\checkpoint-1426291335000" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\checkpoint-1426291350000" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\checkpoint-1426291365000" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\spark_checkpoint\temp" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\target\classes\RandomNetflowGen$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\target\classes\SparkStreamingNetflow$$anonfun$main$2$$anonfun$apply$1$$anonfun$apply$2.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\Bowen_Raw_Source\IntelijProjects\KafkaStreamingPOC\target\classes\SparkStreamingNetflow$$anonfun$main$2$$anonfun$apply$1.class" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$main$1.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$$anonfun$main$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen$.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/RandomNetflowGen.class" afterPath="$PROJECT_DIR$/target/classes/RandomNetflowGen.class" />
@@ -88,16 +303,143 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$$anonfun$main$2.class" afterPath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$$anonfun$main$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$.class" afterPath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow.class" afterPath="$PROJECT_DIR$/target/classes/SparkStreamingNetflow.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/SparkStreamingNetflowOrig$.class" afterPath="$PROJECT_DIR$/target/classes/SparkStreamingNetflowOrig$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="$PROJECT_DIR$/.idea/.name" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__antlr_antlr_2_7_7.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__antlr_antlr_2_7_7.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__asm_asm_3_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__asm_asm_3_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_101tec_zkclient_0_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_101tec_zkclient_0_3.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_amazonaws_aws_java_sdk_1_7_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_amazonaws_aws_java_sdk_1_7_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_clearspring_analytics_stream_2_7_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_clearspring_analytics_stream_2_7_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_esotericsoftware_kryo_kryo_2_21.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_esotericsoftware_kryo_kryo_2_21.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_esotericsoftware_minlog_minlog_1_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_esotericsoftware_minlog_minlog_1_2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_esotericsoftware_reflectasm_reflectasm_shaded_1_07.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_esotericsoftware_reflectasm_reflectasm_shaded_1_07.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_fommil_netlib_core_1_1_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_fommil_netlib_core_1_1_2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_rwl_jtransforms_2_4_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_rwl_jtransforms_2_4_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_1_3_9.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_1_3_9.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_2_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_2_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_14_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_14_0_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_http_client_google_http_client_1_19_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_http_client_google_http_client_1_19_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_2_5_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_2_5_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_jamesmurty_utils_java_xmlbuilder_0_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jamesmurty_utils_java_xmlbuilder_0_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_jolbox_bonecp_0_8_0_RELEASE.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jolbox_bonecp_0_8_0_RELEASE.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_maxmind_db_maxmind_db_1_0_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_maxmind_db_maxmind_db_1_0_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_maxmind_geoip2_geoip2_2_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_maxmind_geoip2_geoip2_2_1_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_ning_compress_lzf_1_0_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_ning_compress_lzf_1_0_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_client_1_9.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_client_1_9.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_core_1_9.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_core_1_9.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_server_1_14.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_server_1_14.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_servlet_1_14.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_jersey_jersey_servlet_1_14.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_thoughtworks_paranamer_paranamer_2_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_thoughtworks_paranamer_paranamer_2_3.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_twitter_chill_2_10_0_5_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_twitter_chill_2_10_0_5_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_twitter_chill_java_0_5_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_twitter_chill_java_0_5_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_typesafe_config_1_2_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_typesafe_config_1_2_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_yammer_metrics_metrics_core_2_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_yammer_metrics_metrics_core_2_2_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_7_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_7_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_core_1_8_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_core_1_8_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_cli_commons_cli_1_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_cli_commons_cli_1_2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_configuration_commons_configuration_1_6.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_configuration_commons_configuration_1_6.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_digester_commons_digester_1_8.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_digester_commons_digester_1_8.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_httpclient_commons_httpclient_3_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_httpclient_commons_httpclient_3_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_3.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_net_commons_net_2_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_net_commons_net_2_2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_3_6_6_Final.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_3_6_6_Final.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_all_4_0_23_Final.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_all_4_0_23_Final.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_jdo_jdo_api_3_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_jdo_jdo_api_3_0_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_transaction_jta_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_transaction_jta_1_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_xml_bind_jaxb_api_2_2_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_xml_bind_jaxb_api_2_2_2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_xml_stream_stax_api_1_0_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_xml_stream_stax_api_1_0_2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_17.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_17.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jets3t_jets3t_0_9_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jets3t_jets3t_0_9_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_jpountz_lz4_lz4_1_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_jpountz_lz4_lz4_1_2_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_opencsv_opencsv_2_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_opencsv_opencsv_2_3.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_py4j_py4j_0_8_2_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_py4j_py4j_0_8_2_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_f2j_arpack_combined_all_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_f2j_arpack_combined_all_0_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_ST4_4_0_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_ST4_4_0_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_antlr_runtime_3_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_antlr_runtime_3_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_stringtemplate_3_2_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_stringtemplate_3_2_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_1_9_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_1_9_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_launcher_1_9_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_ant_ant_launcher_1_9_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_compress_1_4_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_compress_1_4_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_lang3_3_3_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_lang3_3_3_2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_math3_3_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_math3_3_1_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_curator_curator_framework_2_4_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_curator_curator_framework_2_4_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_curator_curator_recipes_2_4_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_curator_curator_recipes_2_4_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_directory_api_api_asn1_api_1_0_0_M20.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_directory_api_api_asn1_api_1_0_0_M20.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_directory_api_api_util_1_0_0_M20.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_directory_api_api_util_1_0_0_M20.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_directory_server_apacheds_i18n_2_0_0_M15.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_directory_server_apacheds_i18n_2_0_0_M15.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_directory_server_apacheds_kerberos_codec_2_0_0_M15.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_directory_server_apacheds_kerberos_codec_2_0_0_M15.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_1_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_1_2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_1_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_1_2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_velocity_velocity_1_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_velocity_velocity_1_5.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_zookeeper_zookeeper_3_4_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_zookeeper_zookeeper_3_4_5.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_groovy_groovy_all_2_1_6.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_groovy_groovy_all_2_1_6.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_core_asl_1_8_8.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_core_asl_1_8_8.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_jaxrs_1_8_8.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_jaxrs_1_8_8.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_mapper_asl_1_8_8.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_mapper_asl_1_8_8.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_xc_1_8_8.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_jackson_jackson_xc_1_8_8.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_datanucleus_datanucleus_api_jdo_3_2_6.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_datanucleus_datanucleus_api_jdo_3_2_6.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_datanucleus_datanucleus_core_3_2_10.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_datanucleus_datanucleus_core_3_2_10.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_datanucleus_datanucleus_rdbms_3_2_9.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_datanucleus_datanucleus_rdbms_3_2_9.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_orbit_javax_servlet_3_0_0_v201112011016.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_eclipse_jetty_orbit_javax_servlet_3_0_0_v201112011016.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_elasticsearch_elasticsearch_spark_2_10_2_1_0_Beta3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_elasticsearch_elasticsearch_spark_2_10_2_1_0_Beta3.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_fusesource_leveldbjni_leveldbjni_all_1_8.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_fusesource_leveldbjni_leveldbjni_all_1_8.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jblas_jblas_1_2_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jblas_jblas_1_2_3.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_json4s_json4s_ast_2_10_3_2_10.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json4s_json4s_ast_2_10_3_2_10.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_json4s_json4s_core_2_10_3_2_10.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json4s_json4s_core_2_10_3_2_10.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_json4s_json4s_jackson_2_10_3_2_10.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json4s_json4s_jackson_2_10_3_2_10.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mortbay_jetty_jetty_util_6_1_26_cloudera_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mortbay_jetty_jetty_util_6_1_26_cloudera_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_1_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_1_2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_roaringbitmap_RoaringBitmap_0_4_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_roaringbitmap_RoaringBitmap_0_4_5.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_scala_lang_scala_library_2_10_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_scala_lang_scala_library_2_10_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_scala_lang_scala_reflect_2_10_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_scala_lang_scala_reflect_2_10_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_scala_lang_scalap_2_10_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_scala_lang_scalap_2_10_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_scalamacros_quasiquotes_2_10_2_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_scalamacros_quasiquotes_2_10_2_0_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_scalanlp_breeze_2_10_0_11_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_scalanlp_breeze_2_10_0_11_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_scalanlp_breeze_macros_2_10_0_11_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_scalanlp_breeze_macros_2_10_0_11_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_5.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_5.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_5.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_7_5.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_7_5.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_akka_akka_actor_2_10_2_2_3_shaded_protobuf.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_akka_akka_actor_2_10_2_2_3_shaded_protobuf.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_akka_akka_remote_2_10_2_2_3_shaded_protobuf.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_akka_akka_remote_2_10_2_2_3_shaded_protobuf.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_akka_akka_slf4j_2_10_2_2_3_shaded_protobuf.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_akka_akka_slf4j_2_10_2_2_3_shaded_protobuf.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_protobuf_protobuf_java_2_4_1_shaded.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_protobuf_protobuf_java_2_4_1_shaded.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_pyrolite_2_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_pyrolite_2_0_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_spark_unused_1_0_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spark_project_spark_unused_1_0_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spire_math_spire_2_10_0_7_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spire_math_spire_2_10_0_7_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_spire_math_spire_macros_2_10_0_7_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_spire_math_spire_macros_2_10_0_7_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_tachyonproject_tachyon_0_5_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_tachyonproject_tachyon_0_5_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_tachyonproject_tachyon_client_0_5_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_tachyonproject_tachyon_client_0_5_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_tukaani_xz_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_tukaani_xz_1_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_uncommons_maths_uncommons_maths_1_2_2a.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_uncommons_maths_uncommons_maths_1_2_2a.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_xerial_snappy_snappy_java_1_0_4_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_xerial_snappy_snappy_java_1_0_4_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__oro_oro_2_0_8.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__oro_oro_2_0_8.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__stax_stax_api_1_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__stax_stax_api_1_0_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__xmlenc_xmlenc_0_52.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__xmlenc_xmlenc_0_52.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala" afterPath="$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala" afterPath="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowJson.scala" afterPath="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowJson.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scripts/sql/alter_table_partitons.sh" afterPath="$PROJECT_DIR$/src/scripts/sql/alter_table_partitons.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/application.conf" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/scripts/ru-spark-netflow-yarn.sh" afterPath="$PROJECT_DIR$/src/scripts/ru-spark-netflow-yarn.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
-    <ignored path="KafkaStreamingPOC.iws" />
+    <ignored path="netflow-streaming.iws" />
     <ignored path=".idea/workspace.xml" />
-    <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
-    <ignored path="$PROJECT_DIR$/project/project/target/" />
-    <ignored path="$PROJECT_DIR$/project/target/" />
-    <ignored path=".idea/dataSources.local.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -111,107 +453,64 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
-    <favorites_list name="KafkaStreamingPOC" />
+    <favorites_list name="netflow-streaming" />
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="RandomNetflowGen.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="350" column="35" selection-start-line="350" selection-start-column="35" selection-end-line="350" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SparkStreamingNetflow.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="111" column="22" selection-start-line="111" selection-start-column="22" selection-end-line="111" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider editor-type-id="MarkdownPreviewEditor">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-10.034483">
+              <caret line="81" column="13" selection-start-line="81" selection-start-column="13" selection-end-line="81" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create_kafka_topics.sh" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/scripts/create_kafka_topics.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.05851979">
+              <caret line="2" column="41" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="application.conf" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="30" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="30" />
+              <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RandomNetflowGen.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-19.25926">
-              <caret line="484" column="5" selection-start-line="484" selection-start-column="5" selection-end-line="484" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="create_external_table_netflow_records_rand_streaming.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/scripts/sql/create_external_table_netflow_records_rand_streaming.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="3" column="11" selection-start-line="0" selection-start-column="0" selection-end-line="26" selection-end-column="62" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SparkStreamingNetflow.scala" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.109375">
-              <caret line="355" column="0" selection-start-line="355" selection-start-column="0" selection-end-line="355" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SparkStreamingNetflowJson.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowJson.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="171" column="41" selection-start-line="171" selection-start-column="41" selection-end-line="171" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ForEachDStream.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-streaming_2.10/1.3.0-cdh5.4.1/spark-streaming_2.10-1.3.0-cdh5.4.1.jar!/org/apache/spark/streaming/dstream/ForEachDStream.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MaxMindSingleton.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/MaxMindSingleton.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="68" selection-start-line="30" selection-start-column="68" selection-end-line="30" selection-end-column="68" />
-              <folding>
-                <element signature="n#!!doc" expanded="false" />
-                <element signature="imports" expanded="false" />
-                <element signature="e#1526#1527#0" expanded="false" />
-                <element signature="e#1557#1558#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="150" column="17" selection-start-line="150" selection-start-column="17" selection-end-line="150" selection-end-column="17" />
-              <folding>
-                <marker date="1436996260000" expanded="true" signature="6289:6305" placeholder="..." />
-                <marker date="1436996260000" expanded="true" signature="6289:6826" placeholder="..." />
-              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Singleton" />
-        <option value="Class" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -224,49 +523,13 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/scala/KafkaWordCount.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/KafkaTopicWriter.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/KafkaReadWrite.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/KafkaTopicReader.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/TestMaxMindSingleton.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/TestReturnCountry.scala" />
-        <option value="$PROJECT_DIR$/build.sbt" />
-        <option value="$PROJECT_DIR$/src/main/resources/create_index_es" />
-        <option value="$PROJECT_DIR$/src/main/run-spark-netflow.sh" />
-        <option value="$PROJECT_DIR$/src/main/java/MaxMindSingleton.java" />
-        <option value="$PROJECT_DIR$/src/scripts/create_linux_user.sh" />
-        <option value="$PROJECT_DIR$/LICENSE.md" />
-        <option value="$PROJECT_DIR$/src/main/scala/HiveFromSpark.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/SimpleLib/SimpleLibContext.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/Utils/NetflowProperties.scala" />
-        <option value="$PROJECT_DIR$/src/scripts/run-spark-netflow.sh" />
-        <option value="$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_snappy_rand_secs.sql" />
-        <option value="$PROJECT_DIR$/src/scripts/sql/run_mr_hive_from_stage.sql" />
-        <option value="$PROJECT_DIR$/src/scripts/ru-spark-netflow-yarn.sh" />
-        <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/src/scripts/copy_jars.sh" />
-        <option value="$PROJECT_DIR$/src/scripts/zip_jars.sh" />
-        <option value="$PROJECT_DIR$/src/main/scala/Utils/randomSetup.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/Utils/WorkRequestImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/Utils/WorkRequest.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/LogisticRegressionWithSGD.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/Utils/WorkRequest.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/RandomIntegerWriter.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/Utils/SaveRDD.scala" />
-        <option value="$PROJECT_DIR$/src/scripts/sql/create_external_table_netflow_records_rand_no_partition.sql" />
-        <option value="$PROJECT_DIR$/src/main/resources/sample_fpgrowth.txt" />
-        <option value="$PROJECT_DIR$/src/main/scala/FPGrowth.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowJson.scala" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala" />
         <option value="$PROJECT_DIR$/src/main/resources/application.conf" />
+        <option value="$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/scripts/create_kafka_topics.sh" />
       </list>
     </option>
-  </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -275,58 +538,14 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="MavenProjectNavigator">
-    <treeState>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="&quot;Netflow Streaming&quot;" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Dependencies" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="&quot;Netflow Streaming&quot;" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="&quot;Netflow Streaming&quot;" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Lifecycle" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$LifecycleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-    </treeState>
-  </component>
-  <component name="MavenRunner">
-    <option name="skipTests" value="true" />
-  </component>
   <component name="NamedScopeManager">
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="824" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1066" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -351,42 +570,30 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope">
+        <subPane subId="Project Files" />
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemId" value="netflow-streaming" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="KafkaStreamingPOC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="KafkaStreamingPOC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemId" value="netflow-streaming" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="KafkaStreamingPOC" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemId" value="netflow-streaming" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -397,18 +604,28 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
+              <option name="myItemId" value="netflow-streaming" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="KafkaStreamingPOC" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemId" value="netflow-streaming" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -427,14 +644,10 @@
               <option name="myItemId" value="scala" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Utils" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemId" value="netflow-streaming" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -456,7 +669,7 @@
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="KafkaStreamingPOC" />
+              <option name="myItemId" value="netflow-streaming" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -474,127 +687,57 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="PackagesPane">
+        <subPane />
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="GoToClass.includeLibraries" value="false" />
-    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="MemberChooser.sorted" value="false" />
-    <property name="MemberChooser.showClasses" value="true" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="FullScreen" value="false" />
     <property name="recentsLimit" value="5" />
     <property name="dynamic.classpath" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="options.lastSelected" value="MavenSettings" />
-    <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.23678161" />
-    <property name="FullScreen" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="project.structure.last.edited" value="Problems" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
   </component>
-  <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="Utils" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/scala" />
-      <recent name="$PROJECT_DIR$/src/scripts/sql" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/src/main/java" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/scripts" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Application.RandomNetflowGen">
+  <component name="RunManager" selected="Application.SparkStreamingNetflow">
     <configuration default="false" name="RandomNetflowGen" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="RandomNetflowGen" />
-      <option name="VM_PARAMETERS" value="-Dorg.xerial.snappy.lib.name=libsnappyjava.jnilib -Dorg.xerial.snappy.tempdir=/tmp" />
-      <option name="PROGRAM_PARAMETERS" value="hdfs://quickstart.cloudera:8020/user/cloudera/randomNetflow2 100000 4 120 false" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="hdfs://vm-cluster-node1:8020/user/admin/randomNetflow 30000000 4 10 true" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="kafkastreamingpoc" />
+      <module name="netflow-streaming" />
       <envs>
-        <env name="HADOOP_USER_NAME" value="cloudera" />
+        <env name="HADOOP_HOME" value="D:\Bowen\hadoop-common-2.2.0-bin-master" />
+        <env name="HADOOP_USER_NAME" value="admin" />
       </envs>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="RandomIntegerWriter" type="Application" factoryName="Application" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="RandomIntegerWriter" />
-      <option name="VM_PARAMETERS" value="-Dorg.xerial.snappy.lib.name=libsnappyjava.jnilib -Dorg.xerial.snappy.tempdir=/tmp" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="kafkastreamingpoc" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="false" name="FPGrowth" type="Application" factoryName="Application" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="FPGrowth" />
-      <option name="VM_PARAMETERS" value="-Dorg.xerial.snappy.lib.name=libsnappyjava.jnilib -Dorg.xerial.snappy.tempdir=/tmp" />
-      <option name="PROGRAM_PARAMETERS" value="'select dir, state from rand_netflow' 0.01 2 cloudera" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="kafkastreamingpoc" />
-      <envs />
       <method />
     </configuration>
     <configuration default="false" name="SparkStreamingNetflow" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="SparkStreamingNetflow" />
-      <option name="VM_PARAMETERS" value="-Dorg.xerial.snappy.lib.name=libsnappyjava.jnilib -Dorg.xerial.snappy.tempdir=/tmp" />
-      <option name="PROGRAM_PARAMETERS" value="quickstart.cloudera:2181 1 flume.netflow_ss_input 2 false" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="vm-cluster-node1:2181 1 netflow-input 2 false" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="kafkastreamingpoc" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="false" name="SparkStreamingNetflowJson" type="Application" factoryName="Application" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="SparkStreamingNetflowJson" />
-      <option name="VM_PARAMETERS" value="-Dorg.xerial.snappy.lib.name=libsnappyjava.jnilib -Dorg.xerial.snappy.tempdir=/tmp" />
-      <option name="PROGRAM_PARAMETERS" value="quickstart.cloudera:2181 1 flume.netflow_ss_input 2" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="kafkastreamingpoc" />
+      <module name="netflow-streaming" />
       <envs>
-        <env name="HADOOP_USER_NAME" value="cloudera" />
+        <env name="HADOOP_HOME" value="D:\Bowen\hadoop-common-2.2.0-bin-master" />
+        <env name="HADOOP_USER_NAME" value="admin" />
       </envs>
       <method />
     </configuration>
@@ -646,12 +789,10 @@
       <method />
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
-      <module />
-      <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
       <option name="HEIGHT" value="300" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <module />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -669,74 +810,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="myFilePath" />
-      <option name="GLUE" />
-      <option name="myNameFilter" />
-      <option name="myGeneratedName" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
-      <option name="BCName" value="" />
-      <option name="IOSSimulatorSdkPath" value="" />
-      <option name="adlOptions" value="" />
-      <option name="airProgramParameters" value="" />
-      <option name="appDescriptorForEmulator" value="Android" />
-      <option name="debugTransport" value="USB" />
-      <option name="debuggerSdkRaw" value="BC SDK" />
-      <option name="emulator" value="NexusOne" />
-      <option name="emulatorAdlOptions" value="" />
-      <option name="fastPackaging" value="true" />
-      <option name="fullScreenHeight" value="0" />
-      <option name="fullScreenWidth" value="0" />
-      <option name="launchUrl" value="false" />
-      <option name="launcherParameters">
-        <LauncherParameters>
-          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
-          <option name="launcherType" value="OSDefault" />
-          <option name="newPlayerInstance" value="false" />
-          <option name="playerPath" value="/Applications/Flash Player Debugger.app" />
-        </LauncherParameters>
-      </option>
-      <option name="mobileRunTarget" value="Emulator" />
-      <option name="moduleName" value="" />
-      <option name="overriddenMainClass" value="" />
-      <option name="overriddenOutputFileName" value="" />
-      <option name="overrideMainClass" value="false" />
-      <option name="runTrusted" value="true" />
-      <option name="screenDpi" value="0" />
-      <option name="screenHeight" value="0" />
-      <option name="screenWidth" value="0" />
-      <option name="url" value="http://" />
-      <option name="usbDebugPort" value="7936" />
-      <method />
-    </configuration>
-    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
-      <option name="BCName" value="" />
-      <option name="launcherParameters">
-        <LauncherParameters>
-          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
-          <option name="launcherType" value="OSDefault" />
-          <option name="newPlayerInstance" value="false" />
-          <option name="playerPath" value="/Applications/Flash Player Debugger.app" />
-        </LauncherParameters>
-      </option>
-      <option name="moduleName" value="" />
-      <option name="trusted" value="true" />
-      <method />
-    </configuration>
     <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -751,16 +824,6 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <method />
-    </configuration>
-    <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
-      <module name="" />
-      <setting name="vmparams" value="" />
-      <setting name="cmdLine" value="run-app" />
-      <setting name="depsClasspath" value="false" />
-      <setting name="passParentEnv" value="true" />
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <setting name="launchBrowser" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
@@ -786,33 +849,7 @@
     </configuration>
     <configuration default="true" type="JarApplication" factoryName="JAR Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="JAR_PATH" value="$PROJECT_DIR$/target/netflow-streaming-0.0.1-SNAPSHOT.jar" />
       <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
-      <method />
-    </configuration>
-    <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
-      <MavenSettings>
-        <option name="myGeneralSettings" />
-        <option name="myRunnerSettings" />
-        <option name="myRunnerParameters">
-          <MavenRunnerParameters>
-            <option name="profiles">
-              <set />
-            </option>
-            <option name="goals">
-              <list />
-            </option>
-            <option name="profilesMap">
-              <map />
-            </option>
-            <option name="resolveToWorkspace" value="false" />
-            <option name="workingDirPath" value="" />
-          </MavenRunnerParameters>
-        </option>
-      </MavenSettings>
       <method />
     </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
@@ -831,7 +868,7 @@
       <setting name="package" value="" />
       <setting name="vmparams" value="" />
       <setting name="params" value="" />
-      <setting name="workingDirectory" value="" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
       <setting name="searchForTest" value="Across module dependencies" />
       <setting name="testName" value="" />
       <setting name="testKind" value="Class" />
@@ -847,17 +884,11 @@
       <setting name="package" value="" />
       <setting name="vmparams" value="" />
       <setting name="params" value="" />
-      <setting name="workingDirectory" value="" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
       <setting name="searchForTest" value="Across module dependencies" />
       <setting name="testName" value="" />
       <setting name="testKind" value="Class" />
       <setting name="showProgressMessages" value="true" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
       <envs />
       <method />
     </configuration>
@@ -889,13 +920,17 @@
       <listeners />
       <method />
     </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
-      <method />
-    </configuration>
-    <configuration default="true" type="osgi.bnd.run" factoryName="Run Launcher">
-      <method />
-    </configuration>
-    <configuration default="true" type="osgi.bnd.run" factoryName="Test Launcher (JUnit)">
+    <configuration default="true" type="executeSpecs" factoryName="Gauge Execution">
+      <setting name="environment" value="" />
+      <setting name="specsToExecute" value="" />
+      <setting name="tags" value="" />
+      <setting name="parallelNodes" value="" />
+      <setting name="execInParallel" value="false" />
+      <setting name="programParameters" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="moduleName" value="" />
+      <envMap />
+      <setting name="rowsRange" value="" />
       <method />
     </configuration>
     <configuration default="true" type="uTestRunConfiguration" factoryName="utest">
@@ -906,7 +941,7 @@
       <setting name="package" value="" />
       <setting name="vmparams" value="" />
       <setting name="params" value="" />
-      <setting name="workingDirectory" value="" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
       <setting name="searchForTest" value="Across module dependencies" />
       <setting name="testName" value="" />
       <setting name="testKind" value="Class" />
@@ -914,249 +949,63 @@
       <envs />
       <method />
     </configuration>
-    <list size="5">
+    <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Application.RandomNetflowGen" />
-      <item index="1" class="java.lang.String" itemvalue="Application.RandomIntegerWriter" />
-      <item index="2" class="java.lang.String" itemvalue="Application.FPGrowth" />
-      <item index="3" class="java.lang.String" itemvalue="Application.SparkStreamingNetflow" />
-      <item index="4" class="java.lang.String" itemvalue="Application.SparkStreamingNetflowJson" />
+      <item index="1" class="java.lang.String" itemvalue="Application.SparkStreamingNetflow" />
     </list>
     <recent_temporary>
-      <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.RandomNetflowGen" />
-        <item index="1" class="java.lang.String" itemvalue="Application.SparkStreamingNetflowJson" />
-        <item index="2" class="java.lang.String" itemvalue="Application.SparkStreamingNetflow" />
-        <item index="3" class="java.lang.String" itemvalue="Application.FPGrowth" />
-        <item index="4" class="java.lang.String" itemvalue="Application.RandomIntegerWriter" />
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Application.SparkStreamingNetflow" />
+        <item index="1" class="java.lang.String" itemvalue="Application.RandomNetflowGen" />
       </list>
     </recent_temporary>
   </component>
   <component name="SbtLocalSettings">
-    <option name="tasksExpandState">
-      <map>
-        <entry key="" value="true" />
-        <entry key="KafkaStreamingPOC/" value="true" />
-      </map>
-    </option>
-    <option name="availableProjects">
-      <map>
-        <entry>
-          <key>
-            <ExternalProjectPojo>
-              <option name="name" value="KafkaStreamingPOC" />
-              <option name="path" value="$PROJECT_DIR$" />
-            </ExternalProjectPojo>
-          </key>
-          <value>
-            <list>
-              <ExternalProjectPojo>
-                <option name="name" value="kafkastreamingpoc" />
-                <option name="path" value="$PROJECT_DIR$" />
-              </ExternalProjectPojo>
-              <ExternalProjectPojo>
-                <option name="name" value="kafkastreamingpoc-build" />
-                <option name="path" value="$PROJECT_DIR$/project" />
-              </ExternalProjectPojo>
-            </list>
-          </value>
-        </entry>
-      </map>
+    <option name="externalProjectsViewState">
+      <projects_view />
     </option>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="SvnConfiguration">
-    <configuration>$USER_HOME$/.subversion</configuration>
+    <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="308cb771-7646-450e-a2a7-e46b95d0aaea" name="Default" comment="" />
-      <created>1424728500300</created>
+      <changelist id="5e40ee37-beee-4a66-9df6-161d8214f22f" name="Default" comment="" />
+      <created>1439889815205</created>
       <option name="number" value="Default" />
-      <updated>1424728500300</updated>
-      <workItem from="1434623288781" duration="1430000" />
-      <workItem from="1434635260554" duration="142000" />
-      <workItem from="1434635438211" duration="1201000" />
-      <workItem from="1434637076818" duration="1617000" />
-      <workItem from="1434638721190" duration="1281000" />
-      <workItem from="1434644407247" duration="1240000" />
-      <workItem from="1434645754321" duration="1560000" />
-      <workItem from="1434655013590" duration="1034000" />
-      <workItem from="1434656852014" duration="26000" />
-      <workItem from="1434656897931" duration="1779000" />
-      <workItem from="1434659014185" duration="817000" />
-      <workItem from="1434692861412" duration="1547000" />
-      <workItem from="1434695513023" duration="1611000" />
-      <workItem from="1434964431652" duration="228000" />
-      <workItem from="1434969672741" duration="75000" />
-      <workItem from="1438407406536" duration="16833000" />
+      <updated>1439889815205</updated>
     </task>
-    <task id="LOCAL-00001" summary="Rough cut code to read from a kafka topic, output to a kafka topic, write to hdfs, wrte to elasticsearch">
-      <created>1427493442145</created>
-      <option name="number" value="00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1427493442145</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Rough cut code to read from a kafka topic, output to a kafka topic, write to hdfs, wrte to elasticsearch">
-      <created>1427493661744</created>
-      <option name="number" value="00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1427493661744</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Added proper license file.">
-      <created>1427494692801</created>
-      <option name="number" value="00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1427494692801</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Added support for the hive context.">
-      <created>1427750818416</created>
-      <option name="number" value="00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1427750818416</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Added support for the hive context.">
-      <created>1427750889276</created>
-      <option name="number" value="00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1427750889276</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Added support for a typesafe config file.">
-      <created>1427836887296</created>
-      <option name="number" value="00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1427836887296</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Additional details on a guide for the impatient.">
-      <created>1427837430941</created>
-      <option name="number" value="00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1427837430941</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Additional details on a guide for the impatient.">
-      <created>1427837481847</created>
-      <option name="number" value="00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1427837481847</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Additional details on a guide for the impatient.">
-      <created>1427837558132</created>
-      <option name="number" value="00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1427837558132</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Making more driven from the application.conf file.">
-      <created>1427882453199</created>
-      <option name="number" value="00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1427882453199</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Make pox.xml more dynamic to cdh version.">
-      <created>1427883243149</created>
-      <option name="number" value="00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1427883243149</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Additional notes on setting up hive databases.">
-      <created>1427891817504</created>
-      <option name="number" value="00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1427891817504</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Working without Country Enrichment.">
-      <created>1428353219635</created>
-      <option name="number" value="00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1428353219635</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Working without Country Enrichment.">
-      <created>1428483904836</created>
-      <option name="number" value="00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1428483904836</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Added notes on InteliJ snappy error">
-      <created>1434657232728</created>
-      <option name="number" value="00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1434657232728</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Able to compile now into a fat or uber jar very nice!">
-      <created>1435007099989</created>
-      <option name="number" value="00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1435007099989</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Simplified random generator now much more performant, also FPGrowth algo basic impl.">
-      <created>1436439200142</created>
-      <option name="number" value="00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1436439200142</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Major re-write of RandomNetflow Gen to be able to do skewed distribution of number of lines per job between min and max number's as defined in the application.conf file. Also netflow json support, also simple SQL based rule support.">
-      <created>1438574091275</created>
-      <option name="number" value="00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1438574091275</updated>
-    </task>
-    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32421000" />
-  </component>
-  <component name="TodoView" selected-index="0">
-    <todo-panel id="selected-file">
-      <are-packages-shown value="false" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="default-changelist">
-      <are-packages-shown value="false" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="false" />
-    </todo-panel>
-  </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="824" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919955" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3165563" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3219616" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28815165" sideWeight="0.50213444" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919955" sideWeight="0.50213903" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32708332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36953643" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4092715" sideWeight="0.49786553" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32796207" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32929516" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919955" sideWeight="0.49786097" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20972222" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24856733" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2521322" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.397351" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919955" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32898173" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919955" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329235" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5822454" sideWeight="0.49786097" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1171,26 +1020,11 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Rough cut code to read from a kafka topic, output to a kafka topic, write to hdfs, wrte to elasticsearch" />
-    <MESSAGE value="Added proper license file." />
-    <MESSAGE value="Added support for the hive context." />
-    <MESSAGE value="Added support for a typesafe config file." />
-    <MESSAGE value="Additional details on a guide for the impatient." />
-    <MESSAGE value="Making more driven from the application.conf file." />
-    <MESSAGE value="Make pox.xml more dynamic to cdh version." />
-    <MESSAGE value="Additional notes on setting up hive databases." />
-    <MESSAGE value="Working without Country ENrichment." />
-    <MESSAGE value="Working without Country Enrichment." />
-    <MESSAGE value="Added notes on InteliJ snappy error" />
-    <MESSAGE value="Able to compile now into a fat or uber jar very nice!" />
-    <MESSAGE value="Simplified random generator now much more performant, also FPGrowth algo basic impl." />
-    <MESSAGE value="Major re-write of RandomNetflow Gen to be able to do skewed distribution of number of lines per job between min and max number's as defined in the application.conf file. Also netflow json support, also simple SQL based rule support." />
-    <option name="LAST_COMMIT_MESSAGE" value="Major re-write of RandomNetflow Gen to be able to do skewed distribution of number of lines per job between min and max number's as defined in the application.conf file. Also netflow json support, also simple SQL based rule support." />
+    <MESSAGE value="basic kafka shell script to create, describe and list topics" />
+    <option name="LAST_COMMIT_MESSAGE" value="basic kafka shell script to create, describe and list topics" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <option name="time" value="26" />
-    </breakpoint-manager>
+    <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="antWorkspaceConfiguration">
@@ -1198,18 +1032,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/sql/create_external_table_netflow_records_rand_streaming.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="11" selection-start-line="0" selection-start-column="0" selection-end-line="26" selection-end-column="62" />
+          <caret line="350" column="35" selection-start-line="350" selection-start-column="35" selection-end-line="350" selection-end-column="35" />
           <folding />
         </state>
       </provider>
@@ -1217,349 +1043,31 @@
     <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="150" column="0" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowJson.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="171" column="41" selection-start-line="171" selection-start-column="41" selection-end-line="171" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-streaming_2.10/1.3.0-cdh5.4.1/spark-streaming_2.10-1.3.0-cdh5.4.1.jar!/org/apache/spark/streaming/dstream/ForEachDStream.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/MaxMindSingleton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="68" selection-start-line="30" selection-start-column="68" selection-end-line="30" selection-end-column="68" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#1526#1527#0" expanded="false" />
-            <element signature="e#1557#1558#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="85" column="17" selection-start-line="85" selection-start-column="17" selection-end-line="85" selection-end-column="17" />
-          <folding>
-            <marker date="1436996260000" expanded="true" signature="6289:6305" placeholder="..." />
-            <marker date="1436996260000" expanded="true" signature="6289:6826" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowOrig.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="34" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LICENSE.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.70597243">
-          <caret line="160" column="60" selection-start-line="160" selection-start-column="60" selection-end-line="160" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/sql/alter_table_partitons.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/sql/add_parts.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="47" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/TestMaxMindSingleton.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="39" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/HiveFromSpark.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="16" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/typesafe/config/1.2.1/config-1.2.1.jar!/com/typesafe/config/impl/SimpleConfig.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34603658">
-          <caret line="131" column="0" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/create_linux_user.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.014619883">
-          <caret line="1" column="16" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.sbt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4945055">
-          <caret line="21" column="44" selection-start-line="21" selection-start-column="44" selection-end-line="21" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_snappy_rand_secs.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.26490065">
-          <caret line="16" column="66" selection-start-line="0" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/sql/run_mr_hive_from_stage.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09419152">
-          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_snappy_rand_bigger.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_snappy_rand.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/sql/create_table_netflow_records_partitioned_snappy_rand_secs.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40031397">
-          <caret line="17" column="1" selection-start-line="0" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/create_index_es">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="57" selection-start-line="0" selection-start-column="57" selection-end-line="0" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/sql/insert_table_netflow_records_partitioned_snappy_rand_bigger.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.033039648">
-          <caret line="1" column="30" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-core_2.10/1.3.0-cdh5.4.0/spark-core_2.10-1.3.0-cdh5.4.0.jar!/org/apache/spark/rdd/RDD.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.89285713">
-          <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/SimpleLib/SimpleLibContext.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22439586">
-          <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Utils/NetflowProperties.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30337077">
-          <caret line="19" column="8" selection-start-line="18" selection-start-column="4" selection-end-line="19" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/configs/hive/conf/hive-site.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.63529414">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/configs/hive/conf/.hiverc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/run-spark-netflow.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="178" selection-start-line="4" selection-start-column="172" selection-end-line="4" selection-end-column="178" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/configs/hive/conf/hive-env.sh.template">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.042713568">
-          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/ru-spark-netflow-yarn.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="188" selection-start-line="0" selection-start-column="188" selection-end-line="0" selection-end-column="188" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/src.zip!/java/lang/Object.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33238637">
-          <caret line="234" column="18" selection-start-line="234" selection-start-column="18" selection-end-line="234" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-core_2.10/1.3.0-cdh5.4.1/spark-core_2.10-1.3.0-cdh5.4.1.jar!/org/apache/spark/util/ClosureCleaner.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.2222223">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-core_2.10/1.3.0-cdh5.4.1/spark-core_2.10-1.3.0-cdh5.4.1.jar!/org/apache/spark/SparkContext.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.962963">
-          <caret line="229" column="0" selection-start-line="229" selection-start-column="0" selection-end-line="229" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-core_2.10/1.3.0-cdh5.4.1/spark-core_2.10-1.3.0-cdh5.4.1.jar!/org/apache/spark/rdd/RDD.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.86706054">
-          <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/sql/create_external_table_netflow_records_rand.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Utils/SaveRDD.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="227" selection-start-line="10" selection-start-column="208" selection-end-line="10" selection-end-column="227" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-streaming-kafka_2.10/1.3.0-cdh5.4.1/spark-streaming-kafka_2.10-1.3.0-cdh5.4.1.jar!/org/apache/spark/streaming/kafka/KafkaReceiver.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2027027">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/MaxMindSingleton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="68" selection-start-line="30" selection-start-column="68" selection-end-line="30" selection-end-column="68" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#1526#1527#0" expanded="false" />
-            <element signature="e#1557#1558#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-streaming_2.10/1.3.0-cdh5.4.1/spark-streaming_2.10-1.3.0-cdh5.4.1.jar!/org/apache/spark/streaming/dstream/ForEachDStream.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scripts/sql/create_external_table_netflow_records_rand_streaming.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="11" selection-start-line="0" selection-start-column="0" selection-end-line="26" selection-end-column="62" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-sql_2.10/1.3.0-cdh5.4.1/spark-sql_2.10-1.3.0-cdh5.4.1.jar!/org/apache/spark/sql/json/JsonRDD.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24680074">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="150" column="17" selection-start-line="150" selection-start-column="17" selection-end-line="150" selection-end-column="17" />
-          <folding>
-            <marker date="1436996260000" expanded="true" signature="6289:6305" placeholder="..." />
-            <marker date="1436996260000" expanded="true" signature="6289:6826" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflowJson.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="171" column="41" selection-start-line="171" selection-start-column="41" selection-end-line="171" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/spark/spark-core_2.10/1.3.0-cdh5.4.3/spark-core_2.10-1.3.0-cdh5.4.3.jar!/org/apache/spark/SparkContext.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.87142855">
-          <caret line="229" column="0" selection-start-line="229" selection-start-column="0" selection-end-line="229" selection-end-column="0" />
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.25926">
-          <caret line="484" column="5" selection-start-line="484" selection-start-column="5" selection-end-line="484" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="350" column="35" selection-start-line="350" selection-start-column="35" selection-end-line="350" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1567,15 +1075,90 @@
     <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="30" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="30" />
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/RandomNetflowGen.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="350" column="35" selection-start-line="350" selection-start-column="35" selection-end-line="350" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/ru-spark-netflow-yarn.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.034483">
+          <caret line="81" column="13" selection-start-line="81" selection-start-column="13" selection-end-line="81" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/SparkStreamingNetflow.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.109375">
-          <caret line="355" column="0" selection-start-line="355" selection-start-column="0" selection-end-line="355" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="111" column="22" selection-start-line="111" selection-start-column="22" selection-end-line="111" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scripts/create_kafka_topics.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.05851979">
+          <caret line="2" column="41" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
           <folding />
         </state>
       </provider>
@@ -1589,7 +1172,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.23678161" />
+                <option value="0.2" />
               </list>
             </option>
           </splitter-proportions>
@@ -1601,7 +1184,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.23678161" />
+                <option value="0.2" />
               </list>
             </option>
           </splitter-proportions>
@@ -1613,7 +1196,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.23678161" />
+                <option value="0.2" />
               </list>
             </option>
           </splitter-proportions>
@@ -1621,11 +1204,11 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8</last-edited>
+          <last-edited>1.7</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.23678161" />
+                <option value="0.2" />
               </list>
             </option>
           </splitter-proportions>
@@ -1633,11 +1216,11 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>kafkastreamingpoc</last-edited>
+          <last-edited>netflow-streaming</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.23678161" />
+                <option value="0.2" />
                 <option value="0.6" />
               </list>
             </option>
@@ -1646,7 +1229,7 @@
       </state>
       <state key="ProjectJDKs.UI">
         <settings>
-          <last-edited>1.8</last-edited>
+          <last-edited>1.7</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1658,11 +1241,11 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Maven: org.apache.spark:spark-mllib_2.10:1.3.0-cdh5.4.1</last-edited>
+          <last-edited>Maven: antlr:antlr:2.7.7</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.23678161" />
+                <option value="0.2" />
               </list>
             </option>
           </splitter-proportions>

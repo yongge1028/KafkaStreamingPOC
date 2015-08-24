@@ -101,3 +101,8 @@ In Intelij you may need to add this to the Java VM run config : -
 
 See http://stackoverflow.com/questions/30039976/unsatisfiedlinkerror-no-snappyjava-in-java-library-path-when-running-spark-mlli for more details.
 
+Enviroment Variables for Spark IDE : -
+
+If you are using InteliJ or another IDE on windows you may need to set the HADOOP_HOME enviroment virable to something like - D:\hadoop-common-2.2.0-bin-master (https://github.com/srccodes/hadoop-common-2.2.0-bin).
+Also you may need to set HADOOP_USER_NAME enviroment variable e.g. HADOOP_USER_NAME=admin so that the admin user is used when reading/writing to hdfs.
+

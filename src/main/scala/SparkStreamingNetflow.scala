@@ -55,7 +55,7 @@ object SparkStreamingNetflow extends Serializable {
       rdd.foreachPartition { partitionOfRecords =>
         val props = new Properties()
         //        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
-        props.put("metadata.broker.list", "quickstart.cloudera:9092")
+        props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
         props.put("serializer.class", "kafka.serializer.StringEncoder")
 
         // some properties we might wish to set commented out below
