@@ -70,7 +70,7 @@ object SparkStreamingNetflow extends Serializable {
         partitionOfRecords.foreach(row => {
           val msg = row.toString
           this.synchronized {
-            producer.send(new KeyedMessage[String, String]("flume.netflow_ss_output", msg))
+            producer.send(new KeyedMessage[String, String]("netflow-output", msg))
           }
         })
         producer.close()
@@ -91,7 +91,7 @@ object SparkStreamingNetflow extends Serializable {
       println("In the sendToKafka RDD partitionOfRecords")
       val props = new Properties()
       //        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
-      props.put("metadata.broker.list", "quickstart.cloudera:9092")
+      props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
       props.put("serializer.class", "kafka.serializer.StringEncoder")
 
       // some properties we might wish to set commented out below
@@ -106,7 +106,7 @@ object SparkStreamingNetflow extends Serializable {
       partitionOfRecords.foreach(row => {
         val msg = row.toString
         this.synchronized {
-          producer.send(new KeyedMessage[String, String]("flume.netflow_ss_output", msg))
+          producer.send(new KeyedMessage[String, String]("netflow-output", msg))
         }
       })
       producer.close()
@@ -137,23 +137,31 @@ object SparkStreamingNetflow extends Serializable {
     //    val sparkConf = new SparkConf().setMaster("local[2]").setAppName("netflowkafka")
     // the jars array below is only needed when running on an IDE when the IDE points to a spark master
     // i.e. when the spark conf is something like this sparkConf.setMaster("spark://an-ip-address-or-hostname:7077")
-    val jars = Array("/Users/faganpe/.m2/repository/org/apache/spark/spark-streaming-kafka_2.10/1.3.0-cdh5.4.1/spark-streaming-kafka_2.10-1.3.0-cdh5.4.1.jar",
-      "/Users/faganpe/.m2/repository/org/apache/kafka/kafka_2.10/0.8.0/kafka_2.10-0.8.0.jar",
-      "/Users/faganpe/.m2/repository/org/apache/spark/spark-core_2.10/1.3.0-cdh5.4.1/spark-core_2.10-1.3.0-cdh5.4.1.jar",
-      "/Users/faganpe/.m2/repository/com/101tec/zkclient/0.3/zkclient-0.3.jar",
-      "/Users/faganpe/.m2/repository/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar",
-      "/Users/faganpe/.m2/repository/com/esotericsoftware/kryo/kryo/2.21/kryo-2.21.jar",
-      "/Users/faganpe/.m2/repository/org/elasticsearch/elasticsearch-spark_2.10/2.1.0.Beta3/elasticsearch-spark_2.10-2.1.0.Beta3.jar",
-      "/Users/faganpe/.m2/repository/com/maxmind/db/maxmind-db/1.0.0/maxmind-db-1.0.0.jar",
-      "/Users/faganpe/.m2/repository/com/maxmind/geoip2/geoip2/2.1.0/geoip2-2.1.0.jar",
-      "/Users/faganpe/IntelijProjects/KafkaStreamingPOC/target/sparkwordcount-0.0.1-SNAPSHOT.jar")
+    val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
+      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.0\\kafka_2.10-0.8.0.jar",
+      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-core_2.10\\1.3.0-cdh5.4.5\\spark-core_2.10-1.3.0-cdh5.4.5.jar",
+      "C:\\Users\\801762473\\.m2\\repository\\com\\101tec\\zkclient\\0.3\\zkclient-0.3.jar",
+      "C:\\Users\\801762473\\.m2\\repository\\com\\yammer\\metrics\\metrics-core\\2.2.0\\metrics-core-2.2.0.jar",
+      "C:\\Users\\801762473\\.m2\\repository\\com\\esotericsoftware\\kryo\\kryo\\2.21\\kryo-2.21.jar",
+      "C:\\Users\\801762473\\.m2\\repository\\org\\elasticsearch\\elasticsearch-spark_2.10\\2.1.0.Beta3\\elasticsearch-spark_2.10-2.1.0.Beta3.jar",
+      "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\db\\maxmind-db\\1.0.0\\maxmind-db-1.0.0.jar",
+      "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\geoip2\\geoip2\\2.1.0\\geoip2-2.1.0.jar",
+      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-hive_2.10\\1.3.0-cdh5.4.5\\spark-hive_2.10-1.3.0-cdh5.4.5.jar",
+      "D:\\Bowen_Raw_Source\\IntelijProjects\\KafkaStreamingPOC\\target\\netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
 
     // setup Spark
     val sparkConf = new SparkConf()
+    sparkConf.setJars(jars)
     sparkConf.set("spark.serializer", classOf[KryoSerializer].getName) // Enable the Kryo serialization support with Spark for ES
     sparkConf.set("es.index.auto.create", "true") // set to auto create the ES index
     sparkConf.set("es.nodes", "192.168.160.72") // note, for multiple elastisearch nodes specify a csv list
-    sparkConf.setMaster("local[4]") // this specifies the master to be run in this IDe i.e. locally with 2 threads
+//    sparkConf.setMaster("local[4]") // this specifies the master to be run in this IDe i.e. locally with 2 threads
+    sparkConf.setMaster("spark://vm-cluster-node2:7077")
+    sparkConf.set("spark.executor.memory", "512m")
+    sparkConf.set("spark.driver.memory", "512m")
+    sparkConf.set("spark.cores.max", "4")
+    // Below line is the hostname or IP address for the driver to listen on. This is used for communicating with the executors and the standalone Master.
+    sparkConf.set("spark.driver.host", "192.168.56.1")
 //    sparkConf.setJars(jars)
     //    sparkConf.setMaster("spark://bow-grd-nn-02.bowdev.net:7077")
     //    sparkConf.setMaster("spark://quickstart.cloudera:7077")

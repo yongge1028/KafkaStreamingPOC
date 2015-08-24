@@ -243,23 +243,25 @@ object RandomNetflowGen extends Serializable {
 //        sparkConf.setMaster("local[4]")
     sparkConf.setMaster("spark://vm-cluster-node2:7077")
     //    sparkConf.setMaster("spark://79d4dd97b170:7077")
-    //    sparkConf.set("spark.executor.memory", "16g")
-    //    sparkConf.set("spark.driver.memory", "64g")
-    //    sparkConf.set("spark.cores.max", "32")
+        sparkConf.set("spark.executor.memory", "256m")
+        sparkConf.set("spark.driver.memory", "256m")
+        sparkConf.set("spark.cores.max", "1")
     sparkConf.setAppName("randomNetflowGen")
+    // Below line is the hostname or IP address for the driver to listen on. This is used for communicating with the executors and the standalone Master.
+    sparkConf.set("spark.driver.host", "192.168.56.1")
     sparkConf.set("spark.hadoop.validateOutputSpecs", "false") // overwrite hdfs files which are written
 
-            val jars = Array("/Users/faganpe/.m2/repository/org/apache/spark/spark-streaming-kafka_2.10/1.3.0-cdh5.4.1/spark-streaming-kafka_2.10-1.3.0-cdh5.4.1.jar",
-              "/Users/faganpe/.m2/repository/org/apache/kafka/kafka_2.10/0.8.0/kafka_2.10-0.8.0.jar",
-              "/Users/faganpe/.m2/repository/org/apache/spark/spark-core_2.10/1.3.0-cdh5.4.1/spark-core_2.10-1.3.0-cdh5.4.1.jar",
-              "/Users/faganpe/.m2/repository/com/101tec/zkclient/0.3/zkclient-0.3.jar",
-              "/Users/faganpe/.m2/repository/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar",
-              "/Users/faganpe/.m2/repository/com/esotericsoftware/kryo/kryo/2.21/kryo-2.21.jar",
-              "/Users/faganpe/.m2/repository/org/elasticsearch/elasticsearch-spark_2.10/2.1.0.Beta3/elasticsearch-spark_2.10-2.1.0.Beta3.jar",
-              "/Users/faganpe/.m2/repository/com/maxmind/db/maxmind-db/1.0.0/maxmind-db-1.0.0.jar",
-              "/Users/faganpe/.m2/repository/com/maxmind/geoip2/geoip2/2.1.0/geoip2-2.1.0.jar",
-              "/Users/faganpe/.m2/repository/org/apache/spark/spark-hive_2.10/1.3.0-cdh5.4.1/spark-hive_2.10-1.3.0-cdh5.4.1.jar",
-              "/Users/faganpe/InteliJProjects/KafkaStreamingPOC/target/netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
+            val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
+              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.0\\kafka_2.10-0.8.0.jar",
+              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-core_2.10\\1.3.0-cdh5.4.5\\spark-core_2.10-1.3.0-cdh5.4.5.jar",
+              "C:\\Users\\801762473\\.m2\\repository\\com\\101tec\\zkclient\\0.3\\zkclient-0.3.jar",
+              "C:\\Users\\801762473\\.m2\\repository\\com\\yammer\\metrics\\metrics-core\\2.2.0\\metrics-core-2.2.0.jar",
+              "C:\\Users\\801762473\\.m2\\repository\\com\\esotericsoftware\\kryo\\kryo\\2.21\\kryo-2.21.jar",
+              "C:\\Users\\801762473\\.m2\\repository\\org\\elasticsearch\\elasticsearch-spark_2.10\\2.1.0.Beta3\\elasticsearch-spark_2.10-2.1.0.Beta3.jar",
+              "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\db\\maxmind-db\\1.0.0\\maxmind-db-1.0.0.jar",
+              "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\geoip2\\geoip2\\2.1.0\\geoip2-2.1.0.jar",
+              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-hive_2.10\\1.3.0-cdh5.4.5\\spark-hive_2.10-1.3.0-cdh5.4.5.jar",
+              "D:\\Bowen_Raw_Source\\IntelijProjects\\KafkaStreamingPOC\\target\\netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
             //
             sparkConf.setJars(jars)
     //      val ssc = new StreamingContext(sparkConf, Seconds(120))
