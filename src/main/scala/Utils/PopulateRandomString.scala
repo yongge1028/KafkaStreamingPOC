@@ -12,7 +12,7 @@ import scala.io.Source
 object PopulateRandomString extends App {
 
 //  def returnRand() : List[List[String]] = {
-  def returnRand() : Unit = {
+  def returnRand() : ArrayBuffer[String] = {
 
   val rVal = scala.util.Random
 
@@ -46,6 +46,8 @@ object PopulateRandomString extends App {
   }
 
   println("Array length is : " + lineArr.length)
+
+  return lineArr
 
   // processing remaining lines
 //  for(l <- src) {
