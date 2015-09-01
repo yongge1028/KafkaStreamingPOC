@@ -16,15 +16,20 @@ object PopulateRandomString extends App {
 
   val rVal = scala.util.Random
 
-  val src = Source.fromFile("src/main/resources/randommaps.csv").getLines
+  val  urls = urlses(getClass.getClassLoader)
+  println(urls.filterNot(_.toString.contains("ivy")).mkString("\n"))
+
+//  val src = Source.fromFile("src/main/resources/randommaps.csv").getLines
+  // get the csv from the classpath rather than a source dir
+  val src = Source.fromInputStream(getClass.getResourceAsStream("/randommaps.csv")).getLines
 
   // assuming first line is a header
-  val numLines = Source.fromFile("src/main/resources/randommaps.csv").getLines.size
+//  val numLines = Source.fromFile("src/main/resources/randommaps.csv").getLines.size
   val headerLine = src.take(1).next
   val numCols = headerLine.split(",").map(_.trim).length
 
-  println("Number of columns is : " + numCols)
-  println("Number of lines is : " + numLines)
+  println("Number of columns in csv is : " + numCols)
+  println("Number of lines in csv is : " + numLines)
 
   // declare an array ready to add the lines below
 //  var lineArr:Array[String] = new Array[String](numLines)
@@ -39,13 +44,13 @@ object PopulateRandomString extends App {
     lineArr += l
   }
 
-  println("lineArr length is : " + lineArr.length)
-
-  for(x <- lineArr) {
-    println("Line in array is : " + x)
-  }
-
-  println("Array length is : " + lineArr.length)
+//  println("lineArr length is : " + lineArr.length)
+//
+//  for(x <- lineArr) {
+//    println("Line in array is : " + x)
+//  }
+//
+//  println("Array length is : " + lineArr.length)
 
   return lineArr
 
@@ -65,6 +70,17 @@ object PopulateRandomString extends App {
 //    println("32,2015-04-30 18:20:43,none,12345678910,147.149.7.125,54944,74.125.0.65,30486,17,4,592,133792,True,True,True,True,True,True,100,none,Charlie Gas Site1,Charlie Gas,Energy,CNI,1,UK,United Kingdom,null,null,51.5,-0.13000488,BT-BT,NULL,14298,United States,CA,Mountain View,37.419205,-122.0574,Google-Google,NULL,59,null,null,Charlie Gas Site1,Charlie Gas,Energy,CNI,1,UK,,,,,NULL,,,,,,,,,,,,2015,4,30,18,20")
 //    return "32,2015-04-30 18:20:43,none,12345678910,147.149.7.125,54944,74.125.0.65,30486,17,4,592,133792,True,True,True,True,True,True,100,none,Charlie Gas Site1,Charlie Gas,Energy,CNI,1,UK,United Kingdom,null,null,51.5,-0.13000488,BT-BT,NULL,14298,United States,CA,Mountain View,37.419205,-122.0574,Google-Google,NULL,59,null,null,Charlie Gas Site1,Charlie Gas,Energy,CNI,1,UK,,,,,NULL,,,,,,,,,,,,2015,4,30,18,20"
 
+  }
+
+  def numLines(): Int = {
+    val numLines = Source.fromFile("src/main/resources/randommaps.csv").getLines.size
+    return numLines
+  }
+
+  def urlses(cl: ClassLoader): Array[java.net.URL] = cl match {
+    case null => Array()
+    case u: java.net.URLClassLoader => u.getURLs() ++ urlses(cl.getParent)
+    case _ => urlses(cl.getParent)
   }
 
   returnRand()
