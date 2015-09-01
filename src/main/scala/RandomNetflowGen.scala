@@ -108,15 +108,15 @@ object RandomNetflowGen extends Serializable {
     // setup Spark
     val sparkConf = new SparkConf()
 //        sparkConf.setMaster("local[4]")
-    sparkConf.setMaster("spark://vm-cluster-node2:7077")
+//    sparkConf.setMaster("spark://vm-cluster-node2:7077")
 //    sparkConf.setMaster("spark://192.168.56.102:7077")
     //    sparkConf.setMaster("spark://79d4dd97b170:7077")
-        sparkConf.set("spark.executor.memory", "256m")
-        sparkConf.set("spark.driver.memory", "256m")
-        sparkConf.set("spark.cores.max", "1")
-    sparkConf.set("spark.worker.cleanup.enabled", "true")
-    sparkConf.set("spark.worker.cleanup.interval", "1")
-    sparkConf.set("spark.worker.cleanup.appDataTtl", "30")
+//        sparkConf.set("spark.executor.memory", "256m")
+//        sparkConf.set("spark.driver.memory", "256m")
+//        sparkConf.set("spark.cores.max", "1")
+//    sparkConf.set("spark.worker.cleanup.enabled", "true")
+//    sparkConf.set("spark.worker.cleanup.interval", "1")
+//    sparkConf.set("spark.worker.cleanup.appDataTtl", "30")
 
     /* Change to Kyro Serialization */
 //    sparkConf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
@@ -132,22 +132,22 @@ object RandomNetflowGen extends Serializable {
     */
     sparkConf.setAppName("randomNetflowGen")
     // Below line is the hostname or IP address for the driver to listen on. This is used for communicating with the executors and the standalone Master.
-    sparkConf.set("spark.driver.host", "192.168.56.1")
+//    sparkConf.set("spark.driver.host", "192.168.56.1")
     sparkConf.set("spark.hadoop.validateOutputSpecs", "false") // overwrite hdfs files which are written
 
-            val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
-              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.0\\kafka_2.10-0.8.0.jar",
-              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-core_2.10\\1.3.0-cdh5.4.5\\spark-core_2.10-1.3.0-cdh5.4.5.jar",
-              "C:\\Users\\801762473\\.m2\\repository\\com\\101tec\\zkclient\\0.3\\zkclient-0.3.jar",
-              "C:\\Users\\801762473\\.m2\\repository\\com\\yammer\\metrics\\metrics-core\\2.2.0\\metrics-core-2.2.0.jar",
-              "C:\\Users\\801762473\\.m2\\repository\\com\\esotericsoftware\\kryo\\kryo\\2.21\\kryo-2.21.jar",
-              "C:\\Users\\801762473\\.m2\\repository\\org\\elasticsearch\\elasticsearch-spark_2.10\\2.1.0.Beta3\\elasticsearch-spark_2.10-2.1.0.Beta3.jar",
-              "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\db\\maxmind-db\\1.0.0\\maxmind-db-1.0.0.jar",
-              "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\geoip2\\geoip2\\2.1.0\\geoip2-2.1.0.jar",
-              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-hive_2.10\\1.3.0-cdh5.4.5\\spark-hive_2.10-1.3.0-cdh5.4.5.jar",
-              "D:\\Bowen_Raw_Source\\IntelijProjects\\KafkaStreamingPOC\\target\\netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
-            //
-            sparkConf.setJars(jars)
+//            val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.0\\kafka_2.10-0.8.0.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-core_2.10\\1.3.0-cdh5.4.5\\spark-core_2.10-1.3.0-cdh5.4.5.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\com\\101tec\\zkclient\\0.3\\zkclient-0.3.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\com\\yammer\\metrics\\metrics-core\\2.2.0\\metrics-core-2.2.0.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\com\\esotericsoftware\\kryo\\kryo\\2.21\\kryo-2.21.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\org\\elasticsearch\\elasticsearch-spark_2.10\\2.1.0.Beta3\\elasticsearch-spark_2.10-2.1.0.Beta3.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\db\\maxmind-db\\1.0.0\\maxmind-db-1.0.0.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\geoip2\\geoip2\\2.1.0\\geoip2-2.1.0.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-hive_2.10\\1.3.0-cdh5.4.5\\spark-hive_2.10-1.3.0-cdh5.4.5.jar",
+//              "D:\\Bowen_Raw_Source\\IntelijProjects\\KafkaStreamingPOC\\target\\netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
+//            //
+//            sparkConf.setJars(jars)
     //      val ssc = new StreamingContext(sparkConf, Seconds(120))
     val sc = new SparkContext(sparkConf)
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)
@@ -183,7 +183,9 @@ object RandomNetflowGen extends Serializable {
             }
 
 //      val seedRdd = sc.parallelize(Seq[String](), numPartitions).mapPartitions { _ => {
-      val broadcastVar = sc.broadcast(PopulateRandomString.returnRand())
+      val broadcastVar = sc.broadcast(PopulateRandomString.returnRand()) // returns the csv file as an ArrayBuffer[String]
+      val randCSV = scala.util.Random
+//      val numLinesCSV = PopulateRandomString.numLines()
       val seedRdd = sc.parallelize(Seq[String](), numPartitions).mapPartitions { x => {
 
 //        (1 to recordsPerPartition).map { _ =>
@@ -265,8 +267,25 @@ object RandomNetflowGen extends Serializable {
 //          println(test)
 //          test
 
-          val ret_value = broadcastVar.value(1)
-          ret_value(0)
+          val numLinesCSV = broadcastVar.value.length
+          val numColsCSV = broadcastVar.value(0).split(",").map(_.trim).length
+//          println("numLinesCSV is : " +  numLinesCSV)
+//          println("numColsCSV is : " +  numColsCSV)
+
+          // build the line
+          // 1. get the random line number
+          // 2. for each field select from the random line number
+          // 3. get another 1.
+          var ret_value = ""
+          for(i <- 0 until numColsCSV) {
+//            println("Building column number : " + i)
+            val lineChosen = broadcastVar.value(r.nextInt(numLinesCSV))
+            ret_value = ret_value + "," + lineChosen.split(",")(i)
+//            ret_value = lineChosen
+          }
+
+//          println("Adding line : " + ret_value.stripPrefix(","))
+          ret_value.stripPrefix(",")
 
 //          PopulateRandomString.returnRand()
         }
@@ -276,8 +295,8 @@ object RandomNetflowGen extends Serializable {
       }
 
       /* End of working out if we need to randomize or not */
-      seedRdd.saveAsTextFile(hdfsURI + "/" + "runNum=" + dirNum)
-//      seedRdd.saveAsTextFile("randNetflow" + "/" + "runNum=" + dirNum)
+//      seedRdd.saveAsTextFile(hdfsURI + "/" + "runNum=" + dirNum)
+      seedRdd.saveAsTextFile("randNetflow" + "/" + "runNum=" + dirNum)
     }
 
   }
