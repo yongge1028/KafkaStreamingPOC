@@ -2,6 +2,7 @@
  * Created by faganpe on 22/06/2015.
  */
 import com.typesafe.config.ConfigFactory
+import org.apache.spark.graphx.Edge
 import org.apache.spark.mllib.clustering.KMeans
 import org.apache.spark.mllib.fpm.FPGrowth
 
@@ -54,29 +55,36 @@ object FPGrowth {
 
     // setup Spark
     val sparkConf = new SparkConf()
-//        sparkConf.setMaster("local[4]")
-//    sparkConf.setMaster("spark://8a0cfaab7088:7077")
+//    sparkConf.setMaster("local[4]")
+    sparkConf.setMaster("spark://vm-cluster-node2:7077")
+//    sparkConf.set("spark.driver.host", "192.168.56.1")
+    sparkConf.set("spark.executor.memory", "256m")
+    sparkConf.set("spark.driver.memory", "256m")
+//    sparkConf.set("spark.cores.max", "4")
+//    sparkConf.set("spark.worker.cleanup.enabled", "true")
+//    sparkConf.set("spark.worker.cleanup.interval", "1")
+//    sparkConf.set("spark.worker.cleanup.appDataTtl", "30")
 //    sparkConf.setMaster("spark://quickstart.cloudera:7077")
     //        sparkConf.setMaster("spark://8a0cfaab7088:7077")
     //    sparkConf.set("spark.executor.memory", "16g")
     //    sparkConf.set("spark.driver.memory", "64g")
     //    sparkConf.set("spark.cores.max", "32")
-    sparkConf.setAppName("randomNetflowGen")
+    sparkConf.setAppName("fpgrowth")
     sparkConf.set("spark.hadoop.validateOutputSpecs", "false") // overwrite hdfs files which are written
 
-//    val jars = Array("/Users/faganpe/.m2/repository/org/apache/spark/spark-streaming-kafka_2.10/1.3.0-cdh5.4.1/spark-streaming-kafka_2.10-1.3.0-cdh5.4.1.jar",
-//      "/Users/faganpe/.m2/repository/org/apache/kafka/kafka_2.10/0.8.0/kafka_2.10-0.8.0.jar",
-//      "/Users/faganpe/.m2/repository/org/apache/spark/spark-core_2.10/1.3.0-cdh5.4.1/spark-core_2.10-1.3.0-cdh5.4.1.jar",
-//      "/Users/faganpe/.m2/repository/com/101tec/zkclient/0.3/zkclient-0.3.jar",
-//      "/Users/faganpe/.m2/repository/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar",
-//      "/Users/faganpe/.m2/repository/com/esotericsoftware/kryo/kryo/2.21/kryo-2.21.jar",
-//      "/Users/faganpe/.m2/repository/org/elasticsearch/elasticsearch-spark_2.10/2.1.0.Beta3/elasticsearch-spark_2.10-2.1.0.Beta3.jar",
-//      "/Users/faganpe/.m2/repository/com/maxmind/db/maxmind-db/1.0.0/maxmind-db-1.0.0.jar",
-//      "/Users/faganpe/.m2/repository/com/maxmind/geoip2/geoip2/2.1.0/geoip2-2.1.0.jar",
-//      "/Users/faganpe/.m2/repository/org/apache/spark/spark-hive_2.10/1.3.0-cdh5.4.1/spark-hive_2.10-1.3.0-cdh5.4.1.jar",
-//      "/Users/faganpe/.m2/repository/org/apache/spark/spark-mllib_2.10/1.3.0-cdh5.4.1/spark-mllib_2.10-1.3.0-cdh5.4.1.jar",
-//      "/Users/faganpe/InteliJProjects/KafkaStreamingPOC/target/netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
-//    //
+//    val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.0\\kafka_2.10-0.8.0.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-core_2.10\\1.3.0-cdh5.4.5\\spark-core_2.10-1.3.0-cdh5.4.5.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\com\\101tec\\zkclient\\0.3\\zkclient-0.3.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\com\\yammer\\metrics\\metrics-core\\2.2.0\\metrics-core-2.2.0.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\com\\esotericsoftware\\kryo\\kryo\\2.21\\kryo-2.21.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\org\\elasticsearch\\elasticsearch-spark_2.10\\2.1.0.Beta3\\elasticsearch-spark_2.10-2.1.0.Beta3.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\db\\maxmind-db\\1.0.0\\maxmind-db-1.0.0.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\geoip2\\geoip2\\2.1.0\\geoip2-2.1.0.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-hive_2.10\\1.3.0-cdh5.4.5\\spark-hive_2.10-1.3.0-cdh5.4.5.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-mllib_2.10\\1.3.0-cdh5.4.5\\spark-mllib_2.10-1.3.0-cdh5.4.5.jar",
+//      "D:\\Bowen_Raw_Source\\IntelijProjects\\KafkaStreamingPOC\\target\\netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
+    //
 //    sparkConf.setJars(jars)
 
     val sc = new SparkContext(sparkConf)
@@ -84,10 +92,12 @@ object FPGrowth {
 
     // sc is an existing SparkContext.
     val sqlContextHive = new org.apache.spark.sql.hive.HiveContext(sc)
+    // set the hive metastore URL for connection to the remote hive metastore
+    sqlContextHive.setConf("hive.metastore.uris", "thrift://vm-cluster-node1:9083")
 
     // Data can easily be extracted from existing sources,
     // such as Apache Hive.
-    sqlContextHive.sql("use cloudera")
+    sqlContextHive.sql("use default")
 
 //    val trainingDataTable = sqlContextHive.sql("""
 //          SELECT dport
@@ -97,18 +107,24 @@ object FPGrowth {
 //          FROM rand_netflow_snappy_sec_stage""")
 
 //    val trainingDataTable = sqlContextHive.sql("select dir, state from rand_netflow")
-    val trainingDataTable = sqlContextHive.sql(argSql)
+    val trainingDataTable = sqlContextHive.sql(argSql) //.collect().foreach(println)
+    trainingDataTable.show()
     // below prints out the SQL RDD
 //    val trainingDataTable = sqlContextHive.sql("select srcaddr, dir from rand_netflow limit 100").collect().foreach(println)
 
 //    val transactions: RDD[Array[String]] = ...
-//    val transactions = sc.textFile("/user/cloudera/sample_fpgrowth.txt").map(_.split(" ")).cache()
+    val transactions = sc.textFile("D:\\Bowen_Raw_Source\\IntelijProjects\\KafkaStreamingPOC\\src\\main\\resources\\sample_fpgrowth.txt").map(_.split(" ")).cache()
     val trainingDataTableFPRDD =  trainingDataTable.map(_.toString().split(" "))
+
+//    val model = new FPGrowth()
+//      .setMinSupport(argMinSupport)
+//      .setNumPartitions(argNumPartitions)
+//      .run(trainingDataTableFPRDD)
 
     val model = new FPGrowth()
       .setMinSupport(argMinSupport)
       .setNumPartitions(argNumPartitions)
-      .run(trainingDataTableFPRDD)
+      .run(transactions)
 //
     model.freqItemsets.collect().foreach { itemset =>
       println(itemset.items.mkString("[", ",", "]") + ", " + itemset.freq)
