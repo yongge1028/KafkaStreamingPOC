@@ -106,3 +106,17 @@ Enviroment Variables for Spark IDE : -
 If you are using InteliJ or another IDE on windows you may need to set the HADOOP_HOME enviroment virable to something like - D:\hadoop-common-2.2.0-bin-master (https://github.com/srccodes/hadoop-common-2.2.0-bin).
 Also you may need to set HADOOP_USER_NAME enviroment variable e.g. HADOOP_USER_NAME=admin so that the admin user is used when reading/writing to hdfs.
 
+Maven : -
+
+In order to ensure the relevant jar's are available in your CLASSPATH on your IDE e.g. Intelij, the following scope should not be set : -
+
+<!--<scope>provided</scope>-->
+
+Otherwise, spark will assume that the jar will be provided at runtime.
+
+Hive Configuration : -
+
+This set's the hive metastore in your spark hive conf : -
+
+sqlContextHive.setConf("hive.metastore.uris", "thrift://vm-cluster-node1:9083")
+
