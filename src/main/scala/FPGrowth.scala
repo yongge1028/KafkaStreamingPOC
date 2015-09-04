@@ -99,6 +99,8 @@ object FPGrowth {
     // Data can easily be extracted from existing sources,
     // such as Apache Hive.
     sqlContextHive.sql("use default")
+    sqlContextHive.sql("set hive.mapred.supports.subdirectories=true")
+    sqlContextHive.sql("set mapred.input.dir.recursive=true")
 
 //    val trainingDataTable = sqlContextHive.sql("""
 //          SELECT dport
@@ -115,22 +117,24 @@ object FPGrowth {
 
 //    val transactions: RDD[Array[String]] = ...
 //    val transactions = sc.textFile("D:\\Bowen_Raw_Source\\IntelijProjects\\KafkaStreamingPOC\\src\\main\\resources\\sample_fpgrowth.txt").map(_.split(" ")).cache()
-    val transactions = sc.textFile("hdfs://vm-cluster-node1:8020/user/admin/fpgrowth/sample_fpgrowth.txtsample_fpgrowth.txt").map(_.split(" ")).cache()
-    val trainingDataTableFPRDD =  trainingDataTable.map(_.toString().split(" "))
-
-//    val model = new FPGrowth()
-//      .setMinSupport(argMinSupport)
-//      .setNumPartitions(argNumPartitions)
-//      .run(trainingDataTableFPRDD)
+    val transactions = sc.textFile("hdfs://vm-cluster-node1:8020/user/admin/fpgrowth/sample_fpgrowth.txt").map(_.split(" ")).cache()
+//    val trainingDataTableFPRDD =  trainingDataTable.map(_.toString().split(" ")).cache()
+    val trainingDataTableFPRDD =  trainingDataTable.map(_.toString().split(" ")).cache()
 
     val model = new FPGrowth()
       .setMinSupport(argMinSupport)
       .setNumPartitions(argNumPartitions)
-      .run(transactions)
+      .run(trainingDataTableFPRDD)
+
+//    val model = new FPGrowth()
+//      .setMinSupport(argMinSupport)
+//      .setNumPartitions(argNumPartitions)
+//      .run(transactions)
 //
     model.freqItemsets.collect().foreach { itemset =>
       println(itemset.items.mkString("[", ",", "]") + ", " + itemset.freq)
     }
+    println("Number of found frequent item sets : " +model.freqItemsets.count())
 
     // select dport, stos, dtos, totpkts from rand_netflow_snappy_sec_stage limit 10
 
