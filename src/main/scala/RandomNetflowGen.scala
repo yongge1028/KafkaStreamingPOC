@@ -45,6 +45,7 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.hive._
 import Array._
 //import util.Properties
+import org.elasticsearch.spark._
 
 /**
  * Created by faganpe on 17/03/15.
@@ -107,10 +108,10 @@ object RandomNetflowGen extends Serializable {
 
     // setup Spark
     val sparkConf = new SparkConf()
-//    sparkConf.setMaster("local[4]")
-////    sparkConf.setMaster("spark://vm-cluster-node2:7077")
+    sparkConf.setMaster("local[4]")
+//    sparkConf.setMaster("spark://vm-cluster-node2:7077")
 ////    sparkConf.setMaster("yarn-cluster")
-////    sparkConf.setMaster("spark://192.168.56.102:7077")
+//    sparkConf.setMaster("spark://quickstart.cloudera:7077")
 //    //    sparkConf.setMaster("spark://79d4dd97b170:7077")
 //        sparkConf.set("spark.executor.memory", "256m")
 //        sparkConf.set("spark.driver.memory", "256m")
@@ -121,6 +122,9 @@ object RandomNetflowGen extends Serializable {
 
     /* Change to Kyro Serialization */
     sparkConf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+    sparkConf.set("es.index.auto.create", "true") // set to auto create the ES index
+    sparkConf.set("es.nodes", "192.168.99.100") // note, for multiple elastisearch nodes specify a csv list
+    sparkConf.set("es.number_of_shards", "1")
       // Now it's 24 Mb of buffer by default instead of 0.064 Mb
 //    sparkConf.set("spark.kryoserializer.buffer.mb","24")
 
@@ -134,7 +138,7 @@ object RandomNetflowGen extends Serializable {
     sparkConf.setAppName("randomNetflowGen")
     // Below line is the hostname or IP address for the driver to listen on. This is used for communicating with the executors and the standalone Master.
 //    sparkConf.set("spark.driver.host", "192.168.56.1")
-//    sparkConf.set("spark.hadoop.validateOutputSpecs", "false") // overwrite hdfs files which are written
+    sparkConf.set("spark.hadoop.validateOutputSpecs", "false") // overwrite hdfs files which are written
 //
 //            val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
 //              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.0\\kafka_2.10-0.8.0.jar",
@@ -157,6 +161,19 @@ object RandomNetflowGen extends Serializable {
 //    val partitions: Int = args(2).toInt
     val hdfsURI = args(0).toString
     println("The application hdfsURI  is: " + hdfsURI)
+
+    // Start of Illustrate a point
+    // Excellent source of examples (not an e.g. for everything though) - http://homepage.cs.latrobe.edu.au/zhe/ZhenHeSparkRDDAPIExamples.html
+//    val testRDD = sc.textFile(hdfsURI + "/a_txt_file.txt") // testRDD is of RDD type RDD[String]
+//    // we could write this which would be the same thing but no implicit datatype is assumed - dynamic typing
+//    val testRDD2: RDD[String] = sc.textFile(hdfsURI + "/a_txt_file.txt") // type is included i.e. static typing
+//    // Let's convert testRDD to a PairRDD we do this with a map function
+//    val testPairRDD = testRDD.map( x => (x, 1)) // split the RDD elements by a space
+//    // now we can use a PairRDD function on our new PairRDD and we are also triggering an action to run as partof the DAG
+//    // DAG = Directed Acyclic Graph a.k.a Execution Engine
+//    // http://www.quora.com/As-it-is-mentioned-Apache-Spark-follows-a-DAG-Directed-Acyclic-Graph-execution-engine-for-execution-What-is-the-whole-concept-about-it-and-the-overall-architecture-of-the-Spark
+//    testPairRDD.saveAsHadoopFile(hdfsURI)
+//    // End of Illustrate a point
 
     val numDirectories = args(3).toInt
 
@@ -286,6 +303,15 @@ object RandomNetflowGen extends Serializable {
 
       /* End of working out if we need to randomize or not */
       seedRdd.saveAsTextFile(hdfsURI + "/" + "runNum=" + dirNum)
+      // save to Elasticsearch
+      val numbers = Map("one" -> 1, "two" -> 2, "three" -> 3)
+      val airports = Map("arrival" -> "Otopeni", "SFO" -> "San Fran")
+      val seedRDDES = seedRdd.map( x => ("something", x.split(",")(1)))
+      seedRDDES.saveToEs("sparkcsv/csv")
+
+//      sc.makeRDD(Seq(numbers, airports)).saveToEs("spark/docs")
+      sc.makeRDD(Seq(airports)).saveToEs("spark/docs")
+//      seedRdd.saveToEs("spark/csvdata")
 //      seedRdd.saveAsTextFile("randNetflow" + "/" + "runNum=" + dirNum)
     }
 
