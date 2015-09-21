@@ -5,7 +5,7 @@
 import java.io.FileWriter
 import java.util
 
-import Utils.{PopulateRandomString, WorkRequest, SaveRDD}
+import Utils.{NetFlowDef, PopulateRandomString, WorkRequest, SaveRDD}
 import com.typesafe.config.ConfigFactory
 import org.apache.spark.api.java.function.VoidFunction
 import org.apache.spark.rdd.RDD
@@ -302,16 +302,109 @@ object RandomNetflowGen extends Serializable {
       }
 
       /* End of working out if we need to randomize or not */
-      seedRdd.saveAsTextFile(hdfsURI + "/" + "runNum=" + dirNum)
+//      seedRdd.saveAsTextFile(hdfsURI + "/" + "runNum=" + dirNum)
+      seedRdd.saveAsTextFile("runNum=" + dirNum)
       // save to Elasticsearch
       val numbers = Map("one" -> 1, "two" -> 2, "three" -> 3)
       val airports = Map("arrival" -> "Otopeni", "SFO" -> "San Fran")
-      val seedRDDES = seedRdd.map( x => ("something", x.split(",")(1)))
-      seedRDDES.saveToEs("sparkcsv/csv")
+
+      var counter = 1
+      val headersCSVStr = "sensor_id,ts,te,duration,src_ip,src_port,dest_ip,dest_port,protocol,ip_version,packets,bytes,tcp_flag_a,tcp_flag_s,tcp_flag_f,tcp_flag_r,tcp_flag_p,tcp_flag_u,tos,reason_for_flow,sensor_site,sensor_org_name,sensor_org_sector,sensor_org_type,sensor_priority,sensor_country,geoip_src_country,geoip_src_subdivisions,geoip_src_city,geoip_src_lat,geoip_src_long,geoip_src_isp_org,geoip_src_as,geoip_src_as_org,geoip_dst_country,geoip_dst_subdivisions,geoip_dst_city,geoip_dst_lat,geoip_dst_long,geoip_dst_isp_org,geoip_dst_as,geoip_dst_as_org,port_src_well_known_service,port_dst_well_known_service,asset_src_site,asset_src_org_name,asset_src_org_sector,asset_src_org_type,asset_src_priority,asset_src_country,asset_dst_site,asset_dst_org_name,asset_dst_org_sector,asset_dst_org_type,asset_dst_priority,asset_dst_country,threat_src_type,threat_src_attacker,threat_src_malware,threat_src_campaign,threat_src_infrastructure,threat_dst_type,threat_dst_attacker,threat_dst_malware,threat_dst_campaign,threat_dst_infrastructure,yyyy,mm,dd,hh,mi"
+      val headersCSVList: List[String] =  headersCSVStr.split(",").toList
+      val numOfCSVEntries = headersCSVList.length
+        val enrichLineES = seedRdd.map(p => {
+          var pushRDD: String = "{\"sensor_id\" : " + "\"" + p.split(",")(0) + "\"" + " , "
+          for (pos <- 1 until 2) {
+            //           build the ES json RDD string
+//            pushRDD =
+//              "{\"StartTime\" : " + "\"" + p.split(",")(0) + "\"" + " , " +
+//                "\"Dur\" : " + "\"" + p.split(",")(1) + "\"" + " , " +
+//                "\"Label12\" : " + "\"" + p.split(",")(24) + "\"" + " , " +
+//                "\"Country\" : " + "\"" + p.split(",")(3) + "\"}"
+
+            pushRDD = pushRDD + "\"Dur\" : " + "\"" + p.split(",")(pos) + "\"" + " , "
+
+            //          "{\"StartTime\" : " + "\"" + p.split(",")(0) + "\"" + " , " +
+            //            "\"Dur\" : " + "\"" + p.split(",")(1) + "\"" + " , " +
+            //            "\"Label12\" : " + "\"" + p.split(",")(24) + "\"" + " , " +
+            //            "\"Country\" : " + "\"" + p.split(",")(3) + "\"}"
+          }
+          // return pushRDD and last closing string to close off the ES json
+          pushRDD + "\"Country\" : " + "\"" + p.split(",")(3) + "\"}"
+//          pushRDD + "\"}"
+        }
+
+//            "{\"StartTime\" : " + "\"" + p.split(",")(0) + "\"" + " , " +
+//              "\"Dur\" : " + "\"" + p.split(",")(counter) + "\"" + " , " +
+//              "\"Proto\" : " + "\"" + p.split(",")(2) + "\"" + " , " +
+//              "\"SrcAddr\" : " + "\"" + p.split(",")(3) + "\"" + " , " +
+//              "\"Dir\" : " + "\"" + p.split(",")(5) + "\"" + " , " +
+//              "\"DstAddr\" : " + "\"" + p.split(",")(6) + "\"" + " , " +
+//              "\"Dport\" : " + "\"" + p.split(",")(7) + "\"" + " , " +
+//              "\"State\" : " + "\"" + p.split(",")(8) + "\"" + " , " +
+//              "\"sTos\" : " + "\"" + p.split(",")(9) + "\"" + " , " +
+//              "\"sTos\" : " + "\"" + p.split(",")(10) + "\"" + " , " +
+//              "\"dTos\" : " + "\"" + p.split(",")(11) + "\"" + " , " +
+//              "\"TotPkts\" : " + "\"" + p.split(",")(12) + "\"" + " , " +
+//              "\"TotBytes\" : " + "\"" + p.split(",")(13) + "\"" + " , " +
+//              "\"Label2\" : " + "\"" + p.split(",")(14) + "\"" + " , " +
+//              "\"Label3\" : " + "\"" + p.split(",")(15) + "\"" + " , " +
+//              "\"Label4\" : " + "\"" + p.split(",")(16) + "\"" + " , " +
+//              "\"Label5\" : " + "\"" + p.split(",")(17) + "\"" + " , " +
+//              "\"Label6\" : " + "\"" + p.split(",")(18) + "\"" + " , " +
+//              "\"Label7\" : " + "\"" + p.split(",")(19) + "\"" + " , " +
+//              "\"Label8\" : " + "\"" + p.split(",")(20) + "\"" + " , " +
+//              "\"Label9\" : " + "\"" + p.split(",")(21) + "\"" + " , " +
+//              "\"Label10\" : " + "\"" + p.split(",")(22) + "\"" + " , " +
+//              "\"Label11\" : " + "\"" + p.split(",")(23) + "\"" + " , " +
+//              "\"Label12\" : " + "\"" + p.split(",")(24) + "\"" + " , " +
+//              "\"Country\" : " + "\"" + p.split(",")(3) + "\"}"
+//          }
+        )
+
+//        "{\"StartTime\" : " + "\"" + p.split(",")(0) + "\"" + " , " +
+//        "\"Dur\" : " + "\"" + p.split(",")(1) + "\"" + " , " +
+//        "\"Label12\" : " + "\"" + p.split(",")(24) + "\"" + " , " +
+//        "\"Country\" : " + "\"" + p.split(",")(3) + "\"}")
+
+      enrichLineES.saveJsonToEs("sparkrdd/netflow")
+
+//      val scEs = enrichLineES.context
+//      val sqlContext = new SQLContext(scEs)
+//      val sendToEs = sqlContext.jsonRDD(enrichLineES)
+//      sendToEs.toJSON.saveToEs("sparkrdd/netflow")
+
+
+      // sc = existing SparkContext
+//      val sqlContext = new SQLContext(sc)
+
+      // case class used to define the DataFrame
+//      case class Person(name: String, surname: String, age: String)
+//      case class Person(name: String, surname: String, age: String)
+
+      //  create DataFrame with 71 columns
+//      val people = seedRdd
+//        .map(_.split(","))
+//        .map(p => NetFlowDef(p(0), p(1), p(2), p(3), p(4), p(5), p(6), p(7), p(8), p(9), p(10)
+//        , p(11), p(12), p(13), p(14), p(15), p(16), p(17), p(18), p(19), p(20), p(21), p(22), p(23), p(24), p(25)
+//        , p(26), p(27), p(28), p(29), p(30), p(31), p(32), p(33), p(34), p(35), p(36), p(37), p(38), p(39), p(40)
+//        , p(41), p(42), p(43), p(44), p(45), p(46), p(47), p(48), p(49), p(50), p(51), p(52), p(53), p(54), p(55)
+//        , p(56), p(57), p(58), p(59), p(60), p(61), p(62), p(63), p(64), p(65), p(66).trim.toInt
+//        , p(67).trim.toInt, p(68).trim.toInt, p(69).trim.toInt, p(70).trim.toInt))
+
+//      people.saveToEs("sparkpeople/people")
+
+
+
+      //      val seedRDDES = seedRdd.map( x => ("something", x.split(",")(0)))
+//      val seedRDDES = seedRdd.map( x => ("arrival" -> "Otopeni", "SFO" -> "San Fran"))
+//      seedRDDES.saveToEs("sparkcsv/csv")
 
 //      sc.makeRDD(Seq(numbers, airports)).saveToEs("spark/docs")
-      sc.makeRDD(Seq(airports)).saveToEs("spark/docs")
+//      sc.makeRDD(Seq(airports)).saveToEs("spark/docs")
 //      seedRdd.saveToEs("spark/csvdata")
+
+//      enrichLineES.saveToEs("spark/csvdata")
 //      seedRdd.saveAsTextFile("randNetflow" + "/" + "runNum=" + dirNum)
     }
 
