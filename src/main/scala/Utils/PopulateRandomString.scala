@@ -21,7 +21,7 @@ object PopulateRandomString extends App {
 
 //  val src = Source.fromFile("src/main/resources/randommaps.csv").getLines
   // get the csv from the classpath rather than a source dir
-  val src = Source.fromInputStream(getClass.getResourceAsStream("/randommaps.csv")).getLines
+  val src = Source.fromInputStream(getClass.getResourceAsStream("/randommaps1.csv")).getLines
 
   // assuming first line is a header
 //  val numLines = Source.fromFile("src/main/resources/randommaps.csv").getLines.size
@@ -70,6 +70,12 @@ object PopulateRandomString extends App {
 //    println("32,2015-04-30 18:20:43,none,12345678910,147.149.7.125,54944,74.125.0.65,30486,17,4,592,133792,True,True,True,True,True,True,100,none,Charlie Gas Site1,Charlie Gas,Energy,CNI,1,UK,United Kingdom,null,null,51.5,-0.13000488,BT-BT,NULL,14298,United States,CA,Mountain View,37.419205,-122.0574,Google-Google,NULL,59,null,null,Charlie Gas Site1,Charlie Gas,Energy,CNI,1,UK,,,,,NULL,,,,,,,,,,,,2015,4,30,18,20")
 //    return "32,2015-04-30 18:20:43,none,12345678910,147.149.7.125,54944,74.125.0.65,30486,17,4,592,133792,True,True,True,True,True,True,100,none,Charlie Gas Site1,Charlie Gas,Energy,CNI,1,UK,United Kingdom,null,null,51.5,-0.13000488,BT-BT,NULL,14298,United States,CA,Mountain View,37.419205,-122.0574,Google-Google,NULL,59,null,null,Charlie Gas Site1,Charlie Gas,Energy,CNI,1,UK,,,,,NULL,,,,,,,,,,,,2015,4,30,18,20"
 
+  }
+
+  def headerLine: String = {
+    val src = Source.fromInputStream(getClass.getResourceAsStream("/randommaps.csv")).getLines
+    val headerLine = src.take(1).next
+    headerLine // return headerLine
   }
 
   def numLines(): Int = {
