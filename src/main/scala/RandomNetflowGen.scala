@@ -46,12 +46,17 @@ import org.apache.spark.sql.hive._
 import Array._
 //import util.Properties
 import org.elasticsearch.spark._
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by faganpe on 17/03/15.
  */
 
 object RandomNetflowGen extends Serializable {
+
+  def stripChars(s:String, ch:String)= s filterNot (ch contains _)
 
   def getIPGenRand(randNum: Int): String = {
     //    val r = scala.util.Random
@@ -318,12 +323,23 @@ object RandomNetflowGen extends Serializable {
 //          var pushRDD: String = "{\"" + headersCSVList(0) + "\"" + " : " + "\"" + p.split(",")(0) // + "\"" + " , "
           // add an ES TZ so we can use kibana ok
 //          val ESDateStr = headersCSVList(1).split(" ")(0) + "T" + headersCSVList(1).split(" ")(1) + "Z"
-          val ESDateStr = "2015/04/30T 18:20:43Z"
-          var pushRDD: String = "{\"" + headersCSVList(0) + "\"" + " : " + "\"" + p.split(",")(0) + "\"" + " , " + "\"" + "ESDateStr" + "\"" + " : " + "\"" + ESDateStr
+//          val ESDateStr = "2015/04/30T18:20:43Z"
+          // (1) get today's date
+          val today: Date = Calendar.getInstance().getTime();
+
+          // (2) create a date "formatter" (the date format we want)
+          val formatterDate: SimpleDateFormat  = new SimpleDateFormat("yyyy/MM/dd");
+          val formatterTime: SimpleDateFormat  = new SimpleDateFormat("hh:mm:ss.SSS");
+//          val ESDateStr: String = formatterDate.format(today) + "T" + formatterTime.format(today) + "Z"
+          val ESDateStr: String = formatterDate.format(today) + " " + formatterTime.format(today)
+
+          var pushRDD: String = "{\"" + headersCSVList(0) + "\"" + " : " + "\"" + p.split(",")(0) + "\"" + " , " + "\"" + "ts" + "\"" + " : " + "\"" + ESDateStr
           for (pos <- 1 until numColsCSV) {
             //           build the ES json RDD string
 //            pushRDD = pushRDD + "\"" + " , " + "\"Dur\" : " + "\"" + p.split(",")(pos)
-            pushRDD = pushRDD + "\"" + " , " + "\"" + headersCSVList(pos) + "\"" + " : " + "\"" + p.split(",")(pos)
+//              pushRDD = pushRDD + "\"" + " , " + "\"" + headersCSVList(pos) + "\"" + " : " + "\"" + p.split(",")(pos)
+              // currently we need to strip out the " characters from the csv file and replace with '
+              pushRDD = pushRDD + "\"" + " , " + "\"" + stripChars(headersCSVList(pos), "\"") + "\"" + " : " + "\"" + p.split(",")(pos)
 
             // Below is an example of an ES Json string that works
 
@@ -337,7 +353,13 @@ object RandomNetflowGen extends Serializable {
           pushRDD + "\"}"
         })
 
-      enrichLineES.saveJsonToEs("spark/netflow")
+      try {
+        enrichLineES.saveJsonToEs("spark/netflow")
+      }
+      catch {
+//        case ioe: MapperParsingException => ... // more specific cases first !
+        case e: Exception => println("Exception occoured!")
+      }
 
       /* End of save to Elasticsearch */
 
