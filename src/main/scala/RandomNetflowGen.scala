@@ -5,7 +5,7 @@
 import java.io.FileWriter
 import java.util
 
-import Utils.{PopulateRandomString, WorkRequest, SaveRDD}
+import Utils.{NetFlowDef, PopulateRandomString, WorkRequest, SaveRDD}
 import com.typesafe.config.ConfigFactory
 import org.apache.spark.api.java.function.VoidFunction
 import org.apache.spark.rdd.RDD
@@ -46,12 +46,17 @@ import org.apache.spark.sql.hive._
 import Array._
 //import util.Properties
 import org.elasticsearch.spark._
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by faganpe on 17/03/15.
  */
 
 object RandomNetflowGen extends Serializable {
+
+  def stripChars(s:String, ch:String)= s filterNot (ch contains _)
 
   def getIPGenRand(randNum: Int): String = {
     //    val r = scala.util.Random
@@ -202,6 +207,9 @@ object RandomNetflowGen extends Serializable {
 
 //      val seedRdd = sc.parallelize(Seq[String](), numPartitions).mapPartitions { _ => {
       val broadcastVar = sc.broadcast(PopulateRandomString.returnRand()) // returns the csv file as an ArrayBuffer[String]
+      val numLinesCSV = broadcastVar.value.length
+      val numColsCSV = broadcastVar.value(0).split(",").map(_.trim).length
+      val headersCSVStr = PopulateRandomString.headerLine
       val randCSV = scala.util.Random
 //      val numLinesCSV = PopulateRandomString.numLines()
       val seedRdd = sc.parallelize(Seq[String](), numPartitions).mapPartitions { x => {
@@ -281,8 +289,8 @@ object RandomNetflowGen extends Serializable {
 //                totBytesMap(r.nextInt(1)) + "," + labelMap(r.nextInt(9))
 //            }
 
-          val numLinesCSV = broadcastVar.value.length
-          val numColsCSV = broadcastVar.value(0).split(",").map(_.trim).length
+//          val numLinesCSV = broadcastVar.value.length
+//          val numColsCSV = broadcastVar.value(0).split(",").map(_.trim).length
 
           var ret_value = ""
           for(i <- 0 until numColsCSV) {
@@ -302,16 +310,59 @@ object RandomNetflowGen extends Serializable {
       }
 
       /* End of working out if we need to randomize or not */
-      seedRdd.saveAsTextFile(hdfsURI + "/" + "runNum=" + dirNum)
-      // save to Elasticsearch
-      val numbers = Map("one" -> 1, "two" -> 2, "three" -> 3)
-      val airports = Map("arrival" -> "Otopeni", "SFO" -> "San Fran")
-      val seedRDDES = seedRdd.map( x => ("something", x.split(",")(1)))
-      seedRDDES.saveToEs("sparkcsv/csv")
+//      seedRdd.saveAsTextFile(hdfsURI + "/" + "runNum=" + dirNum)
+      seedRdd.saveAsTextFile("runNum=" + dirNum)
 
-//      sc.makeRDD(Seq(numbers, airports)).saveToEs("spark/docs")
-      sc.makeRDD(Seq(airports)).saveToEs("spark/docs")
-//      seedRdd.saveToEs("spark/csvdata")
+      /* Start of save to Elasticsearch */
+
+      var counter = 1
+//      val headersCSVStr = "sensor_id,ts,te,duration,src_ip,src_port,dest_ip,dest_port,protocol,ip_version,packets,bytes,tcp_flag_a,tcp_flag_s,tcp_flag_f,tcp_flag_r,tcp_flag_p,tcp_flag_u,tos,reason_for_flow,sensor_site,sensor_org_name,sensor_org_sector,sensor_org_type,sensor_priority,sensor_country,geoip_src_country,geoip_src_subdivisions,geoip_src_city,geoip_src_lat,geoip_src_long,geoip_src_isp_org,geoip_src_as,geoip_src_as_org,geoip_dst_country,geoip_dst_subdivisions,geoip_dst_city,geoip_dst_lat,geoip_dst_long,geoip_dst_isp_org,geoip_dst_as,geoip_dst_as_org,port_src_well_known_service,port_dst_well_known_service,asset_src_site,asset_src_org_name,asset_src_org_sector,asset_src_org_type,asset_src_priority,asset_src_country,asset_dst_site,asset_dst_org_name,asset_dst_org_sector,asset_dst_org_type,asset_dst_priority,asset_dst_country,threat_src_type,threat_src_attacker,threat_src_malware,threat_src_campaign,threat_src_infrastructure,threat_dst_type,threat_dst_attacker,threat_dst_malware,threat_dst_campaign,threat_dst_infrastructure,yyyy,mm,dd,hh,mi"
+      val headersCSVList: List[String] =  headersCSVStr.split(",").toList
+//      val numOfCSVEntries = headersCSVList.length
+        val enrichLineES = seedRdd.map(p => {
+//          var pushRDD: String = "{\"" + headersCSVList(0) + "\"" + " : " + "\"" + p.split(",")(0) // + "\"" + " , "
+          // add an ES TZ so we can use kibana ok
+//          val ESDateStr = headersCSVList(1).split(" ")(0) + "T" + headersCSVList(1).split(" ")(1) + "Z"
+//          val ESDateStr = "2015/04/30T18:20:43Z"
+          // (1) get today's date
+          val today: Date = Calendar.getInstance().getTime();
+
+          // (2) create a date "formatter" (the date format we want)
+          val formatterDate: SimpleDateFormat  = new SimpleDateFormat("yyyy/MM/dd");
+          val formatterTime: SimpleDateFormat  = new SimpleDateFormat("hh:mm:ss.SSS");
+//          val ESDateStr: String = formatterDate.format(today) + "T" + formatterTime.format(today) + "Z"
+          val ESDateStr: String = formatterDate.format(today) + " " + formatterTime.format(today)
+
+          var pushRDD: String = "{\"" + headersCSVList(0) + "\"" + " : " + "\"" + p.split(",")(0) + "\"" + " , " + "\"" + "ts" + "\"" + " : " + "\"" + ESDateStr
+          for (pos <- 1 until numColsCSV) {
+            //           build the ES json RDD string
+//            pushRDD = pushRDD + "\"" + " , " + "\"Dur\" : " + "\"" + p.split(",")(pos)
+//              pushRDD = pushRDD + "\"" + " , " + "\"" + headersCSVList(pos) + "\"" + " : " + "\"" + p.split(",")(pos)
+              // currently we need to strip out the " characters from the csv file and replace with '
+              pushRDD = pushRDD + "\"" + " , " + "\"" + stripChars(headersCSVList(pos), "\"") + "\"" + " : " + "\"" + p.split(",")(pos)
+
+            // Below is an example of an ES Json string that works
+
+            //          "{\"StartTime\" : " + "\"" + p.split(",")(0) + "\"" + " , " +
+            //            "\"Dur\" : " + "\"" + p.split(",")(1) + "\"" + " , " +
+            //            "\"Label12\" : " + "\"" + p.split(",")(24) + "\"" + " , " +
+            //            "\"Country\" : " + "\"" + p.split(",")(3) + "\"}"
+
+          }
+          // return pushRDD and last closing string to close off the ES json
+          pushRDD + "\"}"
+        })
+
+      try {
+        enrichLineES.saveJsonToEs("spark/netflow")
+      }
+      catch {
+//        case ioe: MapperParsingException => ... // more specific cases first !
+        case e: Exception => println("Exception occoured!")
+      }
+
+      /* End of save to Elasticsearch */
+
 //      seedRdd.saveAsTextFile("randNetflow" + "/" + "runNum=" + dirNum)
     }
 
