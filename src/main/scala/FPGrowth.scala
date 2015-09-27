@@ -5,6 +5,7 @@ import com.typesafe.config.ConfigFactory
 import org.apache.spark.graphx.Edge
 import org.apache.spark.mllib.clustering.KMeans
 import org.apache.spark.mllib.fpm.FPGrowth
+import org.apache.spark.sql.{SaveMode, Row}
 
 //import org.apache.spark.mllib.fpm.FPGrowth
 import org.apache.spark.rdd.RDD
@@ -55,8 +56,8 @@ object FPGrowth {
 
     // setup Spark
     val sparkConf = new SparkConf()
-//    sparkConf.setMaster("local[4]")
-    sparkConf.setMaster("spark://vm-cluster-node2:7077")
+    sparkConf.setMaster("local[4]")
+//    sparkConf.setMaster("spark://vm-cluster-node2:7077")
 //    sparkConf.set("spark.driver.host", "192.168.56.1")
     sparkConf.set("spark.executor.memory", "256m")
     sparkConf.set("spark.driver.memory", "256m")
@@ -70,7 +71,8 @@ object FPGrowth {
     //    sparkConf.set("spark.driver.memory", "64g")
     //    sparkConf.set("spark.cores.max", "32")
     sparkConf.setAppName("fpgrowth")
-    sparkConf.set("spark.driver.host", "192.168.56.1")
+//    sparkConf.set("spark.driver.host", "192.168.56.1")
+    sparkConf.set("spark.driver.host", "10.211.55.1")
     sparkConf.set("spark.hadoop.validateOutputSpecs", "false") // overwrite hdfs files which are written
 
     val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
@@ -118,7 +120,7 @@ object FPGrowth {
 //    val transactions: RDD[Array[String]] = ...
 //    val transactions = sc.textFile("D:\\Bowen_Raw_Source\\IntelijProjects\\KafkaStreamingPOC\\src\\main\\resources\\sample_fpgrowth.txt").map(_.split(" ")).cache()
     val transactions = sc.textFile("hdfs://vm-cluster-node1:8020/user/admin/fpgrowth/sample_fpgrowth.txt").map(_.split(" ")).cache()
-//    val trainingDataTableFPRDD =  trainingDataTable.map(_.toString().split(" ")).cache()
+//    val trainingDataTableFPRDD =  trainingDataTable.map(_.toString().split(" ")).cache().l
     val trainingDataTableFPRDD =  trainingDataTable.map(_.toString().split(" ")).cache()
 
     val model = new FPGrowth()
@@ -131,10 +133,90 @@ object FPGrowth {
 //      .setNumPartitions(argNumPartitions)
 //      .run(transactions)
 //
+
     model.freqItemsets.collect().foreach { itemset =>
       println(itemset.items.mkString("[", ",", "]") + ", " + itemset.freq)
     }
     println("Number of found frequent item sets : " +model.freqItemsets.count())
+
+    val modelRDD = model.freqItemsets.map(x => (1, x.items.mkString(",") + x.freq))
+    val modelRDDStr = model.freqItemsets.map(x => x.items.mkString(","))
+    modelRDD.saveAsTextFile("modelfreqItemPair")
+
+    // Import Row.
+    import org.apache.spark.sql.Row;
+
+    // Import Spark SQL data types
+    import org.apache.spark.sql.types.{StructType,StructField,StringType};
+
+    // The schema is encoded in a string
+    val schemaString = "src_ip src_port dest_ip dest_port"
+
+    // Generate the schema based on the string of schema
+    val schema =
+      StructType(
+        schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, true)))
+
+    val testRDD = model.freqItemsets.map(x => x.items.mkString(",").stripPrefix("[").stripSuffix("]")).saveAsTextFile("freqItemsetstestRDD")
+//    val rowRDD = model.freqItemsets.map(x => x.items.mkString(",").stripPrefix("[").stripSuffix("]")).map(p => Row(p(0).toString, p(1).toString, p(2).toString, p(3).toString))
+    val rowRDD = model.freqItemsets.map(x => x.items.mkString(",").stripPrefix("[").stripSuffix("]")).map(p => Row(p.split(",")(0), p.split(",")(1), p.split(",")(2), p.split(",")(3)))
+
+    // Apply the schema to the RDD.
+    val freqItemsDataFrame = sqlContextHive.createDataFrame(rowRDD, schema)
+    freqItemsDataFrame.registerTempTable("tempfreqItemsDataFrame")
+    freqItemsDataFrame.show
+    sqlContextHive.sql("drop table paul")
+    sqlContextHive.sql("create table paul as select * from tempfreqItemsDataFrame")
+    val z = sc.parallelize(List("a","b","c","d"),2)
+    val x = z.map(p => Row(p(0).toString, p(1).toString, p(2).toString, p(3).toString))
+    val freqItemsDataFrame2 = sqlContextHive.createDataFrame(rowRDD, schema)
+
+    freqItemsDataFrame.saveAsTable("freqItemSetSpark4", SaveMode.Append)
+    freqItemsDataFrame2.saveAsTable("freqItemSetSpark5", SaveMode.Append)
+
+
+    // Register the DataFrames as a table.
+//    freqItemsDataFrame.registerTempTable("freqItemSet")
+//
+//    sqlContextHive.sql("create table freqItemSetSpark as select * from freqItemSet")
+
+//    val freqItemsets = sc.makeRDD(Seq(model.freqItemsets.collect.foreach( itemset => itemset.items.mkString(",") + itemset.freq)))
+//    val freqItemsetsStr =  freqItemsets.map( x => x.toString)
+//    freqItemsetsStr.saveAsTextFile("freqItemsetsStr")
+//    freqItemsets.saveAsTextFile("freqItemsets")
+//    freqItemsets.saveAsObjectFile("freqItemsetsObj")
+
+//    val freqItemsetsRowRDD = freqItemsetsStr.map(_.toString.split(" ")).map(p => Row(p(0), p(1), p(2), p(3)))
+
+    // Convert records of the RDD (people) to Rows.
+    // Import Row.
+    import org.apache.spark.sql.Row
+
+//    val rowRDD = model.freqItemsets.map(_.toString.split(" ")).map(p => Row(p(0), p(1), p(2), p(3))
+
+    // The schema is encoded in a string
+//    val schemaString = "src_ip src_port dest_ip dest_port"
+
+    // Import Spark SQL data types
+//    import org.apache.spark.sql.types.{StructType,StructField,StringType};
+
+    // Generate the schema based on the string of schema
+//    val schema =
+//      StructType(
+//        schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, true)))
+
+    // Apply the schema to the RDD.
+//    val freqPatternDataFrame = sqlContext.createDataFrame(rowRDD, schema)
+//    freqPatternDataFrame.printSchema()
+//    freqPatternDataFrame.save("freqPatternDataFrame")
+    //    freqPatternDataFrame.saveAsParquetFile("parquetFPGrowth")
+
+    // Register the DataFrames as a table.
+    //    freqPatternDataFrame.registerTempTable("rdd_save_table_freqpat")
+
+    // save the table into the hive metastore
+    //    sqlContextHive.sql("CREATE TABLE IF NOT EXISTS cloudera.hive_rdd_save_table as select  * from rdd_save_table_freqpat")
+
 
     // select dport, stos, dtos, totpkts from rand_netflow_snappy_sec_stage limit 10
 
