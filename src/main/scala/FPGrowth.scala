@@ -147,32 +147,49 @@ object FPGrowth {
     import org.apache.spark.sql.Row;
 
     // Import Spark SQL data types
-    import org.apache.spark.sql.types.{StructType,StructField,StringType};
+    import org.apache.spark.sql.types.{StructType,StructField,StringType,LongType};
 
     // The schema is encoded in a string
-    val schemaString = "src_ip src_port dest_ip dest_port"
+    val schemaString = "src_ip src_port dest_ip dest_port frequency"
+    val schemaString2 = argSql.split("from")(0).split("select ")(1) + "frequency"
+    println(schemaString2)
 
     // Generate the schema based on the string of schema
     val schema =
       StructType(
-        schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, true)))
+        schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, false)))
 
-    val testRDD = model.freqItemsets.map(x => x.items.mkString(",").stripPrefix("[").stripSuffix("]")).saveAsTextFile("freqItemsetstestRDD")
+//    val schema =
+//      StructType(
+//        StructField("src_ip", StringType, false) ::
+//          StructField("src_port", StringType, false) ::
+//          StructField("dest_ip", StringType, false) ::
+//          StructField("dest_port", StringType, false) ::
+//          StructField("frequency", StringType, false) :: Nil)
+
+    schema.printTreeString()
+
+    val testRDD = model.freqItemsets.map(x => x.items.mkString(",").stripPrefix("[").stripSuffix("]") + "," + x.freq.toString).saveAsTextFile("freqItemsetstestRDD")
 //    val rowRDD = model.freqItemsets.map(x => x.items.mkString(",").stripPrefix("[").stripSuffix("]")).map(p => Row(p(0).toString, p(1).toString, p(2).toString, p(3).toString))
-    val rowRDD = model.freqItemsets.map(x => x.items.mkString(",").stripPrefix("[").stripSuffix("]")).map(p => Row(p.split(",")(0), p.split(",")(1), p.split(",")(2), p.split(",")(3)))
+    val tempRDD = model.freqItemsets.map(x => x.items.mkString(",").stripPrefix("[").stripSuffix("]") + "," + x.freq.toString)
+
+    tempRDD.saveAsTextFile("tempRDD")
+    tempRDD.take(5).foreach(println)
+
+    val rowRDD = tempRDD.map(p => Row(p.split(",")(0), p.split(",")(1), p.split(",")(2), p.split(",")(3), p.split(",")(4)))
 
     // Apply the schema to the RDD.
     val freqItemsDataFrame = sqlContextHive.createDataFrame(rowRDD, schema)
     freqItemsDataFrame.registerTempTable("tempfreqItemsDataFrame")
     freqItemsDataFrame.show
-    sqlContextHive.sql("drop table paul")
-    sqlContextHive.sql("create table paul as select * from tempfreqItemsDataFrame")
-    val z = sc.parallelize(List("a","b","c","d"),2)
-    val x = z.map(p => Row(p(0).toString, p(1).toString, p(2).toString, p(3).toString))
-    val freqItemsDataFrame2 = sqlContextHive.createDataFrame(rowRDD, schema)
+    sqlContextHive.sql("drop table freqItemsSaturn2")
+    sqlContextHive.sql("create table freqItemsSaturn2 as select * from tempfreqItemsDataFrame")
+//    val z = sc.parallelize(List("a","b","c","d"),2)
+//    val x = z.map(p => Row(p(0).toString, p(1).toString, p(2).toString, p(3).toString))
+//    val freqItemsDataFrame2 = sqlContextHive.createDataFrame(rowRDD, schema)
 
-    freqItemsDataFrame.saveAsTable("freqItemSetSpark4", SaveMode.Append)
-    freqItemsDataFrame2.saveAsTable("freqItemSetSpark5", SaveMode.Append)
+//    freqItemsDataFrame.saveAsTable("freqItemSetSpark4", SaveMode.Append)
+//    freqItemsDataFrame2.saveAsTable("freqItemSetSpark5", SaveMode.Append)
 
 
     // Register the DataFrames as a table.
