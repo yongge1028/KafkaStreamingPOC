@@ -10,7 +10,7 @@ import com.typesafe.config.ConfigFactory
 import org.apache.spark.api.java.function.VoidFunction
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.catalyst.expressions.Row
- import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
@@ -113,7 +113,7 @@ object RandomNetflowGen extends Serializable {
 
     // setup Spark
     val sparkConf = new SparkConf()
-    sparkConf.setMaster("local[4]")
+//    sparkConf.setMaster("local[4]")
 //    sparkConf.setMaster("spark://vm-cluster-node2:7077")
 ////    sparkConf.setMaster("yarn-cluster")
 //    sparkConf.setMaster("spark://quickstart.cloudera:7077")
@@ -128,7 +128,8 @@ object RandomNetflowGen extends Serializable {
     /* Change to Kyro Serialization */
     sparkConf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
     sparkConf.set("es.index.auto.create", "true") // set to auto create the ES index
-    sparkConf.set("es.nodes", "192.168.99.100") // note, for multiple elastisearch nodes specify a csv list
+//    sparkConf.set("es.nodes", "192.168.99.100") // note, for multiple elastisearch nodes specify a csv list
+    sparkConf.set("es.nodes", "localhost") // note, for multiple elastisearch nodes specify a csv list
     sparkConf.set("es.number_of_shards", "1")
       // Now it's 24 Mb of buffer by default instead of 0.064 Mb
 //    sparkConf.set("spark.kryoserializer.buffer.mb","24")
@@ -310,8 +311,8 @@ object RandomNetflowGen extends Serializable {
       }
 
       /* End of working out if we need to randomize or not */
-//      seedRdd.saveAsTextFile(hdfsURI + "/" + "runNum=" + dirNum)
-      seedRdd.saveAsTextFile("runNum=" + dirNum)
+      seedRdd.saveAsTextFile(hdfsURI + "/" + "runNum=" + dirNum)
+//      seedRdd.saveAsTextFile("runNum=" + dirNum)
 
       /* Start of save to Elasticsearch */
 
