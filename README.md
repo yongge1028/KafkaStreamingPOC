@@ -120,3 +120,13 @@ This set's the hive metastore in your spark hive conf : -
 
 sqlContextHive.setConf("hive.metastore.uris", "thrift://vm-cluster-node1:9083")
 
+Notes on the FPGrowth Singleton Object : -
+
+A proof of concept class which takes an SQL query and run's the FPGrowth algorithm and uses the power of spark to write the resultset to a hive table.
+
+Notes / ToDo : -
+
+1. The resultset of the FP Growth hive table will all be of data type string.
+2. To use the table in Impala, the table will need to be found initially using a invalidate metadata command.
+3. The table name will be default.freqItemsSaturn in hive and impala.
+

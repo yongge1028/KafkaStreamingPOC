@@ -17,7 +17,7 @@ object PopulateRandomString extends App {
   val rVal = scala.util.Random
 
   val  urls = urlses(getClass.getClassLoader)
-  println(urls.filterNot(_.toString.contains("ivy")).mkString("\n"))
+//  println(urls.filterNot(_.toString.contains("ivy")).mkString("\n"))
 
 //  val src = Source.fromFile("src/main/resources/randommaps.csv").getLines
   // get the csv from the classpath rather than a source dir

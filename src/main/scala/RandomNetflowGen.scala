@@ -10,7 +10,7 @@ import com.typesafe.config.ConfigFactory
 import org.apache.spark.api.java.function.VoidFunction
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.catalyst.expressions.Row
- import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
@@ -113,10 +113,10 @@ object RandomNetflowGen extends Serializable {
 
     // setup Spark
     val sparkConf = new SparkConf()
-    sparkConf.setMaster("local[4]")
+//    sparkConf.setMaster("local[4]")
 //    sparkConf.setMaster("spark://vm-cluster-node2:7077")
 ////    sparkConf.setMaster("yarn-cluster")
-//    sparkConf.setMaster("spark://quickstart.cloudera:7077")
+    sparkConf.setMaster("spark://quickstart.cloudera:7077")
 //    //    sparkConf.setMaster("spark://79d4dd97b170:7077")
 //        sparkConf.set("spark.executor.memory", "256m")
 //        sparkConf.set("spark.driver.memory", "256m")
@@ -128,7 +128,8 @@ object RandomNetflowGen extends Serializable {
     /* Change to Kyro Serialization */
     sparkConf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
     sparkConf.set("es.index.auto.create", "true") // set to auto create the ES index
-    sparkConf.set("es.nodes", "192.168.99.100") // note, for multiple elastisearch nodes specify a csv list
+//    sparkConf.set("es.nodes", "192.168.99.100") // note, for multiple elastisearch nodes specify a csv list
+    sparkConf.set("es.nodes", "localhost") // note, for multiple elastisearch nodes specify a csv list
     sparkConf.set("es.number_of_shards", "1")
       // Now it's 24 Mb of buffer by default instead of 0.064 Mb
 //    sparkConf.set("spark.kryoserializer.buffer.mb","24")
@@ -142,22 +143,22 @@ object RandomNetflowGen extends Serializable {
     */
     sparkConf.setAppName("randomNetflowGen")
     // Below line is the hostname or IP address for the driver to listen on. This is used for communicating with the executors and the standalone Master.
-//    sparkConf.set("spark.driver.host", "192.168.56.1")
+//    sparkConf.set("spark.driver.host", "192.168.99.1")
     sparkConf.set("spark.hadoop.validateOutputSpecs", "false") // overwrite hdfs files which are written
 //
-//            val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
-//              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.0\\kafka_2.10-0.8.0.jar",
-//              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-core_2.10\\1.3.0-cdh5.4.5\\spark-core_2.10-1.3.0-cdh5.4.5.jar",
-//              "C:\\Users\\801762473\\.m2\\repository\\com\\101tec\\zkclient\\0.3\\zkclient-0.3.jar",
-//              "C:\\Users\\801762473\\.m2\\repository\\com\\yammer\\metrics\\metrics-core\\2.2.0\\metrics-core-2.2.0.jar",
-//              "C:\\Users\\801762473\\.m2\\repository\\com\\esotericsoftware\\kryo\\kryo\\2.21\\kryo-2.21.jar",
-//              "C:\\Users\\801762473\\.m2\\repository\\org\\elasticsearch\\elasticsearch-spark_2.10\\2.1.0.Beta3\\elasticsearch-spark_2.10-2.1.0.Beta3.jar",
-//              "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\db\\maxmind-db\\1.0.0\\maxmind-db-1.0.0.jar",
-//              "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\geoip2\\geoip2\\2.1.0\\geoip2-2.1.0.jar",
-//              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-hive_2.10\\1.3.0-cdh5.4.5\\spark-hive_2.10-1.3.0-cdh5.4.5.jar",
-//              "D:\\Bowen_Raw_Source\\IntelijProjects\\KafkaStreamingPOC\\target\\netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
-//            //
-//            sparkConf.setJars(jars)
+            val jars = Array("/Users/faganpe/.m2/repository/org/apache/spark/spark-streaming-kafka_2.10/1.3.0-cdh5.4.5/spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
+              "/Users/faganpe/.m2/repository/org/apache/kafka/kafka_2.10/0.8.2.0/kafka_2.10-0.8.2.0.jar",
+              "/Users/faganpe/.m2/repository/org/apache/spark/spark-core_2.10/1.3.0-cdh5.4.5/spark-core_2.10-1.3.0-cdh5.4.5.jar",
+              "/Users/faganpe/.m2/repository/com/101tec/zkclient/0.3/zkclient-0.3.jar",
+              "/Users/faganpe/.m2/repository/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar",
+              "/Users/faganpe/.m2/repository/com/esotericsoftware/kryo/kryo/2.21/kryo-2.21.jar",
+              "/Users/faganpe/.m2/repository/org/elasticsearch/elasticsearch-spark_2.10/2.1.0.Beta3/elasticsearch-spark_2.10-2.1.0.Beta3.jar",
+              "/Users/faganpe/.m2/repository/com/maxmind/db/maxmind-db/1.0.0/maxmind-db-1.0.0.jar",
+              "/Users/faganpe/.m2/repository/com/maxmind/geoip2/geoip2/2.1.0/geoip2-2.1.0.jar",
+              "/Users/faganpe/.m2/repository/org/apache/spark/spark-hive_2.10/1.3.0-cdh5.4.5/spark-hive_2.10-1.3.0-cdh5.4.5.jar",
+              "/Users/faganpe/InteliJProjects/KafkaStreamingPOC/target/netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
+            //
+            sparkConf.setJars(jars)
     //      val ssc = new StreamingContext(sparkConf, Seconds(120))
     val sc = new SparkContext(sparkConf)
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)
@@ -166,19 +167,6 @@ object RandomNetflowGen extends Serializable {
 //    val partitions: Int = args(2).toInt
     val hdfsURI = args(0).toString
     println("The application hdfsURI  is: " + hdfsURI)
-
-    // Start of Illustrate a point
-    // Excellent source of examples (not an e.g. for everything though) - http://homepage.cs.latrobe.edu.au/zhe/ZhenHeSparkRDDAPIExamples.html
-//    val testRDD = sc.textFile(hdfsURI + "/a_txt_file.txt") // testRDD is of RDD type RDD[String]
-//    // we could write this which would be the same thing but no implicit datatype is assumed - dynamic typing
-//    val testRDD2: RDD[String] = sc.textFile(hdfsURI + "/a_txt_file.txt") // type is included i.e. static typing
-//    // Let's convert testRDD to a PairRDD we do this with a map function
-//    val testPairRDD = testRDD.map( x => (x, 1)) // split the RDD elements by a space
-//    // now we can use a PairRDD function on our new PairRDD and we are also triggering an action to run as partof the DAG
-//    // DAG = Directed Acyclic Graph a.k.a Execution Engine
-//    // http://www.quora.com/As-it-is-mentioned-Apache-Spark-follows-a-DAG-Directed-Acyclic-Graph-execution-engine-for-execution-What-is-the-whole-concept-about-it-and-the-overall-architecture-of-the-Spark
-//    testPairRDD.saveAsHadoopFile(hdfsURI)
-//    // End of Illustrate a point
 
     val numDirectories = args(3).toInt
 
@@ -205,151 +193,44 @@ object RandomNetflowGen extends Serializable {
               }
             }
 
-//      val seedRdd = sc.parallelize(Seq[String](), numPartitions).mapPartitions { _ => {
       val broadcastVar = sc.broadcast(PopulateRandomString.returnRand()) // returns the csv file as an ArrayBuffer[String]
       val numLinesCSV = broadcastVar.value.length
       val numColsCSV = broadcastVar.value(0).split(",").map(_.trim).length
       val headersCSVStr = PopulateRandomString.headerLine
       val randCSV = scala.util.Random
-//      val numLinesCSV = PopulateRandomString.numLines()
       val seedRdd = sc.parallelize(Seq[String](), numPartitions).mapPartitions { x => {
 
-//        (1 to recordsPerPartition).map { _ =>
         (1 to recordsPerPartition).map { x =>
-
-          /*
-            val r = scala.util.Random
-            val currentTimeForDirPart = Calendar.getInstance().getTime()
-            //
-            //          // start of define hours and mins and maybe secs here
-            val formatDateDayForDir = new SimpleDateFormat("YYYY-MM-dd")
-            val formatDateHourForDir = new SimpleDateFormat("HH")
-            val formatDateMinuteForDir = new SimpleDateFormat("mm")
-            val formatDateSecondForDir = new SimpleDateFormat("ss")
-            val formatDateMilliSecondForDir = new SimpleDateFormat("SSS")
-            val flowDay = formatDateDayForDir.format(currentTimeForDirPart)
-            val flowHour = formatDateHourForDir.format(currentTimeForDirPart)
-            val flowMinute = formatDateMinuteForDir.format(currentTimeForDirPart)
-            val flowSecond = formatDateSecondForDir.format(currentTimeForDirPart)
-            val flowMilliSecond = formatDateMilliSecondForDir.format(currentTimeForDirPart)
-            //          // end of define hours and mins and maybe secs here
-            //
-            //          // start of maps
-            val protoMap = Map(0 -> "udp", 1 -> "tcp", 2 -> "icmp", 3 -> "tcp", 4 -> "tcp")
-            val flowDirMap = Map(0 -> "->", 1 -> "<?>", 2 -> "<->", 3 -> "?>", 4 -> "->", 5 -> "->")
-            val flowStatMap = Map(0 -> "FSPA_FSPA", 1 -> "CON", 2 -> "INT", 3 -> "FA_FA",
-              4 -> "SPA_SPA", 5 -> "S_", 6 -> "URP", 7 -> "CON", 8 -> "CON", 9 -> "CON", 10 -> "CON")
-            //  val ipGenMap = Map(0 -> getIPAddressSkew("132.146.5"), 1 -> getIPRand())
-            val sTosMap = Map(0 -> 0, 1 -> 3, 2 -> 2, 3 -> 2, 4 -> 2)
-            val dTosMap = Map(0 -> 0, 1 -> 3, 2 -> 2, 3 -> 4)
-            val totPktsMap = Map(0 -> randNum(2350), 1 -> randNum(128)) // big and small
-            val totBytesMap = Map(0 -> randNum(128)) // big and small
-            val labelMap = Map(0 -> "flow=From-Botnet-V44-ICMP",
-                1 -> "flow=Backgrund-TCP-Attempt",
-                2 -> "flow=From-Normal-V44-CVUT-WebServer",
-                3 -> "flow=Background-google-analytics14",
-                4 -> "flow=Background-UDP-NTP-Established-1",
-                5 -> "flow=From-Botnet-V44-TCP-CC107-IRC-Not-Encrypted",
-                6 -> "flow=Background-google-analytics4",
-                7 -> "flow=Background-google-analytics9",
-                8 -> "flow=From-Normal-V44-UDP-CVUT-DNS-Server")
-            //          // end of maps
-            //
-            val formatDate = new SimpleDateFormat("YYYY-MM-dd HH:MM:ss.SSSSSS")
-            val formatDateDuration = new SimpleDateFormat("ss.SSSSSS")
-            val formatDateDay = new SimpleDateFormat("YYYY-MM-dd")
-            val formatDateHour = new SimpleDateFormat("HH")
-            //
-            //          // get the current time for flowDuration so we get variability
-            val currentTime = Calendar.getInstance().getTime()
-            //
-            val flowTimestamp = formatDate.format(currentTimeForDirPart)
-            //        val flowDay = formatDateDay.format(currentTimeForDirPart)
-            //        val flowHour = formatDateHour.format(currentTimeForDirPart)
-            val flowDuration = formatDateDuration.format(currentTime)
-            //        val SourceIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
-            val SourceIPString = getIPGenRand(r.nextInt())
-            val DestIPString = InetAddresses.fromInteger(r.nextInt()).getHostAddress()
-            //
-          PopulateRandomString.returnRand()
-          */
-//            if (countryEnrichment) {
-//              flowTimestamp + "," + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
-//                SourceIPString + "," + flowDirMap(r.nextInt(6)) + "," + DestIPString + "," +
-//                r.nextInt(65535) + "," + flowStatMap(r.nextInt(11)) + "," + sTosMap(r.nextInt(3)) +
-//                "," + dTosMap(r.nextInt(4)) + "," + totPktsMap(r.nextInt(2)) + "," +
-//                totBytesMap(r.nextInt(1)) + "," + labelMap(r.nextInt(9)) +
-//                "," + MaxMindSingleton.getInstance().getCountry(SourceIPString)
-//            }
-//            else {
-//              flowTimestamp + "," + flowDuration + "," + protoMap(r.nextInt(5)) + "," +
-//                SourceIPString + "," + flowDirMap(r.nextInt(6)) + "," + DestIPString + "," +
-//                r.nextInt(65535) + "," + flowStatMap(r.nextInt(11)) + "," + sTosMap(r.nextInt(3)) +
-//                "," + dTosMap(r.nextInt(4)) + "," + totPktsMap(r.nextInt(2)) + "," +
-//                totBytesMap(r.nextInt(1)) + "," + labelMap(r.nextInt(9))
-//            }
-
-//          val numLinesCSV = broadcastVar.value.length
-//          val numColsCSV = broadcastVar.value(0).split(",").map(_.trim).length
 
           var ret_value = ""
           for(i <- 0 until numColsCSV) {
-//            println("Building column number : " + i)
             val lineChosen = broadcastVar.value(r.nextInt(numLinesCSV))
             ret_value = ret_value + "," + lineChosen.split(",")(i)
           }
-
-//          println("Adding line : " + ret_value.stripPrefix(","))
           ret_value.stripPrefix(",")
-
-//          PopulateRandomString.returnRand()
-        }
-
-      }.iterator
-
+          }
+        }.iterator
       }
 
       /* End of working out if we need to randomize or not */
-//      seedRdd.saveAsTextFile(hdfsURI + "/" + "runNum=" + dirNum)
-      seedRdd.saveAsTextFile("runNum=" + dirNum)
+      seedRdd.saveAsTextFile(hdfsURI + "/" + "runNum=" + dirNum)
 
       /* Start of save to Elasticsearch */
 
-      var counter = 1
-//      val headersCSVStr = "sensor_id,ts,te,duration,src_ip,src_port,dest_ip,dest_port,protocol,ip_version,packets,bytes,tcp_flag_a,tcp_flag_s,tcp_flag_f,tcp_flag_r,tcp_flag_p,tcp_flag_u,tos,reason_for_flow,sensor_site,sensor_org_name,sensor_org_sector,sensor_org_type,sensor_priority,sensor_country,geoip_src_country,geoip_src_subdivisions,geoip_src_city,geoip_src_lat,geoip_src_long,geoip_src_isp_org,geoip_src_as,geoip_src_as_org,geoip_dst_country,geoip_dst_subdivisions,geoip_dst_city,geoip_dst_lat,geoip_dst_long,geoip_dst_isp_org,geoip_dst_as,geoip_dst_as_org,port_src_well_known_service,port_dst_well_known_service,asset_src_site,asset_src_org_name,asset_src_org_sector,asset_src_org_type,asset_src_priority,asset_src_country,asset_dst_site,asset_dst_org_name,asset_dst_org_sector,asset_dst_org_type,asset_dst_priority,asset_dst_country,threat_src_type,threat_src_attacker,threat_src_malware,threat_src_campaign,threat_src_infrastructure,threat_dst_type,threat_dst_attacker,threat_dst_malware,threat_dst_campaign,threat_dst_infrastructure,yyyy,mm,dd,hh,mi"
+/*      var counter = 1
       val headersCSVList: List[String] =  headersCSVStr.split(",").toList
-//      val numOfCSVEntries = headersCSVList.length
-        val enrichLineES = seedRdd.map(p => {
-//          var pushRDD: String = "{\"" + headersCSVList(0) + "\"" + " : " + "\"" + p.split(",")(0) // + "\"" + " , "
-          // add an ES TZ so we can use kibana ok
-//          val ESDateStr = headersCSVList(1).split(" ")(0) + "T" + headersCSVList(1).split(" ")(1) + "Z"
-//          val ESDateStr = "2015/04/30T18:20:43Z"
-          // (1) get today's date
+      val enrichLineES = seedRdd.map(p => {
           val today: Date = Calendar.getInstance().getTime();
 
-          // (2) create a date "formatter" (the date format we want)
           val formatterDate: SimpleDateFormat  = new SimpleDateFormat("yyyy/MM/dd");
           val formatterTime: SimpleDateFormat  = new SimpleDateFormat("hh:mm:ss.SSS");
-//          val ESDateStr: String = formatterDate.format(today) + "T" + formatterTime.format(today) + "Z"
           val ESDateStr: String = formatterDate.format(today) + " " + formatterTime.format(today)
 
           var pushRDD: String = "{\"" + headersCSVList(0) + "\"" + " : " + "\"" + p.split(",")(0) + "\"" + " , " + "\"" + "ts" + "\"" + " : " + "\"" + ESDateStr
           for (pos <- 1 until numColsCSV) {
-            //           build the ES json RDD string
-//            pushRDD = pushRDD + "\"" + " , " + "\"Dur\" : " + "\"" + p.split(",")(pos)
-//              pushRDD = pushRDD + "\"" + " , " + "\"" + headersCSVList(pos) + "\"" + " : " + "\"" + p.split(",")(pos)
-              // currently we need to strip out the " characters from the csv file and replace with '
               pushRDD = pushRDD + "\"" + " , " + "\"" + stripChars(headersCSVList(pos), "\"") + "\"" + " : " + "\"" + p.split(",")(pos)
 
-            // Below is an example of an ES Json string that works
-
-            //          "{\"StartTime\" : " + "\"" + p.split(",")(0) + "\"" + " , " +
-            //            "\"Dur\" : " + "\"" + p.split(",")(1) + "\"" + " , " +
-            //            "\"Label12\" : " + "\"" + p.split(",")(24) + "\"" + " , " +
-            //            "\"Country\" : " + "\"" + p.split(",")(3) + "\"}"
-
           }
-          // return pushRDD and last closing string to close off the ES json
           pushRDD + "\"}"
         })
 
@@ -359,14 +240,12 @@ object RandomNetflowGen extends Serializable {
       catch {
 //        case ioe: MapperParsingException => ... // more specific cases first !
         case e: Exception => println("Exception occoured!")
-      }
+      }*/
 
       /* End of save to Elasticsearch */
 
-//      seedRdd.saveAsTextFile("randNetflow" + "/" + "runNum=" + dirNum)
     }
 
   }
 
 } // end of object
-    /* End of new code */
