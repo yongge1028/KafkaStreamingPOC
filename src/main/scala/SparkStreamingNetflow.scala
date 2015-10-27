@@ -1,8 +1,7 @@
-package OriginalWorking
-
 import java.text.SimpleDateFormat
 import java.util.{Calendar, Properties}
 
+import SQLContextSingleton
 import com.typesafe.config.ConfigFactory
 import kafka.producer.{KeyedMessage, Producer, ProducerConfig}
 import org.apache.spark.SparkConf
