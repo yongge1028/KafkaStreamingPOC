@@ -1,54 +1,33 @@
+package OriginalWorking
+
 /**
  * Created by faganp on 3/19/15.
  */
 
-import java.io.FileWriter
-import java.util
-
-import Utils.{NetFlowDef, PopulateRandomString, WorkRequest, SaveRDD}
+import Utils.PopulateRandomString
 import com.typesafe.config.ConfigFactory
-import org.apache.spark.api.java.function.VoidFunction
-import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.catalyst.expressions.Row
-import org.apache.spark.sql.types.{StringType, StructField, StructType}
-
-import scala.collection.mutable.ArrayBuffer
-import scala.util.Random
-import scala.util.Random
 
 //import org.apache.spark.sql.catalyst.types.{StringType, StructField, StructType} // spark 1.2 codeline
 
 //import java.util.Properties
 
 //import _root_.kafka.producer.Producer
-import kafka.producer.{KeyedMessage, ProducerConfig}
-import org.apache.hadoop.io.{MapWritable, NullWritable}
 //import org.apache.spark.storage.StorageLevel
-import org.apache.spark.{rdd, streaming, SparkContext, SparkConf}
+import org.apache.spark.{SparkConf, SparkContext}
 //import org.apache.spark.serializer.KryoSerializer
 //import org.elasticsearch.spark.rdd.EsSpark
 
 //import org.apache.spark.sql.SQLContext
 //import org.apache.spark.streaming.kafka.KafkaUtils
-import org.apache.spark.streaming.{Seconds, StreamingContext}
-import java.util.{Random, Calendar}
-import java.text.SimpleDateFormat
 //import org.elasticsearch.spark._
 //import org.apache.spark.SparkContext._
 //import org.apache.spark.sql._
 //import org.elasticsearch.spark.sql._
 import com.google.common.net.InetAddresses
-import java.nio.file.{Paths, Files}
-import org.apache.spark.sql.types._
-import org.apache.spark.sql.SQLContext
-import org.apache.spark.sql._
-import org.apache.spark.sql.hive._
-import Array._
+
+import scala.Array._
 //import util.Properties
-import org.elasticsearch.spark._
-import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  * Created by faganpe on 17/03/15.
