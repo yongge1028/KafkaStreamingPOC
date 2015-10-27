@@ -120,6 +120,11 @@ This set's the hive metastore in your spark hive conf : -
 
 sqlContextHive.setConf("hive.metastore.uris", "thrift://vm-cluster-node1:9083")
 
+To control the network communication path from the spark driver (your IDE if you are running from your IDE) to your Spark Master (or cluster),
+the following enviroment variable can be set : -
+
+SPARK_LOCAL_IP=192.168.99.1
+
 Notes on the FPGrowth Singleton Object : -
 
 A proof of concept class which takes an SQL query and run's the FPGrowth algorithm and uses the power of spark to write the resultset to a hive table.
