@@ -56,31 +56,6 @@ import java.util.Calendar;
 
 object RandomNetflowGen extends Serializable {
 
-  def stripChars(s:String, ch:String)= s filterNot (ch contains _)
-
-  def getIPGenRand(randNum: Int): String = {
-    //    val r = scala.util.Random
-    if (randNum % 2 == 0) getIPRand()
-    else getIPAddressSkew("132.146.5")
-    //      getIPAddressSkew("132.146.5")
-  }
-  //
-  //  /* End of the random generation values used to influence the data that is produced */
-  //
-  def getIPAddressSkew(IPSubnet: String): String = {
-    val r = scala.util.Random
-    val dotCount = IPSubnet.count(_ == '.') // let's count the number of dots
-    if (dotCount == 3) IPSubnet // return the complete IP address without making anything up
-    else if (dotCount == 2) IPSubnet + "." + r.nextInt(255)
-    else if (dotCount == 1) IPSubnet + "." + r.nextInt(255) + "." + r.nextInt(255)
-    else IPSubnet // otherwise just return the original ip string
-  }
-
-  def getIPRand(): String = {
-    val r = scala.util.Random
-    InetAddresses.fromInteger(r.nextInt()).getHostAddress()
-  }
-
   // randNum method limit's random number of integers i.e. if 100 passed in number returned can be in the range 0 to 99
   def randNum(ranNum: Int): Int = {
     val r = scala.util.Random
@@ -115,10 +90,12 @@ object RandomNetflowGen extends Serializable {
     val sparkConf = new SparkConf()
 //    sparkConf.setMaster("local[4]")
 //    sparkConf.setMaster("spark://vm-cluster-node2:7077")
-////    sparkConf.setMaster("yarn-cluster")
-    sparkConf.setMaster("spark://quickstart.cloudera:7077")
+//    sparkConf.setMaster("yarn-cluster")
+//    sparkConf.setMaster("spark://quickstart.cloudera:7077")
+//    sparkConf.setMaster("yarn-client")
 //    //    sparkConf.setMaster("spark://79d4dd97b170:7077")
-//        sparkConf.set("spark.executor.memory", "256m")
+//    sparkConf.set("spark.app.id", "0123456789")
+//    sparkConf.set("spark.executor.memory", "256m")
 //        sparkConf.set("spark.driver.memory", "256m")
 //        sparkConf.set("spark.cores.max", "4")
 //    sparkConf.set("spark.worker.cleanup.enabled", "true")
@@ -146,19 +123,21 @@ object RandomNetflowGen extends Serializable {
 //    sparkConf.set("spark.driver.host", "192.168.99.1")
     sparkConf.set("spark.hadoop.validateOutputSpecs", "false") // overwrite hdfs files which are written
 //
-            val jars = Array("/Users/faganpe/.m2/repository/org/apache/spark/spark-streaming-kafka_2.10/1.3.0-cdh5.4.5/spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
-              "/Users/faganpe/.m2/repository/org/apache/kafka/kafka_2.10/0.8.2.0/kafka_2.10-0.8.2.0.jar",
-              "/Users/faganpe/.m2/repository/org/apache/spark/spark-core_2.10/1.3.0-cdh5.4.5/spark-core_2.10-1.3.0-cdh5.4.5.jar",
-              "/Users/faganpe/.m2/repository/com/101tec/zkclient/0.3/zkclient-0.3.jar",
-              "/Users/faganpe/.m2/repository/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar",
-              "/Users/faganpe/.m2/repository/com/esotericsoftware/kryo/kryo/2.21/kryo-2.21.jar",
-              "/Users/faganpe/.m2/repository/org/elasticsearch/elasticsearch-spark_2.10/2.1.0.Beta3/elasticsearch-spark_2.10-2.1.0.Beta3.jar",
-              "/Users/faganpe/.m2/repository/com/maxmind/db/maxmind-db/1.0.0/maxmind-db-1.0.0.jar",
-              "/Users/faganpe/.m2/repository/com/maxmind/geoip2/geoip2/2.1.0/geoip2-2.1.0.jar",
-              "/Users/faganpe/.m2/repository/org/apache/spark/spark-hive_2.10/1.3.0-cdh5.4.5/spark-hive_2.10-1.3.0-cdh5.4.5.jar",
-              "/Users/faganpe/InteliJProjects/KafkaStreamingPOC/target/netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
-            //
-            sparkConf.setJars(jars)
+//            val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.2.0\\kafka_2.10-0.8.2.0.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-core_2.10\\1.3.0-cdh5.4.5\\spark-core_2.10-1.3.0-cdh5.4.5.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\com\\101tec\\zkclient\\0.3\\zkclient-0.3.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\com\\yammer\\metrics\\metrics-core\\2.2.0\\metrics-core-2.2.0.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\com\\esotericsoftware\\kryo\\kryo\\2.21\\kryo-2.21.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\org\\elasticsearch\\elasticsearch-spark_2.10\\2.1.0.Beta3\\elasticsearch-spark_2.10-2.1.0.Beta3.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\db\\maxmind-db\\1.0.0\\maxmind-db-1.0.0.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\geoip2\\geoip2\\2.1.0\\geoip2-2.1.0.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-hive_2.10\\1.3.0-cdh5.4.5\\spark-hive_2.10-1.3.0-cdh5.4.5.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-yarn_2.10\\1.3.0-cdh5.4.5\\spark-yarn_2.10-1.3.0-cdh5.4.5.jar",
+//              "C:\\Users\\801762473\\.m2\\repository\\org\\xerial\\snappy\\snappy-java\\1.0.4.1\\snappy-java-1.0.4.1.jar",
+//              "D:\\Bowen\\InteliJGit\\KafkaStreamingPOC\\target\\netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
+//            //
+//            sparkConf.setJars(jars)
     //      val ssc = new StreamingContext(sparkConf, Seconds(120))
     val sc = new SparkContext(sparkConf)
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)

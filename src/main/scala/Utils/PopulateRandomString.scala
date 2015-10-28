@@ -3,6 +3,8 @@ package Utils
 import com.github.tototoshi.csv._
 import java.io._
 
+import com.typesafe.config.ConfigFactory
+
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 
@@ -19,9 +21,14 @@ object PopulateRandomString extends App {
   val  urls = urlses(getClass.getClassLoader)
 //  println(urls.filterNot(_.toString.contains("ivy")).mkString("\n"))
 
+//  val conf = ConfigFactory.load()
+//  val csvFile = conf.getString("netflow-app.csvSeedFileLocation")
 //  val src = Source.fromFile("src/main/resources/randommaps.csv").getLines
+  val conf = ConfigFactory.load()
+  val csvFile = conf.getString("netflow-app.csvSeedFileLocation")
+  val src = Source.fromFile(csvFile).getLines
   // get the csv from the classpath rather than a source dir
-  val src = Source.fromInputStream(getClass.getResourceAsStream("/randommaps1.csv")).getLines
+//  val src = Source.fromInputStream(getClass.getResourceAsStream("/randommaps.csv")).getLines
 
   // assuming first line is a header
 //  val numLines = Source.fromFile("src/main/resources/randommaps.csv").getLines.size
@@ -35,14 +42,14 @@ object PopulateRandomString extends App {
 //  var lineArr:Array[String] = new Array[String](numLines)
   var lineArr = ArrayBuffer[String]()
 
-  println("lineArr length is : " + lineArr.length)
-
   // print file contents, because we have taken from the file with the take(1) above we have
   // effectivly stripped off the file header
   for(l <- src) {
-    println(l)
+//    println(l)
     lineArr += l
   }
+
+  println("lineArr length is : " + lineArr.length)
 
 //  println("lineArr length is : " + lineArr.length)
 //
@@ -73,13 +80,19 @@ object PopulateRandomString extends App {
   }
 
   def headerLine: String = {
-    val src = Source.fromInputStream(getClass.getResourceAsStream("/randommaps.csv")).getLines
+//    val src = Source.fromInputStream(getClass.getResourceAsStream("/randommaps.csv")).getLines
+    val conf = ConfigFactory.load()
+    val csvFile = conf.getString("netflow-app.csvSeedFileLocation")
+    val src = Source.fromFile(csvFile).getLines
     val headerLine = src.take(1).next
     headerLine // return headerLine
   }
-
+//
   def numLines(): Int = {
-    val numLines = Source.fromFile("src/main/resources/randommaps.csv").getLines.size
+//    val numLines = Source.fromFile("src/main/resources/randommaps.csv").getLines.size
+    val conf = ConfigFactory.load()
+    val csvFile = conf.getString("netflow-app.csvSeedFileLocation")
+    val numLines = Source.fromFile(csvFile).getLines.size
     return numLines
   }
 
