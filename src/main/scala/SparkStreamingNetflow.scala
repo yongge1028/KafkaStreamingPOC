@@ -78,8 +78,9 @@ object SparkStreamingNetflow extends Serializable {
       val producer = new Producer[String, String](config)
       partitionOfRecords.foreach(row => {
         //        val msg = row.toString
-        println("About to send Hello Paul")
-        val msg = "Hello Paul"
+        println("About to send message")
+//        val msg = "Hello Paul"
+        val msg = row.toString
         this.synchronized {
           producer.send(new KeyedMessage[String, String]("netflow-output", msg))
         }
@@ -131,13 +132,13 @@ object SparkStreamingNetflow extends Serializable {
     sparkConf.set("spark.serializer", classOf[KryoSerializer].getName) // Enable the Kryo serialization support with Spark for ES
     sparkConf.set("es.index.auto.create", "true") // set to auto create the ES index
     sparkConf.set("es.nodes", "192.168.160.72") // note, for multiple elastisearch nodes specify a csv list
-    //    sparkConf.setMaster("local[4]") // this specifies the master to be run in this IDe i.e. locally with 2 threads
-    sparkConf.setMaster("spark://vm-cluster-node2:7077")
+    sparkConf.setMaster("local[4]") // this specifies the master to be run in this IDe i.e. locally with 2 threads
+//    sparkConf.setMaster("spark://vm-cluster-node2:7077")
     sparkConf.set("spark.executor.memory", "512m")
     sparkConf.set("spark.driver.memory", "512m")
     sparkConf.set("spark.cores.max", "4")
     // Below line is the hostname or IP address for the driver to listen on. This is used for communicating with the executors and the standalone Master.
-    sparkConf.set("spark.driver.host", "192.168.56.1")
+//    sparkConf.set("spark.driver.host", "192.168.56.1")
     //    sparkConf.setJars(jars)
     //    sparkConf.setMaster("spark://bow-grd-nn-02.bowdev.net:7077")
     //    sparkConf.setMaster("spark://quickstart.cloudera:7077")
@@ -214,7 +215,7 @@ object SparkStreamingNetflow extends Serializable {
           "starttime duration protocol srcaddr dir dstaddr dport state stos dtos totpkts totbytes country"
         }
         else {
-          "starttime duration protocol srcaddr dir dstaddr dport state stos dtos totpkts totbytes"
+          "starttime duration protocol srcaddr dir dstaddr dport state stos dtos totpkts totbytes flow"
         }
       }
 
@@ -232,7 +233,7 @@ object SparkStreamingNetflow extends Serializable {
       // Convert records of the RDD (people) to Rows.
       // below the implicit conversion from datatypes can be done e.g. p(0).toInt if needed
       val rowRDD = rdd.map(_.split(",")).map(p =>
-        Row(p(0), p(1).trim, p(2), p(3), p(4), p(5), p(6), p(7), p(8), p(9), p(10), p(11))
+        Row(p(0), p(1).trim, p(2), p(3), p(4), p(5), p(6), p(7), p(8), p(9), p(10), p(11), p(12))
       )
 
       // Apply the schema to the RDD.
@@ -243,20 +244,30 @@ object SparkStreamingNetflow extends Serializable {
 
       // SQL statements can be run by using the sql methods provided by sqlContext.
       //      val results = sqlContext.sql("SELECT dir FROM people where dir = '->'")
-      peopleDataFrame.foreach(sqlToRun => {
-//        println("sqlToRun is : " + sqlToRun)
-        val results = sqlContext.sql(sqlToRun(0).toString) // run just the first SQL in the list for now
-        // convert the DataFrame to RDD[String]
+
+      alertSQLList.toArray().foreach( sqlToRun => {
+        println("Running SQL Alert: " + sqlToRun)
+        val results = sqlContext.sql(sqlToRun.toString)
         val alert = results.map(r => r.toString())
-        alert.saveAsTextFile("alert")
-        // iterate around the RDD[String] and send to kafka
+        println("Number of results in alert is : " + alert.count())
+//        alert.saveAsTextFile("alert")
         sendToKafka(alert)
-      }
+      })
+
+//      alertSQLList.toList.foreach(sqlToRun => {
+//        println("sqlToRun is : " + sqlToRun)
+//        val results = sqlContext.sql(sqlToRun)
+//        // convert the DataFrame to RDD[String]
+//        val alert = results.map(r => r.toString())
+//        alert.saveAsTextFile("alert")
+//        // iterate around the RDD[String] and send to kafka
+//        sendToKafka(alert)
+//      }
         // The results of SQL queries are DataFrames and support all the normal RDD operations.
         // The columns of a row in the result can be accessed by field index or by field name.
         //        results.map(t => "Name: " + t(0)).collect().foreach(println)
 
-      )
+//      )
       //      val results = sqlContext.sql(alertSQL)
       //      // convert the DataFrame to RDD[String]
       //      val alert = results.map(r => r.toString())
