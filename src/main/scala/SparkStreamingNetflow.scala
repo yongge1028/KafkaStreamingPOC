@@ -1,50 +1,20 @@
-import java.util.Properties
+import java.text.SimpleDateFormat
+import java.util.{Calendar, Properties}
 
+//import SQLContextSingleton
 import com.typesafe.config.ConfigFactory
 import kafka.producer.{KeyedMessage, Producer, ProducerConfig}
-import org.apache.hadoop.io.{MapWritable, NullWritable}
+import org.apache.spark.SparkConf
 import org.apache.spark.examples.sql.hive.HiveFromSpark.Record
 import org.apache.spark.rdd.RDD
-import org.apache.spark.streaming.dstream.DStream
-import org.apache.spark.{SparkContext, SparkConf}
 import org.apache.spark.serializer.KryoSerializer
-import org.apache.spark.sql.SQLContext
-import org.elasticsearch.spark.rdd.EsSpark
-
-//import org.apache.spark.sql.SQLContext
+import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.kafka.KafkaUtils
-import org.apache.spark.streaming.{Time, Seconds, StreamingContext}
-import java.util.Calendar
-import java.text.SimpleDateFormat
-import org.elasticsearch.spark._
-import org.apache.spark.SparkContext._
-import org.apache.spark.sql._
-import org.elasticsearch.spark.sql._
-import scala.collection.JavaConversions._
+import org.apache.spark.streaming.{Seconds, StreamingContext, Time}
 
 /**
- * Created by faganpe on 23/02/15.
+ * Created by 801762473 on 27/10/2015.
  */
-
-/** Case class for converting RDD to DataFrame */
-// Define the schema using a case class.
-// Note: Case classes in Scala 2.10 can support only up to 22 fields. To work around this limit,
-// you can use custom classes that implement the Product interface.
-case class Record(starttime: String)
-
-/** Lazily instantiated singleton instance of SQLContext */
-object SQLContextSingleton {
-  @transient private var instance: SQLContext = null
-
-  // Instantiate SQLContext on demand
-  def getInstance(sparkContext: SparkContext): SQLContext = synchronized {
-    if (instance == null) {
-      instance = new SQLContext(sparkContext)
-    }
-    instance
-  }
-}
-
 object SparkStreamingNetflow extends Serializable {
 
   def sendToKafka(enrichKafkaLine: DStream[String]): Unit = {
@@ -107,9 +77,10 @@ object SparkStreamingNetflow extends Serializable {
       val config = new ProducerConfig(props)
       val producer = new Producer[String, String](config)
       partitionOfRecords.foreach(row => {
-//        val msg = row.toString
-        println("About to send Hello Paul")
-        val msg = "Hello Paul"
+        //        val msg = row.toString
+        println("About to send message")
+//        val msg = "Hello Paul"
+        val msg = row.toString
         this.synchronized {
           producer.send(new KeyedMessage[String, String]("netflow-output", msg))
         }
@@ -118,7 +89,7 @@ object SparkStreamingNetflow extends Serializable {
     }
 
     // ********** End of write to Apache Kafka **********
-    }
+  }
 
   def main(args: Array[String]) {
 
@@ -143,7 +114,7 @@ object SparkStreamingNetflow extends Serializable {
     // the jars array below is only needed when running on an IDE when the IDE points to a spark master
     // i.e. when the spark conf is something like this sparkConf.setMaster("spark://an-ip-address-or-hostname:7077")
     val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
-//      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.0\\kafka_2.10-0.8.0.jar",
+      //      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.0\\kafka_2.10-0.8.0.jar",
       "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.2.0\\kafka_2.10-0.8.2.0.jar",
       "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-core_2.10\\1.3.0-cdh5.4.5\\spark-core_2.10-1.3.0-cdh5.4.5.jar",
       "C:\\Users\\801762473\\.m2\\repository\\com\\101tec\\zkclient\\0.3\\zkclient-0.3.jar",
@@ -161,14 +132,14 @@ object SparkStreamingNetflow extends Serializable {
     sparkConf.set("spark.serializer", classOf[KryoSerializer].getName) // Enable the Kryo serialization support with Spark for ES
     sparkConf.set("es.index.auto.create", "true") // set to auto create the ES index
     sparkConf.set("es.nodes", "192.168.160.72") // note, for multiple elastisearch nodes specify a csv list
-//    sparkConf.setMaster("local[4]") // this specifies the master to be run in this IDe i.e. locally with 2 threads
-    sparkConf.setMaster("spark://vm-cluster-node2:7077")
+    sparkConf.setMaster("local[4]") // this specifies the master to be run in this IDe i.e. locally with 2 threads
+//    sparkConf.setMaster("spark://vm-cluster-node2:7077")
     sparkConf.set("spark.executor.memory", "512m")
     sparkConf.set("spark.driver.memory", "512m")
     sparkConf.set("spark.cores.max", "4")
     // Below line is the hostname or IP address for the driver to listen on. This is used for communicating with the executors and the standalone Master.
-    sparkConf.set("spark.driver.host", "192.168.56.1")
-//    sparkConf.setJars(jars)
+//    sparkConf.set("spark.driver.host", "192.168.56.1")
+    //    sparkConf.setJars(jars)
     //    sparkConf.setMaster("spark://bow-grd-nn-02.bowdev.net:7077")
     //    sparkConf.setMaster("spark://quickstart.cloudera:7077")
     sparkConf.setAppName("netflowkafka")
@@ -203,15 +174,15 @@ object SparkStreamingNetflow extends Serializable {
 
     /* Below only save rdd's with actual data in them and avoid the - java.lang.UnsupportedOperationException: empty collection
        exception being raised */
-//    enrichLine.saveAsTextFiles("hdfs://bow-grd-nn-01.bowdev.net/user/faganp/spark-streaming/netflow_records", "/" + hdfsPartitionDir)
-//    enrichLine.foreachRDD( rdd => {
-//      if(!rdd.partitions.isEmpty)
-//        enrichLine.saveAsTextFiles("netflow_records", "/" + hdfsPartitionDir)
-//    })
+    //    enrichLine.saveAsTextFiles("hdfs://bow-grd-nn-01.bowdev.net/user/faganp/spark-streaming/netflow_records", "/" + hdfsPartitionDir)
+    //    enrichLine.foreachRDD( rdd => {
+    //      if(!rdd.partitions.isEmpty)
+    //        enrichLine.saveAsTextFiles("netflow_records", "/" + hdfsPartitionDir)
+    //    })
 
     // ********** Start of rules based engine **********
 
-     // convert csv RDD to space based RDD for below code
+    // convert csv RDD to space based RDD for below code
     val spaceEnrichLine = enrichLine.map(x => x.split(","))
 
     enrichLine.foreachRDD((rdd: RDD[String], time: Time) => {
@@ -220,7 +191,7 @@ object SparkStreamingNetflow extends Serializable {
       import sqlContext.implicits._
 
       // Convert RDD[String] to RDD[case class] to DataFrame
-//      val wordsDataFrame = rdd.map(w => Record(w.split(",").toString)).toDF()
+      //      val wordsDataFrame = rdd.map(w => Record(w.split(",").toString)).toDF()
       val wordsDataFrame = rdd.map(w => Record(w)).toDF()
 
       // Register as table
@@ -234,7 +205,7 @@ object SparkStreamingNetflow extends Serializable {
     })
 
     // sc is an existing SparkContext.
-//    val sqlContext = new org.apache.spark.sql.SQLContext(ssc)
+    //    val sqlContext = new org.apache.spark.sql.SQLContext(ssc)
     // Start of Comment Out
     enrichLine.foreachRDD((rdd: RDD[String], time: Time) => {
       val sqlContext = SQLContextSingletonNetFlow.getInstance(rdd.sparkContext)
@@ -244,7 +215,7 @@ object SparkStreamingNetflow extends Serializable {
           "starttime duration protocol srcaddr dir dstaddr dport state stos dtos totpkts totbytes country"
         }
         else {
-          "starttime duration protocol srcaddr dir dstaddr dport state stos dtos totpkts totbytes"
+          "starttime duration protocol srcaddr dir dstaddr dport state stos dtos totpkts totbytes flow"
         }
       }
 
@@ -252,7 +223,7 @@ object SparkStreamingNetflow extends Serializable {
       import org.apache.spark.sql.Row;
 
       // Import Spark SQL data types
-      import org.apache.spark.sql.types.{StructType,StructField,StringType};
+      import org.apache.spark.sql.types.{StringType, StructField, StructType};
 
       // Generate the schema based on the string of schema
       val schema =
@@ -262,7 +233,7 @@ object SparkStreamingNetflow extends Serializable {
       // Convert records of the RDD (people) to Rows.
       // below the implicit conversion from datatypes can be done e.g. p(0).toInt if needed
       val rowRDD = rdd.map(_.split(",")).map(p =>
-        Row(p(0), p(1).trim, p(2), p(3), p(4), p(5), p(6), p(7), p(8), p(9), p(10), p(11))
+        Row(p(0), p(1).trim, p(2), p(3), p(4), p(5), p(6), p(7), p(8), p(9), p(10), p(11), p(12))
       )
 
       // Apply the schema to the RDD.
@@ -272,31 +243,41 @@ object SparkStreamingNetflow extends Serializable {
       peopleDataFrame.registerTempTable("people")
 
       // SQL statements can be run by using the sql methods provided by sqlContext.
-//      val results = sqlContext.sql("SELECT dir FROM people where dir = '->'")
-      alertSQLList.toList.foreach(sqlToRun => {
-        println("sqlToRun is : " + sqlToRun)
-        val results = sqlContext.sql(sqlToRun)
-        // convert the DataFrame to RDD[String]
+      //      val results = sqlContext.sql("SELECT dir FROM people where dir = '->'")
+
+      alertSQLList.toArray().foreach( sqlToRun => {
+        println("Running SQL Alert: " + sqlToRun)
+        val results = sqlContext.sql(sqlToRun.toString)
         val alert = results.map(r => r.toString())
-        alert.saveAsTextFile("alert")
-        // iterate around the RDD[String] and send to kafka
+        println("Number of results in alert is : " + alert.count())
+//        alert.saveAsTextFile("alert")
         sendToKafka(alert)
-      }
+      })
+
+//      alertSQLList.toList.foreach(sqlToRun => {
+//        println("sqlToRun is : " + sqlToRun)
+//        val results = sqlContext.sql(sqlToRun)
+//        // convert the DataFrame to RDD[String]
+//        val alert = results.map(r => r.toString())
+//        alert.saveAsTextFile("alert")
+//        // iterate around the RDD[String] and send to kafka
+//        sendToKafka(alert)
+//      }
         // The results of SQL queries are DataFrames and support all the normal RDD operations.
         // The columns of a row in the result can be accessed by field index or by field name.
-//        results.map(t => "Name: " + t(0)).collect().foreach(println)
+        //        results.map(t => "Name: " + t(0)).collect().foreach(println)
 
-      )
-//      val results = sqlContext.sql(alertSQL)
-//      // convert the DataFrame to RDD[String]
-//      val alert = results.map(r => r.toString())
-//      alert.saveAsTextFile("alert")
-//      // iterate around the RDD[String] and send to kafka
-//      sendToKafka(alert)
-//
-//      // The results of SQL queries are DataFrames and support all the normal RDD operations.
-//      // The columns of a row in the result can be accessed by field index or by field name.
-//      results.map(t => "Name: " + t(0)).collect().foreach(println)
+//      )
+      //      val results = sqlContext.sql(alertSQL)
+      //      // convert the DataFrame to RDD[String]
+      //      val alert = results.map(r => r.toString())
+      //      alert.saveAsTextFile("alert")
+      //      // iterate around the RDD[String] and send to kafka
+      //      sendToKafka(alert)
+      //
+      //      // The results of SQL queries are DataFrames and support all the normal RDD operations.
+      //      // The columns of a row in the result can be accessed by field index or by field name.
+      //      results.map(t => "Name: " + t(0)).collect().foreach(println)
 
     })
     // End of Comment Out
@@ -308,65 +289,65 @@ object SparkStreamingNetflow extends Serializable {
     // prepare the elasticsearch DStream[String] with json formated data, p represents the whole enriched
     // netflow line, note: if you click or highlight a word in the code Ctrl-j in Intelij will tell you
     // the type of Scala object
-//    val enrichLineES = enrichLine.map(p => "{\"StartTime\" : " + "\"" + p.split(",")(0) + "\"" + " , " +
-//                                            "\"Dur\" : " + "\"" + p.split(",")(1) + "\"" + " , " +
-//                                            "\"Proto\" : " + "\"" + p.split(",")(2) + "\"" + " , " +
-//                                            "\"SrcAddr\" : " + "\"" + p.split(",")(3) + "\"" + " , " +
-//                                            "\"Dir\" : " + "\"" + p.split(",")(5) + "\"" + " , " +
-//                                            "\"DstAddr\" : " + "\"" + p.split(",")(6) + "\"" + " , " +
-//                                            "\"Dport\" : " + "\"" + p.split(",")(7) + "\"" + " , " +
-//                                            "\"State\" : " + "\"" + p.split(",")(8) + "\"" + " , " +
-//                                            "\"sTos\" : " + "\"" + p.split(",")(9) + "\"" + " , " +
-//                                            "\"sTos\" : " + "\"" + p.split(",")(10) + "\"" + " , " +
-//                                            "\"dTos\" : " + "\"" + p.split(",")(11) + "\"" + " , " +
-//                                            "\"TotPkts\" : " + "\"" + p.split(",")(12) + "\"" + " , " +
-//                                            "\"TotBytes\" : " + "\"" + p.split(",")(13) + "\"" + " , " +
-//                                            "\"Label\" : " + "\"" + p.split(",")(14) + "\"" + " , " +
-//                                            "\"Country\" : " + "\"" + p.split(",")(3) + "\"}")
-//
-//    enrichLineES.foreachRDD { rdd =>
-//      if(!rdd.partitions.isEmpty) {
-//        val sparkConf = rdd.context
-//        val sqlContext = new SQLContext(sparkConf)
-//        val sendToEs = sqlContext.jsonRDD(rdd)
-//        sendToEs.saveToEs(elasticResource)
-//      }
-//    }
+    //    val enrichLineES = enrichLine.map(p => "{\"StartTime\" : " + "\"" + p.split(",")(0) + "\"" + " , " +
+    //                                            "\"Dur\" : " + "\"" + p.split(",")(1) + "\"" + " , " +
+    //                                            "\"Proto\" : " + "\"" + p.split(",")(2) + "\"" + " , " +
+    //                                            "\"SrcAddr\" : " + "\"" + p.split(",")(3) + "\"" + " , " +
+    //                                            "\"Dir\" : " + "\"" + p.split(",")(5) + "\"" + " , " +
+    //                                            "\"DstAddr\" : " + "\"" + p.split(",")(6) + "\"" + " , " +
+    //                                            "\"Dport\" : " + "\"" + p.split(",")(7) + "\"" + " , " +
+    //                                            "\"State\" : " + "\"" + p.split(",")(8) + "\"" + " , " +
+    //                                            "\"sTos\" : " + "\"" + p.split(",")(9) + "\"" + " , " +
+    //                                            "\"sTos\" : " + "\"" + p.split(",")(10) + "\"" + " , " +
+    //                                            "\"dTos\" : " + "\"" + p.split(",")(11) + "\"" + " , " +
+    //                                            "\"TotPkts\" : " + "\"" + p.split(",")(12) + "\"" + " , " +
+    //                                            "\"TotBytes\" : " + "\"" + p.split(",")(13) + "\"" + " , " +
+    //                                            "\"Label\" : " + "\"" + p.split(",")(14) + "\"" + " , " +
+    //                                            "\"Country\" : " + "\"" + p.split(",")(3) + "\"}")
+    //
+    //    enrichLineES.foreachRDD { rdd =>
+    //      if(!rdd.partitions.isEmpty) {
+    //        val sparkConf = rdd.context
+    //        val sqlContext = new SQLContext(sparkConf)
+    //        val sendToEs = sqlContext.jsonRDD(rdd)
+    //        sendToEs.saveToEs(elasticResource)
+    //      }
+    //    }
 
     // ********** End of write to Elasticsearch **********
 
     // ********** Start of write to Apache Kafka **********
 
-//    enrichLine.foreachRDD { rdd =>
-//      rdd.foreachPartition { partitionOfRecords =>
-//        val props = new Properties()
-////        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
-//        props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
-//        props.put("serializer.class", "kafka.serializer.StringEncoder")
-//
-//        // some properties we might wish to set commented out below
-//        //      props.put("compression.codec", codec.toString)
-//        //      props.put("producer.type", "sync")
-//        //      props.put("batch.num.messages", BatchSize.toString)
-//        //      props.put("message.send.max.retries", maxRetries.toString)
-//        //      props.put("request.required.acks", "-1")
-//
-//        val config = new ProducerConfig(props)
-//        val producer = new Producer[String, String](config)
-//        partitionOfRecords.foreach(row => {
-//          val msg = row.toString
-//          this.synchronized {
-//            producer.send(new KeyedMessage[String, String]("netflow-output", msg))
-//          }
-//        })
-//        producer.close()
-//      }
-//    }
+    //    enrichLine.foreachRDD { rdd =>
+    //      rdd.foreachPartition { partitionOfRecords =>
+    //        val props = new Properties()
+    ////        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
+    //        props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
+    //        props.put("serializer.class", "kafka.serializer.StringEncoder")
+    //
+    //        // some properties we might wish to set commented out below
+    //        //      props.put("compression.codec", codec.toString)
+    //        //      props.put("producer.type", "sync")
+    //        //      props.put("batch.num.messages", BatchSize.toString)
+    //        //      props.put("message.send.max.retries", maxRetries.toString)
+    //        //      props.put("request.required.acks", "-1")
+    //
+    //        val config = new ProducerConfig(props)
+    //        val producer = new Producer[String, String](config)
+    //        partitionOfRecords.foreach(row => {
+    //          val msg = row.toString
+    //          this.synchronized {
+    //            producer.send(new KeyedMessage[String, String]("netflow-output", msg))
+    //          }
+    //        })
+    //        producer.close()
+    //      }
+    //    }
 
     // ********** End of write to Apache Kafka **********
 
     ssc.start()
     ssc.awaitTermination()
-    }
+  }
 
 }
