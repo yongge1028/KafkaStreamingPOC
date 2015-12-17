@@ -1,5 +1,8 @@
+import java.{util, io}
 import java.text.SimpleDateFormat
 import java.util.{Calendar, Properties}
+
+import kafka.serializer.StringDecoder
 
 //import SQLContextSingleton
 import com.typesafe.config.ConfigFactory
@@ -27,7 +30,8 @@ object SparkStreamingNetflow extends Serializable {
       rdd.foreachPartition { partitionOfRecords =>
         val props = new Properties()
         //        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
-        props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
+//        props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
+        props.put("metadata.broker.list", "localhost:9092")
         props.put("serializer.class", "kafka.serializer.StringEncoder")
 
         // some properties we might wish to set commented out below
@@ -43,7 +47,7 @@ object SparkStreamingNetflow extends Serializable {
           val msg = row.toString
           println(msg)
           this.synchronized {
-            producer.send(new KeyedMessage[String, String]("netflow-output", msg))
+            producer.send(new KeyedMessage[String, String]("netflow-output2", msg))
           }
         })
         producer.close()
@@ -64,7 +68,8 @@ object SparkStreamingNetflow extends Serializable {
       println("In the sendToKafka RDD partitionOfRecords")
       val props = new Properties()
       //        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
-      props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
+//      props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
+      props.put("metadata.broker.list", "localhost:9092")
       props.put("serializer.class", "kafka.serializer.StringEncoder")
       props.put("producer.type", "async")
       // some properties we might wish to set commented out below
@@ -81,11 +86,16 @@ object SparkStreamingNetflow extends Serializable {
         println("About to send message")
 //        val msg = "Hello Paul"
         val msg = row.toString
+        println("netflow-output2 : " + msg)
         this.synchronized {
-          producer.send(new KeyedMessage[String, String]("netflow-output", msg))
+          producer.send(new KeyedMessage[String, String]("netflow-output2", msg))
         }
       })
       producer.close()
+    }
+
+    def sendToKafka(enrichLine: DStream[_ >: String with (String, String) <: io.Serializable]): Unit = {
+
     }
 
     // ********** End of write to Apache Kafka **********
@@ -113,22 +123,22 @@ object SparkStreamingNetflow extends Serializable {
     //    val sparkConf = new SparkConf().setMaster("local[2]").setAppName("netflowkafka")
     // the jars array below is only needed when running on an IDE when the IDE points to a spark master
     // i.e. when the spark conf is something like this sparkConf.setMaster("spark://an-ip-address-or-hostname:7077")
-    val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
-      //      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.0\\kafka_2.10-0.8.0.jar",
-      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.2.0\\kafka_2.10-0.8.2.0.jar",
-      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-core_2.10\\1.3.0-cdh5.4.5\\spark-core_2.10-1.3.0-cdh5.4.5.jar",
-      "C:\\Users\\801762473\\.m2\\repository\\com\\101tec\\zkclient\\0.3\\zkclient-0.3.jar",
-      "C:\\Users\\801762473\\.m2\\repository\\com\\yammer\\metrics\\metrics-core\\2.2.0\\metrics-core-2.2.0.jar",
-      "C:\\Users\\801762473\\.m2\\repository\\com\\esotericsoftware\\kryo\\kryo\\2.21\\kryo-2.21.jar",
-      "C:\\Users\\801762473\\.m2\\repository\\org\\elasticsearch\\elasticsearch-spark_2.10\\2.1.0.Beta3\\elasticsearch-spark_2.10-2.1.0.Beta3.jar",
-      "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\db\\maxmind-db\\1.0.0\\maxmind-db-1.0.0.jar",
-      "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\geoip2\\geoip2\\2.1.0\\geoip2-2.1.0.jar",
-      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-hive_2.10\\1.3.0-cdh5.4.5\\spark-hive_2.10-1.3.0-cdh5.4.5.jar",
-      "D:\\Bowen_Raw_Source\\IntelijProjects\\KafkaStreamingPOC\\target\\netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
+//    val jars = Array("C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-streaming-kafka_2.10\\1.3.0-cdh5.4.5\\spark-streaming-kafka_2.10-1.3.0-cdh5.4.5.jar",
+//      //      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.0\\kafka_2.10-0.8.0.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\kafka\\kafka_2.10\\0.8.2.0\\kafka_2.10-0.8.2.0.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-core_2.10\\1.3.0-cdh5.4.5\\spark-core_2.10-1.3.0-cdh5.4.5.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\com\\101tec\\zkclient\\0.3\\zkclient-0.3.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\com\\yammer\\metrics\\metrics-core\\2.2.0\\metrics-core-2.2.0.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\com\\esotericsoftware\\kryo\\kryo\\2.21\\kryo-2.21.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\org\\elasticsearch\\elasticsearch-spark_2.10\\2.1.0.Beta3\\elasticsearch-spark_2.10-2.1.0.Beta3.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\db\\maxmind-db\\1.0.0\\maxmind-db-1.0.0.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\com\\maxmind\\geoip2\\geoip2\\2.1.0\\geoip2-2.1.0.jar",
+//      "C:\\Users\\801762473\\.m2\\repository\\org\\apache\\spark\\spark-hive_2.10\\1.3.0-cdh5.4.5\\spark-hive_2.10-1.3.0-cdh5.4.5.jar",
+//      "D:\\Bowen_Raw_Source\\IntelijProjects\\KafkaStreamingPOC\\target\\netflow-streaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar")
 
     // setup Spark
     val sparkConf = new SparkConf()
-    sparkConf.setJars(jars)
+//    sparkConf.setJars(jars)
     sparkConf.set("spark.serializer", classOf[KryoSerializer].getName) // Enable the Kryo serialization support with Spark for ES
     sparkConf.set("es.index.auto.create", "true") // set to auto create the ES index
     sparkConf.set("es.nodes", "192.168.160.72") // note, for multiple elastisearch nodes specify a csv list
@@ -147,30 +157,45 @@ object SparkStreamingNetflow extends Serializable {
     //    sparkConf.set("spark.driver.memory", "4g")
     //    sparkConf.set("spark.driver.maxResultSize", "1g") // this is the default
     //    sparkConf.setJars(jars)
-    val ssc = new StreamingContext(sparkConf, Seconds(15))
+    val ssc = new StreamingContext(sparkConf, Seconds(5))
 
     //    ssc.checkpoint("hdfs://bow-grd-nn-01.bowdev.net/user/faganp/spark_checkpoint") // specify an hdfs directory if working on an hadoop platform
     ssc.checkpoint("spark_checkpoint") // specify an hdfs directory if working on an hadoop platform
 
     // start to process the lines
-    val topicMap = topics.split(",").map((_, numThreads.toInt)).toMap
-    val lines = KafkaUtils.createStream(ssc, zkQuorum, group, topicMap).map(_._2) // we may need to set the storage policy here
+//    val topicMap = topics.split(",").map((_, numThreads.toInt)).toMap
+//    val lines = KafkaUtils.createStream(ssc, zkQuorum, group, topicMap).map(_._2) // we may need to set the storage policy here
+
+//    val topicsSet = topics.split(",").toSet
+    val topicsSet = Set("netflow-input")
+    val kafkaParams = Map[String, String]("metadata.broker.list" -> "localhost:9092")
+    val lines = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](
+      ssc, kafkaParams, topicsSet)
+
     //    val filteredLinesByLength = lines.filter(_.length > 1)
     //    val enrichLine = lines.map(line => line.split(",")(0).trim + line + "," + MaxMindSingleton.getInstance().getCountry(line.split(",")(3).trim))
 
     // set the enrichLine val based on if we want Contry Enrichment or not
+
     val enrichLine  = {
       if (countryEnrichment == true) {
-        lines.map(line => line + "," + MaxMindSingleton.getInstance().getCountry(line.split(",")(3).trim))
+        lines.map(line => line + "," + MaxMindSingleton.getInstance().getCountry(line._2.split(",")(3).trim))
+//        lines.map(line => line)
       }
       else {
-        lines.map(line => line)
+        lines.map(line => line._2)
       }
     }
 
     enrichLine.print()
+    enrichLine.print()
+    enrichLine.print()
+    enrichLine.print()
+    enrichLine.print()
+    enrichLine.print()
+    enrichLine.print()
 
-    sendToKafka(enrichLine)
+//    sendToKafka(enrichLine._1)
 
     /* Below only save rdd's with actual data in them and avoid the - java.lang.UnsupportedOperationException: empty collection
        exception being raised */
@@ -337,7 +362,7 @@ object SparkStreamingNetflow extends Serializable {
     //        partitionOfRecords.foreach(row => {
     //          val msg = row.toString
     //          this.synchronized {
-    //            producer.send(new KeyedMessage[String, String]("netflow-output", msg))
+    //            producer.send(new KeyedMessage[String, String]("netflow-output2", msg))
     //          }
     //        })
     //        producer.close()
