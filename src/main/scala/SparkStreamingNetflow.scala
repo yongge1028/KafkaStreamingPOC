@@ -4,6 +4,8 @@ import java.util.{Calendar, Properties}
 
 import kafka.serializer.StringDecoder
 
+import scala.util.matching.Regex
+
 //import SQLContextSingleton
 import com.typesafe.config.ConfigFactory
 import kafka.producer.{KeyedMessage, Producer, ProducerConfig}
@@ -31,7 +33,7 @@ object SparkStreamingNetflow extends Serializable {
         val props = new Properties()
         //        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
 //        props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
-        props.put("metadata.broker.list", "localhost:9092")
+        props.put("metadata.broker.list", "vm-cluster-node1:9092,vm-cluster-node2:9092,vm-cluster-node3:9092")
         props.put("serializer.class", "kafka.serializer.StringEncoder")
 
         // some properties we might wish to set commented out below
@@ -45,9 +47,9 @@ object SparkStreamingNetflow extends Serializable {
         val producer = new Producer[String, String](config)
         partitionOfRecords.foreach(row => {
           val msg = row.toString
-          println(msg)
+          println("DStream : " + msg)
           this.synchronized {
-            producer.send(new KeyedMessage[String, String]("netflow-output2", msg))
+            producer.send(new KeyedMessage[String, String]("proxy-output", msg))
           }
         })
         producer.close()
@@ -69,7 +71,7 @@ object SparkStreamingNetflow extends Serializable {
       val props = new Properties()
       //        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
 //      props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
-      props.put("metadata.broker.list", "localhost:9092")
+      props.put("metadata.broker.list", "vm-cluster-node1:9092,vm-cluster-node2:9092,vm-cluster-node3:9092")
       props.put("serializer.class", "kafka.serializer.StringEncoder")
       props.put("producer.type", "async")
       // some properties we might wish to set commented out below
@@ -86,9 +88,9 @@ object SparkStreamingNetflow extends Serializable {
         println("About to send message")
 //        val msg = "Hello Paul"
         val msg = row.toString
-        println("netflow-output2 : " + msg)
+        println("RDD proxy-output : " + msg)
         this.synchronized {
-          producer.send(new KeyedMessage[String, String]("netflow-output2", msg))
+          producer.send(new KeyedMessage[String, String]("proxy-output", msg))
         }
       })
       producer.close()
@@ -99,6 +101,43 @@ object SparkStreamingNetflow extends Serializable {
     }
 
     // ********** End of write to Apache Kafka **********
+  }
+
+  def lineParse(pArrayWholeLine: Array[String]): Array[String] = {
+    // construct an Array[String] with the correct parsing of the space delimted fields to take into account the "" quoted fields
+    val patternStart = new Regex("^\".*")
+    val patternEnd = new Regex("$\"")
+    val pLength = pArrayWholeLine.length
+
+//    var replaceArray: Array[String] = null
+//    var replaceArrayWholeLine: Array[String] = null
+    var startFlag: Boolean = false
+    val EoLPattern = """.*\"$""".r
+
+    for(myString <- pArrayWholeLine) {
+      println(myString)
+      if (myString.matches("^\".*")) {
+        println("myString found is : " + myString)
+//        replaceArray :+ myString
+        startFlag = true
+      }
+//      else if (myString.matches(".*12.0\"$")) {
+      else if (myString.matches(".*\"$")) {
+        println("eol myString found is : " + myString)
+//        replaceArray :+ myString
+        startFlag = false
+      }
+//      else {
+//        if (startFlag) {
+////          replaceArray :+ myString
+//        }
+//        else {
+////          replaceArrayWholeLine :+ replaceArray
+//        }
+//      }
+    }
+//    println("Returned whole line array is : " + replaceArrayWholeLine.deep.mkString("\n"))
+    return pArrayWholeLine // for now
   }
 
   def main(args: Array[String]) {
@@ -157,7 +196,7 @@ object SparkStreamingNetflow extends Serializable {
     //    sparkConf.set("spark.driver.memory", "4g")
     //    sparkConf.set("spark.driver.maxResultSize", "1g") // this is the default
     //    sparkConf.setJars(jars)
-    val ssc = new StreamingContext(sparkConf, Seconds(5))
+    val ssc = new StreamingContext(sparkConf, Seconds(1))
 
     //    ssc.checkpoint("hdfs://bow-grd-nn-01.bowdev.net/user/faganp/spark_checkpoint") // specify an hdfs directory if working on an hadoop platform
     ssc.checkpoint("spark_checkpoint") // specify an hdfs directory if working on an hadoop platform
@@ -168,7 +207,7 @@ object SparkStreamingNetflow extends Serializable {
 
 //    val topicsSet = topics.split(",").toSet
     val topicsSet = Set("netflow-input")
-    val kafkaParams = Map[String, String]("metadata.broker.list" -> "localhost:9092")
+    val kafkaParams = Map[String, String]("metadata.broker.list" -> "vm-cluster-node1:9092,vm-cluster-node2:9092,vm-cluster-node3:9092")
     val lines = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](
       ssc, kafkaParams, topicsSet)
 
@@ -187,14 +226,6 @@ object SparkStreamingNetflow extends Serializable {
       }
     }
 
-    enrichLine.print()
-    enrichLine.print()
-    enrichLine.print()
-    enrichLine.print()
-    enrichLine.print()
-    enrichLine.print()
-    enrichLine.print()
-
 //    sendToKafka(enrichLine._1)
 
     /* Below only save rdd's with actual data in them and avoid the - java.lang.UnsupportedOperationException: empty collection
@@ -208,26 +239,36 @@ object SparkStreamingNetflow extends Serializable {
     // ********** Start of rules based engine **********
 
     // convert csv RDD to space based RDD for below code
-    val spaceEnrichLine = enrichLine.map(x => x.split(","))
+//    val spaceEnrichLine = enrichLine.map(x => x.split(" "))
 
-    enrichLine.foreachRDD((rdd: RDD[String], time: Time) => {
-      // Get the singleton instance of SQLContext
-      val sqlContext = SQLContextSingleton.getInstance(rdd.sparkContext)
-      import sqlContext.implicits._
-
-      // Convert RDD[String] to RDD[case class] to DataFrame
-      //      val wordsDataFrame = rdd.map(w => Record(w.split(",").toString)).toDF()
-      val wordsDataFrame = rdd.map(w => Record(w)).toDF()
-
-      // Register as table
-      wordsDataFrame.registerTempTable("words")
-
-      // Do word count on table using SQL and print it
-      val wordCountsDataFrame =
-        sqlContext.sql("select count(*) from words")
-      println(s"========= $time =========")
-      wordCountsDataFrame.show()
-    })
+//    enrichLine.foreachRDD((rdd: RDD[String], time: Time) => {
+//      // Get the singleton instance of SQLContext
+//      val sqlContext = SQLContextSingleton.getInstance(rdd.sparkContext)
+//      import sqlContext.implicits._
+//
+//      // Convert RDD[String] to RDD[case class] to DataFrame
+//      //      val wordsDataFrame = rdd.map(w => Record(w.split(",").toString)).toDF()
+//      val wordsDataFrame = rdd.map(w => Record(w)).toDF()
+//
+//      // Register as table
+//      wordsDataFrame.registerTempTable("alerts")
+//
+//      // Do word count on table using SQL and print it
+//      val wordCountsDataFrame =
+//        sqlContext.sql("select count(*) from alerts")
+//      println(s"========= $time =========")
+//      wordCountsDataFrame.show()
+//
+//      alertSQLList.toArray().foreach( sqlToRun => {
+//        println("Running SQL Alert: " + sqlToRun)
+//        val results = sqlContext.sql(sqlToRun.toString)
+//        val alert = results.map(r => r.toString())
+//        println("Number of results in alert is : " + alert.count())
+//        //        alert.saveAsTextFile("alert")
+//        sendToKafka(alert)
+//      })
+//
+//    })
 
     // sc is an existing SparkContext.
     //    val sqlContext = new org.apache.spark.sql.SQLContext(ssc)
@@ -240,7 +281,7 @@ object SparkStreamingNetflow extends Serializable {
           "starttime duration protocol srcaddr dir dstaddr dport state stos dtos totpkts totbytes country"
         }
         else {
-          "starttime duration protocol srcaddr dir dstaddr dport state stos dtos totpkts totbytes flow"
+          "date time time-taken c-ip sc-status s-action sc-bytes cs-bytes cs-method cs-uri-scheme cs-host cs-uri-port cs-uri-path cs-uri-query cs-username cs-auth-group s-supplier-name rs(Content-Type) cs(Referer) cs(User-Agent) sc-filter-result cs-categories x-virus-id s-ip s-action x-exception-id r-ip"
         }
       }
 
@@ -257,18 +298,25 @@ object SparkStreamingNetflow extends Serializable {
 
       // Convert records of the RDD (people) to Rows.
       // below the implicit conversion from datatypes can be done e.g. p(0).toInt if needed
-      val rowRDD = rdd.map(_.split(",")).map(p =>
-        Row(p(0), p(1).trim, p(2), p(3), p(4), p(5), p(6), p(7), p(8), p(9), p(10), p(11), p(12))
+      val rowRDD = rdd.map(_.split(" ")).map(p => {
+        lineParse(p)
+        Row(p(0), p(1).trim, p(2), p(3), p(4), p(5), p(6), p(7), p(8), p(9), p(10), p(11), p(12), p(13), p(14), p(15), p(16), p(17), p(18), p(19), p(20), p(21), p(22), p(23), p(24), p(25), p(26))
+        }
       )
+//
+//      // Apply the schema to the RDD.
+      val alertsDataFrame = sqlContext.createDataFrame(rowRDD, schema)
 
-      // Apply the schema to the RDD.
-      val peopleDataFrame = sqlContext.createDataFrame(rowRDD, schema)
+      // Convert RDD[String] to DataFrame
+      import sqlContext.implicits._
+//      val sscDataFrame = rdd.toDF("word")
 
       // Register the DataFrames as a table.
-      peopleDataFrame.registerTempTable("people")
+      alertsDataFrame.registerTempTable("alerts")
+//      alertsDataFrame.show(10)
 
       // SQL statements can be run by using the sql methods provided by sqlContext.
-      //      val results = sqlContext.sql("SELECT dir FROM people where dir = '->'")
+//      val results = sqlContext.sql("SELECT dir FROM people where dir = '->'")
 
       alertSQLList.toArray().foreach( sqlToRun => {
         println("Running SQL Alert: " + sqlToRun)
@@ -278,32 +326,32 @@ object SparkStreamingNetflow extends Serializable {
 //        alert.saveAsTextFile("alert")
         sendToKafka(alert)
       })
-
-//      alertSQLList.toList.foreach(sqlToRun => {
-//        println("sqlToRun is : " + sqlToRun)
-//        val results = sqlContext.sql(sqlToRun)
-//        // convert the DataFrame to RDD[String]
-//        val alert = results.map(r => r.toString())
-//        alert.saveAsTextFile("alert")
-//        // iterate around the RDD[String] and send to kafka
-//        sendToKafka(alert)
-//      }
-        // The results of SQL queries are DataFrames and support all the normal RDD operations.
-        // The columns of a row in the result can be accessed by field index or by field name.
-        //        results.map(t => "Name: " + t(0)).collect().foreach(println)
-
-//      )
-      //      val results = sqlContext.sql(alertSQL)
-      //      // convert the DataFrame to RDD[String]
-      //      val alert = results.map(r => r.toString())
-      //      alert.saveAsTextFile("alert")
-      //      // iterate around the RDD[String] and send to kafka
-      //      sendToKafka(alert)
-      //
-      //      // The results of SQL queries are DataFrames and support all the normal RDD operations.
-      //      // The columns of a row in the result can be accessed by field index or by field name.
-      //      results.map(t => "Name: " + t(0)).collect().foreach(println)
-
+//
+////      alertSQLList.toList.foreach(sqlToRun => {
+////        println("sqlToRun is : " + sqlToRun)
+////        val results = sqlContext.sql(sqlToRun)
+////        // convert the DataFrame to RDD[String]
+////        val alert = results.map(r => r.toString())
+////        alert.saveAsTextFile("alert")
+////        // iterate around the RDD[String] and send to kafka
+////        sendToKafka(alert)
+////      }
+//        // The results of SQL queries are DataFrames and support all the normal RDD operations.
+//        // The columns of a row in the result can be accessed by field index or by field name.
+//        //        results.map(t => "Name: " + t(0)).collect().foreach(println)
+//
+////      )
+//      //      val results = sqlContext.sql(alertSQL)
+//      //      // convert the DataFrame to RDD[String]
+//      //      val alert = results.map(r => r.toString())
+//      //      alert.saveAsTextFile("alert")
+//      //      // iterate around the RDD[String] and send to kafka
+//      //      sendToKafka(alert)
+//      //
+//      //      // The results of SQL queries are DataFrames and support all the normal RDD operations.
+//      //      // The columns of a row in the result can be accessed by field index or by field name.
+//      //      results.map(t => "Name: " + t(0)).collect().foreach(println)
+//
     })
     // End of Comment Out
 
