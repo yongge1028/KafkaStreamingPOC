@@ -4,6 +4,7 @@ import java.util.{Calendar, Properties}
 
 import kafka.serializer.StringDecoder
 
+import scala.collection.mutable.ArrayBuffer
 import scala.util.matching.Regex
 
 //import SQLContextSingleton
@@ -33,7 +34,7 @@ object SparkStreamingNetflow extends Serializable {
         val props = new Properties()
         //        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
 //        props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
-        props.put("metadata.broker.list", "vm-cluster-node1:9092,vm-cluster-node2:9092,vm-cluster-node3:9092")
+        props.put("metadata.broker.list", "localhost:9092")
         props.put("serializer.class", "kafka.serializer.StringEncoder")
 
         // some properties we might wish to set commented out below
@@ -71,7 +72,7 @@ object SparkStreamingNetflow extends Serializable {
       val props = new Properties()
       //        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
 //      props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
-      props.put("metadata.broker.list", "vm-cluster-node1:9092,vm-cluster-node2:9092,vm-cluster-node3:9092")
+      props.put("metadata.broker.list", "localhost:9092")
       props.put("serializer.class", "kafka.serializer.StringEncoder")
       props.put("producer.type", "async")
       // some properties we might wish to set commented out below
@@ -85,10 +86,10 @@ object SparkStreamingNetflow extends Serializable {
       val producer = new Producer[String, String](config)
       partitionOfRecords.foreach(row => {
         //        val msg = row.toString
-        println("About to send message")
+//        println("About to send message")
 //        val msg = "Hello Paul"
         val msg = row.toString
-        println("RDD proxy-output : " + msg)
+//        println("RDD proxy-output : " + msg)
         this.synchronized {
           producer.send(new KeyedMessage[String, String]("proxy-output", msg))
         }
@@ -103,41 +104,98 @@ object SparkStreamingNetflow extends Serializable {
     // ********** End of write to Apache Kafka **********
   }
 
+//  def lineParse(pStrWholeLine: String): String = {
+//    // construct an Array[String] with the correct parsing of the space delimted fields to take into account the "" quoted fields
+//    //    val patternStart = new Regex("^\".*")
+//    //    val patternEnd = new Regex("$\"")
+//
+//    //    println(pArrayWholeLine.deep.mkString("\n"))
+//
+//    var replaceArrayWholeLine = ArrayBuffer[String]()
+//    var replaceStr: String = ""
+//    var startFlag: Boolean = false
+//    val EoLPattern = """.*\"$""".r
+//
+//    for(myString <- pArrayWholeLine) {
+//      //      println("myString is : " + myString)
+//      if (myString.matches("^\".*")) {
+//        //        println("myString found is : " + myString)
+//        replaceStr += myString
+//        //        replaceArray :+ myString
+//        startFlag = true
+//      }
+//      //      else if (myString.matches(".*12.0\"$")) {
+//      else if (myString.matches(".*\"$")) {
+//        //        println("eol myString found is : " + myString)
+//        //        replaceArray :+ myString
+//        replaceStr += myString
+//        // also add to replaceArrayWholeLine as an elemnt in the array because we have detected the end of the quoted
+//        // string
+//        replaceArrayWholeLine += replaceStr
+//        replaceStr = "" // reset the replace string
+//        startFlag = false
+//      }
+//      else {
+//        if (startFlag) {
+//          replaceStr += myString
+//        }
+//        else {
+//          replaceArrayWholeLine += myString
+//        }
+//      }
+//    }
+//    return pArrayWholeLine
+//  }
+
+//  def lineParse(pArrayWholeLine: Array[String]): Array[String] = {
   def lineParse(pArrayWholeLine: Array[String]): Array[String] = {
     // construct an Array[String] with the correct parsing of the space delimted fields to take into account the "" quoted fields
-    val patternStart = new Regex("^\".*")
-    val patternEnd = new Regex("$\"")
-    val pLength = pArrayWholeLine.length
+//    val patternStart = new Regex("^\".*")
+//    val patternEnd = new Regex("$\"")
 
-//    var replaceArray: Array[String] = null
-//    var replaceArrayWholeLine: Array[String] = null
+//    println(pArrayWholeLine.deep.mkString(" "))
+
+    var replaceArrayWholeLine = ArrayBuffer[String]()
+    var replaceStr: String = ""
     var startFlag: Boolean = false
     val EoLPattern = """.*\"$""".r
 
     for(myString <- pArrayWholeLine) {
-      println(myString)
-      if (myString.matches("^\".*")) {
-        println("myString found is : " + myString)
+//      println("myString is : " + myString)
+      if (myString.matches("^\".*\"$")) {
+        replaceArrayWholeLine += myString + " "
+      }
+      else if (myString.matches("^\".*")) {
+//        println("myString found is : " + myString)
+        replaceStr += myString + " "
 //        replaceArray :+ myString
         startFlag = true
       }
 //      else if (myString.matches(".*12.0\"$")) {
       else if (myString.matches(".*\"$")) {
-        println("eol myString found is : " + myString)
+//        println("eol myString found is : " + myString)
 //        replaceArray :+ myString
+        replaceStr += myString + " "
+        // also add to replaceArrayWholeLine as an elemnt in the array because we have detected the end of the quoted
+        // string
+        replaceArrayWholeLine += replaceStr
+        replaceStr = "" // reset the replace string
         startFlag = false
       }
-//      else {
-//        if (startFlag) {
-////          replaceArray :+ myString
-//        }
-//        else {
-////          replaceArrayWholeLine :+ replaceArray
-//        }
-//      }
+      else {
+        if (startFlag) {
+          replaceStr += myString + " "
+        }
+        else {
+          replaceArrayWholeLine += myString + " "
+        }
+      }
     }
-//    println("Returned whole line array is : " + replaceArrayWholeLine.deep.mkString("\n"))
-    return pArrayWholeLine // for now
+    println("Return array length is : " + replaceArrayWholeLine.length)
+    println(replaceArrayWholeLine)
+    println(pArrayWholeLine.deep.mkString(" "))
+    return replaceArrayWholeLine.toArray
+//    return pArrayWholeLine
   }
 
   def main(args: Array[String]) {
@@ -207,7 +265,7 @@ object SparkStreamingNetflow extends Serializable {
 
 //    val topicsSet = topics.split(",").toSet
     val topicsSet = Set("netflow-input")
-    val kafkaParams = Map[String, String]("metadata.broker.list" -> "vm-cluster-node1:9092,vm-cluster-node2:9092,vm-cluster-node3:9092")
+    val kafkaParams = Map[String, String]("metadata.broker.list" -> "localhost:9092")
     val lines = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](
       ssc, kafkaParams, topicsSet)
 
@@ -281,7 +339,7 @@ object SparkStreamingNetflow extends Serializable {
           "starttime duration protocol srcaddr dir dstaddr dport state stos dtos totpkts totbytes country"
         }
         else {
-          "date time time-taken c-ip sc-status s-action sc-bytes cs-bytes cs-method cs-uri-scheme cs-host cs-uri-port cs-uri-path cs-uri-query cs-username cs-auth-group s-supplier-name rs(Content-Type) cs(Referer) cs(User-Agent) sc-filter-result cs-categories x-virus-id s-ip s-action x-exception-id r-ip"
+          "date time time-taken c-ip sc-status s-action sc-bytes cs-bytes cs-method cs-uri-scheme cs-host cs-uri-port cs-uri-path cs-uri-query cs-username cs-auth-group s-supplier-name rs(Content-Type) cs(Referer) cs(User-Agent) sc-filter-result cscategories x-virus-id s-ip s-action x-exception-id r-ip"
         }
       }
 
@@ -299,8 +357,10 @@ object SparkStreamingNetflow extends Serializable {
       // Convert records of the RDD (people) to Rows.
       // below the implicit conversion from datatypes can be done e.g. p(0).toInt if needed
       val rowRDD = rdd.map(_.split(" ")).map(p => {
-        lineParse(p)
-        Row(p(0), p(1).trim, p(2), p(3), p(4), p(5), p(6), p(7), p(8), p(9), p(10), p(11), p(12), p(13), p(14), p(15), p(16), p(17), p(18), p(19), p(20), p(21), p(22), p(23), p(24), p(25), p(26))
+//      val rowRDD = rdd.map(p => {
+        val p1 = lineParse(p)
+//        Row(p(0), p(1).trim, p(2), p(3), p(4), p(5), p(6), p(7), p(8), p(9), p(10), p(11), p(12), p(13), p(14), p(15), p(16), p(17), p(18), p(19), p(20), p(21), p(22), p(23), p(24), p(25), p(26))
+        Row(p1(0), p1(1).trim, p1(2), p1(3), p1(4), p1(5), p1(6), p1(7), p1(8), p1(9), p1(10), p1(11), p1(12), p1(13), p1(14), p1(15), p1(16), p1(17), p1(18), p1(19), p1(20), p1(21), p1(22), p1(23), p1(24), p1(25), p1(26))
         }
       )
 //
@@ -323,9 +383,9 @@ object SparkStreamingNetflow extends Serializable {
         val results = sqlContext.sql(sqlToRun.toString)
         val alert = results.map(r => r.toString())
         println("Number of results in alert is : " + alert.count())
-//        alert.saveAsTextFile("alert")
         sendToKafka(alert)
       })
+
 //
 ////      alertSQLList.toList.foreach(sqlToRun => {
 ////        println("sqlToRun is : " + sqlToRun)
