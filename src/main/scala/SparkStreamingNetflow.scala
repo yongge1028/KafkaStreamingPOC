@@ -333,7 +333,7 @@ object SparkStreamingNetflow extends Serializable {
     // Start of Comment Out
     enrichLine.foreachRDD((rdd: RDD[String], time: Time) => {
       val sqlContext = SQLContextSingletonNetFlow.getInstance(rdd.sparkContext)
-      // The schema is encoded in a string
+      // The schema is encoded in a string, tak eoff the dashes
       val schemaString = {
         if (countryEnrichment == true) {
           "starttime duration protocol srcaddr dir dstaddr dport state stos dtos totpkts totbytes country"
