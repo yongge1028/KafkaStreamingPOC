@@ -49,7 +49,7 @@ object ObsfucateLogs extends Serializable {
       for (c <- UIN) {
         newUIN += UINDigitTranslation(c.toString)
       }
-      println("Obsfucated UIN is : " + newUIN)
+//      println("Obsfucated UIN is : " + newUIN)
     }
     else {
       println("UIN does not have a length of 9 digits")
@@ -135,12 +135,18 @@ object ObsfucateLogs extends Serializable {
 
     // read the gzipped file, eventually we will want to read this into a spark RDD
 //    gis("D:\\Bowen\\IntelijGitNewLaptop\\KafkaStreamingPOC\\src\\main\\resources\\bluecoat1.txt.gz")
-    val iterator = GzFileIterator(new java.io.File("D:\\Bowen\\IntelijGitNewLaptop\\KafkaStreamingPOC\\src\\main\\resources\\bluecoat1.txt.gz"), "UTF-8")
+    val iterator = GzFileIterator(new java.io.File("/Users/faganpe/InteliJProjects/KafkaStreamingPOC/src/main/resources/bluecoat1.txt.gz"), "UTF-8")
 
     while (iterator.hasNext){
       val UIN = iterator.next().split(",")(proxyUINPos.toInt)
-      println(iterator.next().split(",")(proxyUINPos.toInt))
-      UINObsfucate(iterator.next().split(",")(proxyUINPos.toInt))
+      val iterLine = iterator.next()
+      val iterArray = iterLine.split(",")
+      iterArray(proxyUINPos.toInt) = UINObsfucate(UIN)
+//      for (i <- iterArray) {
+//        println(i)
+//      }
+//      println(iterLine.split(",")(0) + " " + iterLine.split(",")(proxyUINPos.toInt))
+//      UINObsfucate(iterator.next().split(",")(proxyUINPos.toInt))
     }
 
 //    iterator.foreach(println)

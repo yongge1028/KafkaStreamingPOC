@@ -7,7 +7,7 @@ import com.typesafe.config.ConfigFactory
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql._
-import org.apache.spark.sql.catalyst.expressions.Row
+//import org.apache.spark.sql.catalyst.expressions.Row
 //import org.apache.spark.sql.catalyst.types.{StringType, StructField, StructType} // spark 1.2 codebase
  import org.apache.spark.sql.types._
 

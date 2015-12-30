@@ -2,6 +2,7 @@ import java.io
 import java.text.SimpleDateFormat
 import java.util.{Calendar, Properties}
 
+import Utils.MongoRules
 import kafka.serializer.StringDecoder
 
 import scala.collection.mutable.ArrayBuffer
@@ -32,7 +33,7 @@ object SparkStreamingProxy extends Serializable {
         val props = new Properties()
         //        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
 //        props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
-        props.put("metadata.broker.list", "vm-cluster-node1:9092")
+        props.put("metadata.broker.list", "localhost:9092")
         props.put("serializer.class", "kafka.serializer.StringEncoder")
 
         // some properties we might wish to set commented out below
@@ -70,7 +71,7 @@ object SparkStreamingProxy extends Serializable {
       val props = new Properties()
       //        props.put("metadata.broker.list", "bow-grd-res-01.bowdev.net:9092,bow-grd-res-02.bowdev.net:9092,bow-grd-res-03.bowdev.net:9092")
 //      props.put("metadata.broker.list", "vm-cluster-node2:9092,vm-cluster-node3:9092,vm-cluster-node4:9092")
-      props.put("metadata.broker.list", "vm-cluster-node1:9092")
+      props.put("metadata.broker.list", "localhost:9092")
       props.put("serializer.class", "kafka.serializer.StringEncoder")
       props.put("producer.type", "async")
       // some properties we might wish to set commented out below
@@ -151,6 +152,7 @@ object SparkStreamingProxy extends Serializable {
     val conf = ConfigFactory.load()
     val alertSQL = conf.getString("proxylog-streaming.alertSql")
     val alertSQLList = conf.getStringList("proxylog-streaming.alertSqlList")
+    val alertSQLType = conf.getString("proxylog-streaming.alertSQLType")
     val argsCountryEnrichment = args(4)
 
     val format = new SimpleDateFormat("d/MM/y/hh/mm")
@@ -208,7 +210,7 @@ object SparkStreamingProxy extends Serializable {
 
 //    val topicsSet = topics.split(",").toSet
     val topicsSet = Set("netflow-input")
-    val kafkaParams = Map[String, String]("metadata.broker.list" -> "vm-cluster-node1:9092")
+    val kafkaParams = Map[String, String]("metadata.broker.list" -> "localhost:9092")
     val lines = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](
       ssc, kafkaParams, topicsSet)
 
@@ -273,7 +275,19 @@ object SparkStreamingProxy extends Serializable {
       // SQL statements can be run by using the sql methods provided by sqlContext.
 //      val results = sqlContext.sql("SELECT dir FROM people where dir = '->'")
 
-      alertSQLList.toArray().foreach( sqlToRun => {
+      var alertSQL: Array[AnyRef] = null
+      if (alertSQLType == "alertSqlList") {
+        println("Using alertSqlList")
+        alertSQL = alertSQLList.toArray()
+      }
+      else if (alertSQLType == "alertSqlMongoDB") {
+        println("Using mongo DB")
+        alertSQL = MongoRules.retreiveSQLRules()
+      }
+
+//      val alertSQL = alertSQLList.toArray
+
+      alertSQL.foreach( sqlToRun => {
         println("Running SQL Alert: " + sqlToRun)
         val results = sqlContext.sql(sqlToRun.toString)
         val alert = results.map(r => r.toString())
