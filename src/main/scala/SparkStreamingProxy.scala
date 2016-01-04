@@ -2,7 +2,7 @@ import java.io
 import java.text.SimpleDateFormat
 import java.util.{Calendar, Properties}
 
-import Utils.MongoRules
+import Utils.MongoOps
 import kafka.serializer.StringDecoder
 
 import scala.collection.mutable.ArrayBuffer
@@ -16,6 +16,10 @@ import org.apache.spark.serializer.KryoSerializer
 import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.kafka.KafkaUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext, Time}
+
+import com.mongodb.CursorType
+import com.mongodb.casbah.Imports._
+import com.mongodb.casbah.commons.{Imports, MongoDBList}
 
 /**
  * Created by 801762473 on 27/10/2015.
@@ -279,21 +283,31 @@ object SparkStreamingProxy extends Serializable {
       if (alertSQLType == "alertSqlList") {
         println("Using alertSqlList")
         alertSQL = alertSQLList.toArray()
+        alertSQL.foreach( sqlToRun => {
+          println("Running SQL Alert: " + sqlToRun)
+          val results = sqlContext.sql(sqlToRun.toString)
+          val alert = results.map(r => r.toString())
+          println("Number of results in alert is : " + alert.count())
+          sendToKafka(alert)
+        })
       }
       else if (alertSQLType == "alertSqlMongoDB") {
         println("Using mongo DB")
-        alertSQL = MongoRules.retreiveSQLRules()
+        val alertSQLCursor = MongoOps.retreiveSQLRulesCursor()
+        alertSQLCursor.foreach( sqlToRun => {
+          val results = sqlContext.sql(sqlToRun("rulesql").toString)
+          val alert = results.map(r => r.toString())
+          val today = Calendar.getInstance().getTime()
+          MongoOps.updateNumMessages(sqlToRun("name").toString, "nummessages", alert.count().toString + " @ datestamp " + today.toString)
+          val resultsCount = results.count()
+          if (resultsCount > 0) {
+            val alertSnippet = results.take(5) // Array[Row]
+            val alertSnippetStrArr = alertSnippet.toSeq.toArray.map(_.toString())
+            MongoOps.updateNumMessages(sqlToRun("name").toString, "alertsnippet", alertSnippetStrArr(0))
+          }
+          sendToKafka(alert)
+        })
       }
-
-//      val alertSQL = alertSQLList.toArray
-
-      alertSQL.foreach( sqlToRun => {
-        println("Running SQL Alert: " + sqlToRun)
-        val results = sqlContext.sql(sqlToRun.toString)
-        val alert = results.map(r => r.toString())
-        println("Number of results in alert is : " + alert.count())
-        sendToKafka(alert)
-      })
 
     })
     // End of Comment Out
